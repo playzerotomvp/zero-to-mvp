@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ZERO TO MVP — Basketball Career Simulator v42</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d1520;--plank:#253649;--card:#1a2939;--ink:#f3f7fc;--mute:#b6c7d8;--blue:#70baff;--org:#ff8047;--line:#455c70;--good:#72df9e;--bad:#ff9999;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme="light"],:root[data-theme="dark"]{--bg:#0d1520;--plank:#253649;--card:#1a2939;--ink:#f3f7fc;--mute:#b6c7d8;--blue:#70baff;--org:#ff8047;--line:#455c70;--good:#72df9e;--bad:#ff9999;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(135deg,#101820 0%,#172632 60%,#101820 100%);color:var(--ink);font:16px/1.55 "Noto Sans KR",system-ui,sans-serif;min-height:100vh}
+main{max-width:720px;margin:0 auto;padding:58px 16px 40px}
+.top-actions{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:calc(10px + env(safe-area-inset-right,0px));z-index:1000;display:flex;gap:6px}
+button.exit-btn{width:auto;margin:0;padding:7px 11px;border:2px solid var(--ink);border-left:4px solid var(--bad);background:var(--card);font-size:13px;box-shadow:0 2px 5px #0002}
+button.exit-btn:hover{background:var(--plank)}
+@media(max-width:520px){main{padding:54px 12px 28px}.brand-hero{padding:24px 18px}.brand-actions{flex-direction:column}.brand-actions button{width:100%;flex-basis:auto}.brand-kicker{letter-spacing:.15em}}@media(max-width:380px){main{padding-top:54px}button.exit-btn{font-size:12px;padding:6px 8px}.brand-wordmark{font-size:2.45rem}}
+h1{font:400 32px/1.1 "Black Han Sans","Noto Sans KR",sans-serif;margin:0 0 10px}.brand-wordmark{font:900 clamp(2.65rem,9vw,5.4rem)/.92 system-ui,sans-serif;letter-spacing:-.065em;text-transform:uppercase;color:#f7f8fa;margin:0}.brand-wordmark span{color:#ef6b35}.brand-kicker{font:700 .78rem/1.4 system-ui,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#aebbc5;margin:14px 0 22px}.brand-hero{position:relative;overflow:hidden;background:#14212b;border:1px solid #344754;border-top:5px solid #ef6b35;border-radius:8px;padding:clamp(22px,5vw,40px);margin:0 0 22px;color:#f7f8fa}.brand-hero:after{content:"";position:absolute;right:-42px;bottom:-92px;width:210px;height:210px;border:2px solid #ffffff16;border-radius:50%;box-shadow:0 0 0 24px #ffffff08,0 0 0 48px #ffffff05;pointer-events:none}.brand-tagline{font-size:1rem;font-weight:700;color:#fff;margin:0 0 8px}.brand-copy{color:#c7d1d8;margin:0;max-width:36rem}.brand-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;position:relative;z-index:1}.brand-actions button{width:auto;flex:1 1 160px;margin:0;text-align:center;min-height:48px}.brand-actions .brand-primary{background:#ef6b35;border-color:#ef6b35;color:#111820;border-left-width:2px}.brand-actions .brand-secondary{background:transparent;color:#f7f8fa;border-color:#657782;border-left-width:2px}.brand-section-title{font:700 .78rem/1.4 system-ui,sans-serif;letter-spacing:.15em;text-transform:uppercase;color:var(--mute);margin:22px 0 8px}.game-headline{font:800 1.25rem/1 system-ui,sans-serif;letter-spacing:-.04em;text-transform:uppercase;margin:0 0 8px}.game-headline span{color:var(--org)}
+h2{font:400 22px/1.2 "Black Han Sans","Noto Sans KR",sans-serif;margin:0 0 6px}
+.card{background:var(--card);border:2px solid var(--ink);border-radius:6px;padding:14px;margin:12px 0}
+.track{position:relative;height:30px;margin:6px 0 2px;border:2px solid var(--ink);border-radius:4px;background:var(--card);display:flex;justify-content:space-between;align-items:center;padding:0 8px;font-size:12px;font-weight:700}
+.track:before{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:2px solid var(--org)}
+.track i{position:absolute;top:2px;font-style:normal;font-size:20px;transform:translateX(-50%);transition:left .6s}
+.row{display:grid;grid-template-columns:104px 1fr 28px;gap:8px;align-items:center;font-size:14px;margin:4px 0}
+.bar{height:10px;background:var(--line);border-radius:2px;overflow:hidden}.bar b{display:block;height:100%;background:var(--blue)}
+.meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:14px;color:var(--mute);margin:4px 0 8px}.meta b{color:var(--ink)}
+button{font:700 16px "Noto Sans KR",sans-serif;color:var(--ink);background:var(--card);border:2px solid var(--ink);border-left:8px solid var(--org);border-radius:4px;padding:12px 14px;margin:6px 0;width:100%;text-align:left;cursor:pointer}
+button:hover{background:var(--plank)}button:focus-visible,input:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+button.go{background:var(--ink);color:var(--card);text-align:center}
+button small{display:block;font-weight:400;color:var(--mute)}
+button.chip{display:inline-block;width:auto;margin:3px 4px 3px 0;padding:6px 10px;border-left-width:2px;font-size:14px}
+button.on{background:var(--ink);color:var(--card)}button.on small{color:var(--card)}
+button.cand.on{background:var(--plank);color:var(--ink);border-color:var(--blue);border-left-color:var(--blue)}
+input{font:16px "Noto Sans KR",sans-serif;width:100%;padding:10px;margin:4px 0 8px;border:2px solid var(--ink);border-radius:4px;background:var(--card);color:var(--ink)}
+.big{font:400 26px/1.2 "Black Han Sans",sans-serif;margin:4px 0}
+.ovrbox{display:flex;align-items:center;gap:12px;border:2px solid var(--ink);background:var(--plank);padding:10px 12px;margin:10px 0;border-radius:5px}.ovrnum{font:400 34px/1 "Black Han Sans",sans-serif;min-width:54px;text-align:center;color:var(--org)}.ovrlabel{font-weight:700}.ovrsub{font-size:12px;color:var(--mute)}
+.aw{display:inline-block;background:var(--org);color:#fff;border-radius:3px;padding:1px 8px;margin:2px 4px 2px 0;font-size:13px;font-weight:700}.trait{display:inline-block;background:var(--blue);color:var(--card);border:1px solid var(--ink);border-radius:4px;padding:3px 8px;margin:2px 4px 2px 0;font-size:13px;font-weight:700}.muted-trait{background:transparent;color:var(--mute);border-color:var(--line);font-weight:400}.trait-section{margin:8px 0}.trait-title{font-size:13px;color:var(--mute);font-weight:700;margin-bottom:3px}
+.bad{color:var(--bad)}.good{color:var(--good)}
+.tbl{overflow-x:auto}table{border-collapse:collapse;font-size:13px;width:100%;white-space:nowrap}td,th{padding:4px 6px;border-bottom:1px solid var(--line);text-align:right}td:first-child,th:first-child{text-align:left}
+
+/* v21: every interactive surface is visually separated from the dark page */
+body{background:linear-gradient(150deg,#0b131e,#142436 55%,#0b131e);color:var(--ink)}
+.card{background:#1b2b3c;border:1px solid #476079;box-shadow:0 4px 18px #0003;color:var(--ink)}
+.ovrbox{background:#263a4e;border:1px solid #5b748c;color:#f3f7fc}
+.ovrlabel{color:#f5f8ff}.ovrsub{color:#c5d4e2}
+.game-headline{color:#f5f8ff}.meta{color:#b9cadd}.meta b{color:#fff}
+button{background:#30465d;color:#f8fbff;border:1px solid #607b94;border-left:5px solid var(--org);box-shadow:0 2px 5px #0003}
+button:hover{background:#405b76;border-color:#90b7d8}
+button.go{background:#ff8047;color:#111820;border-color:#ffae85;font-weight:900}
+button.go:hover{background:#ffa06f}
+button small{color:#d0deea}
+button.on,button.chip.on{background:#ff8047;color:#101820;border-color:#ffae85}
+button.on small{color:#23313d}
+button.cand{position:relative;transition:background .15s,border-color .15s,box-shadow .15s,transform .15s}
+button.cand.on,button.cand.on:hover{background:#ff8047!important;color:#101820!important;border:3px solid #ffd0b8!important;border-left:10px solid #fff!important;box-shadow:0 0 0 3px #ff804755,0 8px 22px #0006!important;transform:translateY(-2px)}
+button.cand.on .cand-title{font-weight:900;color:#101820!important}
+button.cand.on small{color:#24313d!important;font-weight:700}
+button.cand:focus-visible{outline:4px solid #fff;outline-offset:3px}
+button.exit-btn{background:#2b3e52;color:#fff;border-color:#6b8298;border-left-color:#ff9999}
+button.exit-btn:hover{background:#405a74}
+input,select{background:#283d51!important;color:#f8fbff!important;border-color:#69849b!important}
+input::placeholder{color:#b4c7d8}
+.brand-section-title{color:#d2deeb}
+.brand-actions .brand-primary{background:#ff8047;color:#111820;border-color:#ff8047}
+.brand-actions .brand-secondary{background:#30465d;color:#fff;border-color:#7894ac}
+.brand-actions .brand-secondary:disabled{opacity:.55;cursor:not-allowed}
+.trait{background:#345e85;color:#fff;border-color:#75a3c8}
+.muted-trait{background:#24384a;color:#c1d1e0;border-color:#526a7e}
+.bar{background:#3c5369}.bar b{background:#70baff}
+.track{display:block;height:auto;min-height:58px;padding:9px 12px;background:#1b2b3c;border:1px solid #5a7590;color:#f7faff}
+.track:before{display:none}
+.track-labels{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:12px;font-weight:800;margin-bottom:8px}
+.track-rail{height:13px;background:#354d63;border:1px solid #688299;border-radius:999px;overflow:hidden}
+.track-fill{height:100%;background:linear-gradient(90deg,#ff8047,#ffbd67);border-radius:999px;transition:width .6s ease}
+.track-labels strong{color:#ffbd83}
+
+.save-access{display:flex;justify-content:flex-end;margin:8px 0 12px}.save-access button{width:auto;margin:0;padding:8px 13px;border:1px solid #526b83;border-radius:8px;background:#1b2b3c;color:#dce8f4;font-size:13px;box-shadow:none}.save-access button:hover{background:#2a4056}.save-modal-backdrop{position:fixed;inset:0;background:#050b12c9;backdrop-filter:blur(5px);z-index:5000;display:flex;align-items:center;justify-content:center;padding:18px}.save-modal{width:min(100%,560px);max-height:88vh;overflow:auto;background:#172536;border:1px solid #526b83;border-radius:16px;padding:22px;box-shadow:0 24px 80px #0009}.save-modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:6px}.save-modal-head h3{margin:0;font-size:20px}.save-modal-head button{width:auto;margin:0;padding:5px 10px;border:1px solid #526b83;border-radius:8px;background:transparent}.save-modal-desc{color:#aebfd0;font-size:13px;margin:4px 0 16px}.save-slot{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:13px 0;border-top:1px solid #30455b}.save-slot-info{min-width:0}.save-slot-name{font-weight:800}.save-slot-meta{font-size:12px;color:#aebfd0;margin-top:2px}.save-slot-actions{display:flex;gap:6px}.save-slot-actions button{width:auto;min-width:76px;margin:0;padding:8px 10px;border:1px solid #526b83;border-left-width:1px;border-radius:8px;font-size:12px;text-align:center;box-shadow:none}.save-slot-actions .save-primary{background:#ff8047;color:#111820;border-color:#ff8047}.save-slot-actions button:disabled{opacity:.35;cursor:not-allowed}.save-current{display:inline-block;color:#ffb58e;font-size:11px;font-weight:800;margin-left:6px}.save-modal-foot{font-size:12px;color:#8fa4b9;margin-top:12px}@media(max-width:420px){.save-slot{grid-template-columns:1fr}.save-slot-actions button{flex:1}}
+.save-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.save-grid button{margin:0;padding:9px 7px;font-size:13px;text-align:center;border-left-width:3px}.save-grid small{font-size:11px}.stat-tabs{display:flex;gap:8px;margin:8px 0}.stat-tabs button{width:auto;flex:1;text-align:center;margin:0}.stat-tabs button.active{background:#ff8047;color:#101820;border-color:#ffd0b8}.economy-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.economy-grid button{margin:0;font-size:13px}.economy-grid button small{font-size:11px}@media(max-width:420px){.save-grid{grid-template-columns:1fr}.economy-grid{grid-template-columns:1fr}}
+
+/* v36: Hall of Fame retirement card */
+.hof-card{position:relative;overflow:hidden;background:linear-gradient(145deg,#182a3c 0%,#263d53 58%,#172635 100%);border:1px solid #7790a7;border-top:5px solid var(--org);border-radius:14px;padding:clamp(18px,4vw,30px);margin:14px 0 18px;box-shadow:0 18px 42px #0005}
+.hof-card:after{content:"HOF";position:absolute;right:-7px;top:22px;font:900 clamp(4rem,17vw,8rem)/1 system-ui,sans-serif;letter-spacing:-.09em;color:#ffffff08;pointer-events:none}
+.hof-kicker{font:800 .75rem/1.4 system-ui,sans-serif;letter-spacing:.22em;color:#ffb184;text-transform:uppercase}
+.hof-title{font:400 clamp(1.8rem,7vw,2.8rem)/1.05 "Black Han Sans","Noto Sans KR",sans-serif;margin:8px 0 4px;color:#fff;position:relative;z-index:1}
+.hof-name{font-size:1.05rem;color:#d9e5f0;margin-bottom:18px}
+.hof-badge{display:inline-flex;align-items:center;gap:7px;background:#ff8047;color:#151d26;border-radius:999px;padding:7px 13px;font-weight:900;margin:2px 0 18px;position:relative;z-index:1}
+.hof-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}
+.hof-stat{background:#0d182555;border:1px solid #6b8297;border-radius:8px;padding:10px;min-width:0}
+.hof-stat strong{display:block;font:400 clamp(1.35rem,5vw,2rem)/1.1 "Black Han Sans",sans-serif;color:#ff9565;overflow-wrap:anywhere}
+.hof-stat span{font-size:.76rem;color:#d5e0ea}
+.hof-detail{border-top:1px solid #ffffff2b;padding-top:12px;margin-top:12px;color:#e4edf5}
+.hof-awards{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.hof-award{background:#344e66;border:1px solid #728aa0;border-radius:5px;padding:4px 8px;font-size:.82rem;font-weight:700}
+.hof-copy{background:var(--org)!important;color:#111820!important;border:1px solid #ffb184!important;border-left:5px solid #fff!important;text-align:center!important;font-weight:900!important;margin:14px 0 8px!important}
+.hof-copy:hover{background:#ffa06f!important}
+@media(max-width:420px){.hof-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.hof-card{padding:16px}}
+
+/* v42: 시즌 종료 리포트 */
+.season-report{background:#f7f9fc;color:#202a38;border:1px solid #dce4ed;border-radius:16px;overflow:hidden;margin:12px 0 16px;box-shadow:0 12px 30px #0002}
+.season-report *{box-sizing:border-box}
+.sr-head{padding:20px;background:linear-gradient(135deg,#172b40,#294765);color:#fff}
+.sr-kicker{font-size:12px;letter-spacing:.12em;font-weight:900;color:#b8d6f2;text-transform:uppercase}
+.sr-head h2{font-size:26px;margin:5px 0 3px;color:#fff}
+.sr-sub{color:#d3dfeb;font-size:14px}
+.sr-ovr{display:flex;align-items:center;gap:14px;margin-top:16px;padding:12px;background:#ffffff12;border:1px solid #ffffff30;border-radius:10px}
+.sr-ovr-num{font-size:36px;line-height:1;font-weight:900;color:#77b7ff}
+.sr-ovr-label{font-size:13px;color:#dbe8f5}.sr-ovr-label b{display:block;font-size:17px;color:#fff}
+.sr-body{padding:16px}
+.sr-section{margin:0 0 18px}.sr-section:last-child{margin-bottom:0}
+.sr-section h3{font-size:16px;margin:0 0 10px;color:#202a38}
+.sr-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.sr-stat{padding:11px 8px;background:#eaf1f8;border-radius:9px;text-align:center;min-width:0}
+.sr-stat strong{display:block;font-size:21px;line-height:1.25;color:#243d59}.sr-stat span{display:block;font-size:12px;color:#65778a;margin-top:3px}
+.sr-competition{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid #e6ebf1}
+.sr-competition:last-child{border-bottom:0}.sr-icon{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;background:#e9f0f7;font-size:17px;flex:none}
+.sr-comp-main{flex:1;min-width:0}.sr-comp-main b{display:block;font-size:14px;color:#2a3544}.sr-comp-main small{display:block;font-size:12px;color:#7b8796;margin-top:2px}
+.sr-comp-result{font-weight:900;font-size:15px;text-align:right;max-width:46%;color:#37465a}.sr-comp-result.good{color:#15804a}.sr-comp-result.bad{color:#b45335}
+.sr-growth{display:grid;grid-template-columns:1fr 1fr;gap:8px}.sr-growth-item{background:#f0f4f8;border-radius:8px;padding:9px 10px;display:flex;justify-content:space-between;gap:8px;font-size:13px;color:#536274}.sr-growth-item b{color:#243d59}.sr-growth-item .up{color:#16834c}.sr-growth-item .down{color:#b45335}
+.sr-reaction{padding:13px;background:#f0f3f7;border-radius:10px;margin:8px 0}.sr-reaction:last-child{margin-bottom:0}.sr-source{font-size:11px;color:#7c8998;font-weight:800;margin-bottom:4px}.sr-quote{font-weight:700;font-size:14px;line-height:1.5;color:#273444}.sr-fan{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #e6ebf1}.sr-fan:last-child{border-bottom:0}.sr-avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#dcecfb;color:#315d89;font-weight:900;flex:none}.sr-fan p{margin:0;font-size:13px;color:#354254}.sr-fan small{display:block;color:#8a96a4;margin-top:4px;font-size:11px}
+.sr-awards{display:flex;flex-wrap:wrap;gap:6px}.sr-award{background:#fff0e7;color:#a84820;border:1px solid #ffd0b9;border-radius:6px;padding:5px 8px;font-size:12px;font-weight:900}
+@media(max-width:420px){.sr-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.sr-body{padding:12px}.sr-head{padding:16px}.sr-comp-result{font-size:13px}}
+
+
+/* v42: 밝고 가벼운 핀테크 앱 스타일 — Toss-inspired, not a brand replica */
+:root{--bg:#f5f7fa;--plank:#edf2f7;--card:#ffffff;--ink:#191f28;--mute:#687586;--blue:#3182f6;--org:#3182f6;--line:#e5eaf0;--good:#159765;--bad:#e5484d;color-scheme:light}
+html,body{background:#f5f7fa!important;color:#191f28!important}
+body{background:linear-gradient(180deg,#f7f9fc 0%,#f3f6fa 100%)!important;font-family:"Noto Sans KR",system-ui,sans-serif;letter-spacing:-.018em}
+#app{width:min(100%,760px);margin:0 auto;padding:18px 16px 48px}
+.top-actions{position:sticky;top:0;z-index:100;display:flex;justify-content:flex-end;padding:8px max(12px,calc((100vw - 760px)/2 + 12px));background:#f5f7faeF;backdrop-filter:blur(12px)}
+button.exit-btn{background:#fff!important;color:#687586!important;border:1px solid #e5eaf0!important;border-radius:12px!important;box-shadow:0 2px 6px #172b4d08!important}
+h1{color:#191f28}
+.brand-wordmark{color:#191f28!important}.brand-wordmark span{color:#3182f6!important}
+.brand-kicker{color:#687586!important}
+.brand-hero{background:linear-gradient(135deg,#fff,#edf5ff)!important;color:#191f28!important;border:1px solid #e2ebf7!important;border-top:4px solid #3182f6!important;border-radius:24px!important;box-shadow:0 8px 28px #263d5a0a!important}
+.brand-hero:after{border-color:#3182f610!important;box-shadow:0 0 0 24px #3182f608,0 0 0 48px #3182f605!important}
+.brand-tagline{color:#191f28!important}.brand-copy{color:#687586!important}.brand-section-title{color:#7b8797!important;letter-spacing:.04em!important}
+.game-headline{color:#191f28!important}.game-headline span{color:#3182f6!important}
+.card{background:#fff!important;color:#191f28!important;border:1px solid #e6ebf2!important;border-radius:18px!important;box-shadow:0 4px 18px #263d5a08!important;padding:18px!important}
+.ovrbox{background:#f0f6ff!important;color:#191f28!important;border:1px solid #dceaff!important;border-radius:16px!important}.ovrnum{color:#3182f6!important}.ovrlabel{color:#191f28!important}.ovrsub{color:#7b8797!important}
+.meta{color:#7b8797!important}.meta b{color:#191f28!important}
+button{background:#fff!important;color:#26313f!important;border:1px solid #e2e7ee!important;border-left:4px solid #3182f6!important;border-radius:14px!important;box-shadow:0 2px 6px #263d5a06!important;padding:13px 15px!important;transition:background .15s,border-color .15s,transform .15s}
+button:hover{background:#f5f9ff!important;border-color:#c7dcfb!important;transform:translateY(-1px)}
+button.go,.brand-actions .brand-primary{background:#3182f6!important;color:#fff!important;border-color:#3182f6!important;border-left-width:1px!important;border-radius:14px!important;font-weight:800!important;box-shadow:0 5px 12px #3182f626!important}
+button.go:hover,.brand-actions .brand-primary:hover{background:#1b70ed!important}
+button.on,button.chip.on{background:#eaf3ff!important;color:#1768d2!important;border-color:#8bbcff!important}
+button.on small,button small{color:#7b8797!important}
+button.cand.on,button.cand.on:hover{background:#eaf3ff!important;color:#1768d2!important;border:2px solid #3182f6!important;border-left:5px solid #3182f6!important;box-shadow:0 0 0 3px #3182f612!important;transform:translateY(-1px)}
+button.cand.on .cand-title,button.cand.on small{color:#1768d2!important}
+button.exit-btn:hover{background:#f0f4f8!important}
+input,select{background:#fff!important;color:#191f28!important;border:1px solid #dfe5ec!important;border-radius:12px!important;padding:12px!important}
+input::placeholder{color:#9aa5b3!important}
+.trait{background:#eaf3ff!important;color:#2168c4!important;border:1px solid #d3e5ff!important;border-radius:8px!important}
+.muted-trait{background:#f4f6f8!important;color:#7b8797!important;border-color:#e5eaf0!important}
+.aw{background:#eaf3ff!important;color:#2168c4!important;border-radius:8px!important}
+.bar{background:#e8edf3!important;border-radius:999px!important}.bar b{background:#3182f6!important;border-radius:999px!important}
+.track{background:#fff!important;border:1px solid #e5eaf0!important;border-radius:14px!important;color:#26313f!important;box-shadow:0 2px 8px #263d5a06!important}
+.track-rail{background:#e8edf3!important;border:0!important}.track-fill{background:linear-gradient(90deg,#3182f6,#69a8ff)!important}.track-labels strong{color:#3182f6!important}
+.save-access button{background:#fff!important;color:#687586!important;border:1px solid #e5eaf0!important;border-radius:10px!important}
+.save-access button:hover{background:#f3f7fc!important}
+.save-modal-backdrop{background:#172b4d66!important}.save-modal{background:#fff!important;color:#191f28!important;border:1px solid #e5eaf0!important;border-radius:22px!important;box-shadow:0 24px 80px #172b4d24!important}.save-modal-desc,.save-slot-meta,.save-modal-foot{color:#7b8797!important}.save-slot{border-top-color:#edf0f4!important}.save-slot-actions button{border-radius:10px!important}.save-slot-actions .save-primary{background:#3182f6!important;color:#fff!important;border-color:#3182f6!important}.save-current{color:#3182f6!important}
+.hof-card{background:linear-gradient(145deg,#fff 0%,#edf5ff 100%)!important;color:#191f28!important;border:1px solid #dce8f8!important;border-top:4px solid #3182f6!important;border-radius:22px!important;box-shadow:0 10px 28px #263d5a0c!important}.hof-card:after{color:#3182f608!important}.hof-kicker{color:#3182f6!important}.hof-title{color:#191f28!important}.hof-name{color:#687586!important}.hof-badge{background:#e5f0ff!important;color:#1768d2!important}.hof-stat{background:#fff!important;border:1px solid #e2eaf4!important;border-radius:12px!important}.hof-stat strong{color:#3182f6!important}.hof-stat span,.hof-detail{color:#687586!important}.hof-detail{border-top-color:#e5eaf0!important}.hof-award{background:#f1f6fd!important;color:#315c8b!important;border-color:#dce8f8!important}.hof-copy{background:#3182f6!important;color:#fff!important;border-color:#3182f6!important;border-left-color:#fff!important}.hof-copy:hover{background:#1b70ed!important}
+/* season review cards harmonized with the app-wide light theme */
+.season-report{background:#fff!important;color:#191f28!important;border:1px solid #e5eaf0!important;border-radius:22px!important;box-shadow:0 8px 28px #263d5a0b!important}
+.sr-head{background:linear-gradient(135deg,#eaf3ff,#f6faff)!important;color:#191f28!important;border-bottom:1px solid #e2ebf7!important}
+.sr-kicker{color:#3182f6!important}.sr-head h2{color:#191f28!important}.sr-sub{color:#687586!important}
+.sr-ovr{background:#fff!important;border:1px solid #dce8f8!important;border-radius:14px!important}.sr-ovr-num{color:#3182f6!important}.sr-ovr-label{color:#687586!important}.sr-ovr-label b{color:#191f28!important}
+.sr-body{background:#fff!important}.sr-section h3{color:#191f28!important}.sr-stat{background:#f5f8fc!important;border:1px solid #edf1f6!important;border-radius:12px!important}.sr-stat strong{color:#243d59!important}.sr-stat span{color:#7b8797!important}
+.sr-competition{border-bottom-color:#edf0f4!important}.sr-icon{background:#edf4ff!important;color:#3182f6!important}.sr-comp-main b{color:#26313f!important}.sr-comp-main small{color:#8a96a4!important}.sr-comp-result{color:#37465a!important}.sr-comp-result.good{color:#159765!important}.sr-comp-result.bad{color:#d97745!important}
+.sr-growth-item{background:#f5f8fc!important;color:#687586!important;border:1px solid #edf1f6!important;border-radius:10px!important}.sr-growth-item b{color:#26313f!important}.sr-growth-item .up{color:#159765!important}.sr-growth-item .down{color:#d97745!important}
+.sr-reaction{background:#f5f8fc!important;border:1px solid #edf1f6!important;border-radius:14px!important}.sr-source{color:#8a96a4!important}.sr-quote{color:#26313f!important}.sr-fan{border-bottom-color:#edf0f4!important}.sr-avatar{background:#e5f0ff!important;color:#3182f6!important}.sr-fan p{color:#354254!important}.sr-fan small{color:#8a96a4!important}.sr-award{background:#eaf3ff!important;color:#2168c4!important;border-color:#d3e5ff!important;border-radius:8px!important}
+@media(max-width:520px){#app{padding:12px 12px 32px}.card{padding:15px!important}.brand-hero{padding:22px!important;border-radius:20px!important}.season-report{border-radius:18px!important}}
+
+</style></head><body><div class="top-actions"><button type="button" id="exitGameBtn" class="exit-btn" aria-label="게임 종료">게임 종료 ✕</button></div><main id="app"></main>
+<script>
+const R=Math.random,rn=(a,b)=>a+R()*(b-a),cl=(v,a=0,b=100)=>Math.max(a,Math.min(b,v)),rd=Math.round,pk=a=>a[Math.floor(R()*a.length)];
+const $=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const K=['shoot','fin','play','def','reb','phy'];
+const KN={shoot:'슛',fin:'돌파·마무리',play:'플레이메이킹',def:'수비',reb:'리바운드',phy:'피지컬',health:'건강',trust:'감독 신뢰',fame:'명성'};
+const POS={H:{n:'핸들러',w:{shoot:.22,fin:.18,play:.30,def:.12,reb:.03,phy:.15},h:[176,192],pm:1},W:{n:'윙',w:{shoot:.28,fin:.22,play:.12,def:.20,reb:.08,phy:.10},h:[188,200],pm:1.06},B:{n:'빅',w:{shoot:.08,fin:.25,play:.07,def:.22,reb:.25,phy:.13},h:[197,212],pm:.92}};
+const LV={HS:{n:'고교',b:50,g:25},UNIV:{n:'대학',b:56,g:28},KBL:{n:'KBL',b:64,g:54},NCAA:{n:'NCAA',b:68,g:32},GL:{n:'G리그',b:66,g:50},MIL:{n:'상무',b:62,g:40},NBA:{n:'NBA',b:76,g:82}};
+const Pn={HS:'고교',UNIV:'U리그',KBL:'KBL',NCAA:'NCAA',GL:'G리그',NBA:'NBA',MIL:'상무'};
+const TN={HS:['삼일고','경복고','용산고','양정고','휘문고','제물포고'],UNIV:['연세대','고려대','중앙대','경희대','한양대','동국대'],KBL:['서울 SK','서울 삼성','수원 KT','창원 LG','울산 현대모비스','대구 한국가스공사','고양 소노','원주 DB','안양 정관장','부산 KCC'],NCAA:['듀크','캔자스','UCLA','UConn','곤자가','미시간 주립'],GL:['위스콘신 허드','오스틴 스퍼스','산타크루즈','사우스베이'],NBA:['레이커스','셀틱스','워리어스','너기츠','히트','벅스','선즈','닉스','스퍼스','썬더','매버릭스','위저즈']};
+const KR_SCHOOLS=[
+ {name:'용산고',state:'서울 · 전통 강호'},
+ {name:'경복고',state:'서울 · 전통 강호'},
+ {name:'휘문고',state:'서울 · 전통 강호'},
+ {name:'삼일고',state:'경기 수원 · 전통 강호'},
+ {name:'낙생고',state:'경기 성남 · 전국대회 출전'},
+ {name:'양정고',state:'서울 · 전국대회 출전'},
+ {name:'제물포고',state:'인천 · 전통 농구부'},
+ {name:'홍대부고',state:'서울 · 전국대회 출전'},
+ {name:'전주고',state:'전북 전주 · 전국대회 출전'},
+ {name:'안양고',state:'경기 안양 · 전국대회 출전'},
+ {name:'송도고',state:'인천 · 전통 농구부'},
+ {name:'광신방송예고',state:'서울 · 전국대회 출전'},
+ {name:'광주고',state:'광주 · 전국대회 출전'},
+ {name:'군산고',state:'전북 군산 · 전국대회 출전'},
+ {name:'김해가야고',state:'경남 김해 · 전국대회 출전'},
+ {name:'대전고',state:'대전 · 전국대회 출전'},
+ {name:'동아고',state:'부산 · 전국대회 출전'},
+ {name:'마산고',state:'경남 창원 · 전통 농구부'},
+ {name:'명지고',state:'서울 · 전국대회 출전'},
+ {name:'무룡고',state:'울산 · 전국대회 출전'},
+ {name:'배재고',state:'서울 · 전통 농구부'},
+ {name:'부산중앙고',state:'부산 · 전통 농구부'},
+ {name:'상산전자고',state:'전북 전주 · 전국대회 출전'},
+ {name:'여수화양고',state:'전남 여수 · 전국대회 출전'},
+ {name:'인헌고',state:'서울 · 전국대회 출전'},
+ {name:'천안쌍용고',state:'충남 천안 · 전국대회 출전'},
+ {name:'청주신흥고',state:'충북 청주 · 전국대회 출전'},
+ {name:'충주고',state:'충북 충주 · 전국대회 출전'},
+ {name:'강원사대부고',state:'강원 춘천 · 전국대회 출전'},
+ {name:'계성고',state:'대구 · 전통 농구부'}
+];
+const US_SCHOOLS=[
+ {name:'Montverde Academy',state:'플로리다 · 전국구 명문 프로그램'},
+ {name:'Chino Hills High School',state:'캘리포니아 · 유명 고교 프로그램'},
+ {name:'IMG Academy',state:'플로리다 · 스포츠 아카데미'},
+ {name:'Oak Hill Academy',state:'버지니아 · 전통 강호'},
+ {name:'Sierra Canyon School',state:'캘리포니아 · 유명 고교 프로그램'},
+ {name:'Link Academy',state:'미주리 · 전국구 프렙 프로그램'},
+ {name:'Sunrise Christian Academy',state:'캔자스 · 전국구 프렙 프로그램'},
+ {name:'Brewster Academy',state:'뉴햄프셔 · 유명 프렙 프로그램'},
+ {name:'Prolific Prep',state:'플로리다 · 전국구 농구 프로그램'},
+ {name:'AZ Compass Prep',state:'애리조나 · 전국구 프렙 프로그램'},
+ {name:'La Lumiere School',state:'인디애나 · 유명 프렙 프로그램'},
+ {name:'Wasatch Academy',state:'유타 · 전국구 프렙 프로그램'},
+ {name:'Long Island Lutheran',state:'뉴욕 · 유명 고교 프로그램'},
+ {name:'SPIRE Academy',state:'오하이오 · 스포츠 아카데미'},
+ {name:'Oak Ridge Military Academy',state:'노스캐롤라이나 · 기숙형 학교'},
+ {name:'New Hampton School',state:'뉴햄프셔 · 기숙형 프렙 프로그램'},
+ {name:'Cushing Academy',state:'매사추세츠 · 기숙형 프렙 프로그램'},
+ {name:'Sunshine State / Other School',state:'기타 미국 고교 · 랜덤 학교'}
+];
+const TY={early:'조숙형',normal:'보통형',late:'대기만성형',durable:'장수형'};
+const NT=[['아시안게임',2026,o=>cl((o-60)/70+.05,0,.75),1],['FIBA 월드컵',2027,o=>cl((o-62)/80,0,.4),0],['올림픽',2028,o=>cl((o-84)/60,0,.35),2],['FIBA 아시아컵',2029,o=>cl((o-60)/75,0,.55),0]];
+const EV=[
+{t:'슈팅 전문 코치',d:'유명한 슈팅 코치가 특별 훈련을 제안한다.',a:['특훈을 받는다',{shoot:3,health:-8,trust:3}],b:['일정대로 간다',{health:4}]},
+{t:'복싱 크로스 트레이닝',d:'트레이너가 복싱으로 몸싸움을 키우자고 한다.',a:['도전한다',{phy:3,def:1,health:-10},{health:-15,risk:.06},.7],b:['하지 않는다',{trust:1}]},
+{t:'반대 손 훈련',d:'코치가 약한 손으로 마무리하는 훈련을 권한다.',a:['도전한다',{fin:3,play:1,health:-6}],b:['강점을 더 키운다',{shoot:1,fin:1}]},
+{t:'유튜브 채널 제안',u:1,d:'구단 홍보팀이 개인 채널을 열자고 한다.',a:['개설한다',{fame:6,trust:-5}],b:['거절한다',{trust:3}]},
+{t:'팀 주장 완장',u:1,d:'감독이 주장을 맡아달라고 한다.',c:()=>G.age>=22&&G.trust>=45,a:['수락한다',{trust:15,play:1,health:-5}],b:['사양한다',{health:3}]},
+{t:'에이전트 교체 제안',u:1,c:()=>G.age>=20&&['KBL','NBA','GL'].includes(G.lv)&&(G.fame>=15||ovr()>=70),d:'프로 무대에서 이름을 알린 뒤, 대형 에이전시가 영입 의사를 밝혔다.',a:['교체한다',{fame:4},{fame:-3,trust:-4},.6],b:['기존 에이전트를 유지한다',{trust:2}]},
+{t:'진통제를 맞고 뛸까',d:'중요한 경기를 앞두고 몸이 무겁다.',c:()=>G.age>=20,a:['맞고 뛴다',{trust:8,fame:3,risk:.1}],b:['쉰다',{health:8,trust:-3}]},
+{t:'부모님 수술 소식',u:1,c:()=>['NCAA','NBA','GL'].includes(G.lv),d:'해외 리그에서 뛰던 중 고향의 부모님이 수술을 받게 됐다.',a:['잠시 귀국해 곁을 지킨다',{trust:-6,health:4}],b:['시즌에 집중한다',{health:-8,play:1}]},
+{t:'반려견 입양',u:1,d:'숙소 근처 보호소에서 강아지를 만났다.',a:['입양한다',{health:6}],b:['시간이 없다',{shoot:1}]},
+{t:'영상 분석 세션',d:'분석팀이 상대 영상을 같이 보자고 한다.',a:['밤새 본다',{play:2,def:2,health:-4}],b:['푹 잔다',{health:5}]},
+{t:'동료의 1대1 도발',d:'주전 선배가 한 판 붙자고 한다.',a:['받아준다',{fin:2,def:1,health:-6,trust:-2}],b:['웃어넘긴다',{trust:2}]},
+{t:'슛 슬럼프',d:'3주째 슛이 들어가지 않는다.',a:['개인 코치와 폼을 고친다',{shoot:3,health:-5},{shoot:-2,trust:-3},.6],b:['믿고 계속 던진다',{trust:2,shoot:1}]},
+{t:'팬 사인회',c:()=>['KBL','NBA','GL'].includes(G.lv),d:'프로 구단이 팬 사인회에 참석해달라고 한다.',a:['참석한다',{fame:4,health:-3}],b:['개인 훈련을 한다',{shoot:1,fin:1}]},
+{t:'신발 후원 제안',d:'스포츠 브랜드가 후원을 제안한다.',c:()=>G.fame>=15,a:['계약한다',{fame:5,trust:-2}],b:['거절한다',{trust:3}]},
+{t:'식단 관리',d:'영양사가 식단을 바꾸자고 한다.',a:['따른다',{health:8,phy:1}],b:['먹고 싶은 대로 먹는다',{health:-4,trust:-1}]},
+{t:'베테랑의 조언',d:'은퇴를 앞둔 선배가 비결을 알려주겠다고 한다.',a:['귀 기울인다',{play:2,def:1,trust:3}],b:['내 방식대로 간다',{shoot:1}]},
+{t:'감독과 면담',d:'출전 시간에 대해 감독에게 말할 기회가 생겼다.',c:()=>G.age>=18,a:['직접 말한다',{trust:6},{trust:-8},.5],b:['참고 훈련한다',{health:-3,fin:1,def:1}]},
+{t:'해외 하계 캠프',d:'해외 농구 캠프에 초청받았다.',c:()=>G.age<=22,a:['참가한다',{fin:2,shoot:2,fame:2,health:-8}],b:['고향에서 쉰다',{health:8}]},
+{t:'동료와의 갈등',d:'패스를 두고 동료와 말다툼이 벌어졌다.',a:['먼저 사과한다',{trust:4,play:1}],b:['맞받아친다',{trust:-5,fame:2}]},
+{t:'원정 강행군',c:()=>['KBL','NBA','GL'].includes(G.lv),d:'프로 시즌 일정이 빡빡해 백투백 원정이 이어진다.',a:['회복 프로그램을 받는다',{health:5,phy:1}],b:['버틴다',{health:-10,trust:3}]},
+{t:'전국대회 활약',c:()=>G.age>=16&&G.age<=18&&ovr()>=48,d:'전국대회에서 강팀을 상대로 좋은 활약을 펼쳤다. 코치진이 다음 경기에서 더 큰 역할을 맡길지 고민한다.',a:['큰 무대에서 적극적으로 뛴다',{play:2,fame:3,health:-4}],b:['기본기에 집중한다',{shoot:1,def:1,trust:2}]},
+{t:'대학 스카우트 접촉',c:()=>G.age>=16&&G.age<=18&&ovr()>=52,d:'대학 코치진이 경기 영상을 보고 관심을 보였다. 아직 장학금이나 입학이 확정된 것은 아니다.',a:['하이라이트와 성적을 보낸다',{fame:3,trust:2}],b:['현재 팀 훈련에 집중한다',{play:1,health:3}]},
+{t:'프로 진출 고민',c:()=>['UNIV','NCAA'].includes(G.lv)&&G.age>=19&&ovr()>=60,d:'주변에서 프로 진출 가능성을 이야기한다. 지금 도전할지, 대학에서 더 성장할지 고민이다.',a:['프로 진출을 진지하게 준비한다',{fame:3,play:1,health:-3}],b:['대학에서 더 성장한다',{shoot:1,play:1,trust:2}]},
+{t:'출전 시간 갈등',c:()=>['UNIV','NCAA','KBL','NBA','GL'].includes(G.lv)&&G.last&&G.last.min<18,d:'최근 출전 시간이 기대보다 적다. 감독과 면담해 역할을 확인할 기회가 생겼다.',a:['구체적인 피드백을 요청한다',{trust:4,play:1}],b:['훈련으로 증명한다',{shoot:1,def:1,health:-4}]},
+{t:'드래프트 선언 고민',c:()=>['NCAA','UNIV'].includes(G.lv)&&G.age>=19&&ovr()>=64,d:'스카우트 평가를 받아보고 드래프트 참가 여부를 결정할 수 있다. 선언이 지명을 보장하지는 않는다.',a:['에이전트·가족과 평가를 받아본다',{fame:4,trust:2}],b:['대학에 남아 기량을 다진다',{play:2,shoot:1}]},
+{t:'계약 협상 테이블',c:()=>['KBL','NBA','GL'].includes(G.lv)&&G.cy<=1&&(G.fame>=10||ovr()>=65),d:'계약 만료가 가까워졌다. 에이전트와 함께 역할과 계약 조건을 검토한다.',a:['출전 기회와 역할을 우선한다',{trust:3,play:1}],b:['조건을 높게 요구한다',{fame:2,trust:-2}]},
+{t:'트레이드 루머',c:()=>['KBL','NBA','GL'].includes(G.lv)&&G.age>=20&&(G.fame>=12||ovr()>=70),d:'언론에서 트레이드 가능성을 거론한다. 아직 구단의 공식 발표는 없다.',a:['경기에 집중한다',{play:1,trust:2}],b:['에이전트에게 상황을 확인한다',{fame:1,trust:1}]},
+{t:'역할 변화의 신호',c:()=>G.age>=30&&['KBL','NBA','GL'].includes(G.lv)&&G.last&&G.last.min<20,d:'젊은 선수에게 기회가 늘면서 출전 시간이 줄었다. 경험을 살려 새로운 역할을 찾아야 한다.',a:['수비와 리더십에 집중한다',{def:2,trust:3}],b:['주전 자리를 되찾기 위해 강하게 훈련한다',{shoot:1,phy:1,health:-6}]},
+{t:'젊은 선수 멘토링',c:()=>G.age>=30&&['KBL','NBA','GL'].includes(G.lv)&&G.trust>=35,d:'코치가 젊은 선수의 적응을 도와달라고 부탁했다. 팀 내 리더십을 보여줄 기회다.',a:['훈련을 함께한다',{trust:5,play:1}],b:['내 훈련 루틴을 우선한다',{shoot:1,health:2}]},
+{t:'은퇴 이후를 생각하다',c:()=>G.age>=34&&['KBL','NBA','GL'].includes(G.lv),d:'시즌이 길어질수록 코트 밖의 삶도 생각하게 된다. 당장 은퇴할 필요는 없지만 다음 단계를 준비할 수 있다.',a:['지도자·코치 과정을 알아본다',{trust:3,fame:1}],b:['선수 생활에 집중한다',{play:1,health:-2}]},
+{t:'지도자 전향 제안',c:()=>G.age>=35&&['KBL','NBA','GL'].includes(G.lv)&&G.fame>=18,d:'구단 관계자가 은퇴 후 코치 역할에 관심이 있는지 조심스럽게 물어본다. 아직 정식 계약 제안은 아니다.',a:['은퇴 후 진로 상담을 한다',{trust:4,fame:2}],b:['선수로 더 뛰겠다고 말한다',{play:1,trust:1}]}];
+// 이벤트 단계별 허용표: HS=고등학교, COLLEGE=대학, PRO=프로, VETERAN=30세 이상 프로 베테랑, MIL=군 복무.
+const EVENT_STAGE_RULES={
+'슈팅 전문 코치':['HS','COLLEGE','PRO','VETERAN','MIL'],
+'복싱 크로스 트레이닝':['HS','COLLEGE','PRO','VETERAN','MIL'],
+'반대 손 훈련':['HS','COLLEGE','PRO','VETERAN','MIL'],
+'유튜브 채널 제안':['COLLEGE','PRO','VETERAN'],
+'팀 주장 완장':['COLLEGE','PRO','VETERAN'],
+'에이전트 교체 제안':['PRO','VETERAN'],
+'진통제를 맞고 뛸까':['PRO','VETERAN'],
+'부모님 수술 소식':['COLLEGE','PRO','VETERAN'],
+'반려견 입양':['PRO','VETERAN'],
+'영상 분석 세션':['HS','COLLEGE','PRO','VETERAN','MIL'],
+'동료의 1대1 도발':['HS','COLLEGE','PRO','VETERAN','MIL'],
+'슛 슬럼프':['HS','COLLEGE','PRO','VETERAN','MIL'],
+'팬 사인회':['PRO','VETERAN'],
+'신발 후원 제안':['PRO','VETERAN'],
+'식단 관리':['HS','COLLEGE','PRO','VETERAN','MIL'],
+'베테랑의 조언':['COLLEGE','PRO','VETERAN','MIL'],
+'감독과 면담':['COLLEGE','PRO','VETERAN'],
+'해외 하계 캠프':['HS','COLLEGE'],
+'동료와의 갈등':['HS','COLLEGE','PRO','VETERAN','MIL'],
+'원정 강행군':['PRO','VETERAN'],
+'전국대회 활약':['HS'],
+'대학 스카우트 접촉':['HS'],
+'프로 진출 고민':['COLLEGE'],
+'출전 시간 갈등':['COLLEGE','PRO','VETERAN'],
+'드래프트 선언 고민':['COLLEGE'],
+'계약 협상 테이블':['PRO','VETERAN'],
+'트레이드 루머':['PRO','VETERAN'],
+'역할 변화의 신호':['VETERAN'],
+'젊은 선수 멘토링':['VETERAN'],
+'은퇴 이후를 생각하다':['VETERAN'],
+'지도자 전향 제안':['VETERAN']
+};
+function careerStage(){if(G.lv==='HS')return 'HS';if(['UNIV','NCAA'].includes(G.lv))return 'COLLEGE';if(G.lv==='MIL')return 'MIL';if(['KBL','NBA','GL'].includes(G.lv))return G.age>=30?'VETERAN':'PRO';return 'HS'}
+function eventAllowedByStage(e){const allowed=EVENT_STAGE_RULES[e.t];return !!allowed&&allowed.includes(careerStage())}
+let G=null,C={name:'',no:7,pos:'H',st:'KR',krSchool:'용산고',usSchool:'Montverde Academy',cs:[],sel:-1,foc:[]};
+const SK='b2mvp-v2', SLOT_KEY='zeroToMvpSaveSlots-v1';
+let activeSaveSlot=1, statView='basic';
+try{activeSaveSlot=Number(localStorage.getItem('zeroToMvpActiveSlot'))||1}catch(e){}
+if(![1,2,3].includes(activeSaveSlot))activeSaveSlot=1;
+function readSlots(){
+  try{const x=JSON.parse(localStorage.getItem(SLOT_KEY));if(x&&typeof x==='object')return {1:x[1]||null,2:x[2]||null,3:x[3]||null}}catch(e){}
+  let legacy=null;try{legacy=JSON.parse(localStorage.getItem(SK))}catch(e){}
+  const slots={1:legacy||null,2:null,3:null};
+  try{localStorage.setItem(SLOT_KEY,JSON.stringify(slots))}catch(e){}
+  return slots;
+}
+function migrateSaveData(g){
+  if(!g||typeof g!=='object')return g;
+  g.staff = g.staff || {shootingCoach:false,playmakingCoach:false,defenseCoach:false,trainer:false,agent:false};
+  g.economyLog = g.economyLog || []; g.injury = g.injury || {gamesOut:0,permanentLoss:0};
+  g.hist = g.hist || []; g.aw = g.aw || {}; g.s = g.s || {};
+  for(const k of K) if(!Number.isFinite(g.s[k]))g.s[k]=40;
+  return g;
+}
+function sv(){try{if(!G)return;localStorage.setItem(SK,JSON.stringify(G));}catch(e){console.warn('저장 실패',e)}}
+function ld(){try{const direct=JSON.parse(localStorage.getItem(SK)||'null');if(direct)return migrateSaveData(direct);const slots=readSlots();const legacy=slots[activeSaveSlot]||slots[1]||slots[2]||slots[3]||null;if(legacy){const migrated=migrateSaveData(legacy);localStorage.setItem(SK,JSON.stringify(migrated));return migrated;}return null}catch(e){return null}}
+function clr(){try{const slots=readSlots();slots[activeSaveSlot]=null;localStorage.setItem(SLOT_KEY,JSON.stringify(slots));localStorage.removeItem(SK)}catch(e){}} 
+function saveToSlot(slot){if(![1,2,3].includes(Number(slot))||!G)return;const slots=readSlots();if(slots[slot]&&!confirm(`슬롯 ${slot}의 기존 커리어를 덮어쓸까요?`))return;slots[slot]=JSON.parse(JSON.stringify(G));localStorage.setItem(SLOT_KEY,JSON.stringify(slots));activeSaveSlot=Number(slot);localStorage.setItem(SK,JSON.stringify(G));G.note=`커리어를 슬롯 ${slot}에 저장했습니다.`;render()}
+function loadFromSlot(slot){const slots=readSlots();if(!slots[slot]){G&&(G.note=`슬롯 ${slot}은 비어 있습니다.`);render();return}activeSaveSlot=Number(slot);localStorage.setItem('zeroToMvpActiveSlot',String(slot));G=migrateSaveData(JSON.parse(JSON.stringify(slots[slot])));sv();render()}
+function exportSave(){if(!G){alert('내보낼 커리어가 없습니다.');return}const data={format:'ZERO_TO_MVP_SAVE',version:1,exportedAt:new Date().toISOString(),game:G};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`zero-to-mvp-slot${activeSaveSlot}-${String(G.name||'career').replace(/[^\w가-힣-]/g,'_')}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+function importSaveFile(file){if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const data=JSON.parse(reader.result);const g=data.format==='ZERO_TO_MVP_SAVE'?data.game:data;if(!g||!g.s||!Array.isArray(g.hist)||!Number.isFinite(g.age)||!g.lv||!LV[g.lv])throw Error('저장 파일 구조 오류');for(const k of K)if(!Number.isFinite(g.s[k])||g.s[k]<0||g.s[k]>100)throw Error('능력치 데이터 오류');G=migrateSaveData(g);sv();render();alert('커리어를 불러왔습니다.')}catch(e){alert('유효하지 않은 ZERO TO MVP 저장 파일입니다.');console.error(e)}};reader.readAsText(file)}
+const ovrOf=(s,p)=>rd(K.reduce((a,k)=>a+s[k]*POS[p].w[k],0)),ovr=()=>ovrOf(G.s,G.pos);
+// NBA 2K 스타일을 참고한 게임 내 등급 구간(공식 NBA 2K 산식 복제는 아님)
+const ovrTier=o=>o>=90?'슈퍼스타':o>=85?'올스타급':o>=80?'주전급':o>=75?'로테이션 핵심':o>=70?'벤치 전력':'성장 유망주';
+const ovrBox=(o,sub='포지션별 능력치 가중 평균')=>`<div class="ovrbox"><div class="ovrnum">${o??'—'}</div><div><div class="ovrlabel">OVERALL · ${o==null?'기록 없음':ovrTier(o)}</div><div class="ovrsub">${sub}</div></div></div>`;
+// 시즌 능력치에서 자동 산출하는 특기 시스템. 경기 효과는 traitEffects()에서 제한적으로 적용한다. v8은 리그 대비 OVR 득점 보너스를 선형·상한 방식으로 조정한다.
+const TRAIT_DEF=[
+ {id:'sniper',n:'스나이퍼',icon:'🎯',desc:'슛 능력이 뛰어남',score:s=>s.shoot},
+ {id:'slasher',n:'슬래셔',icon:'⚡',desc:'돌파·마무리와 피지컬이 뛰어남',score:s=>s.fin*.68+s.phy*.32},
+ {id:'playmaker',n:'플레이메이커',icon:'🎮',desc:'경기 운영과 플레이메이킹에 강점',score:s=>s.play*.82+s.fin*.10+s.shoot*.08},
+ {id:'lockdown',n:'락다운 디펜더',icon:'🔒',desc:'수비와 피지컬을 바탕으로 상대를 압박',score:s=>s.def*.76+s.phy*.24},
+ {id:'rimprotector',n:'림 프로텍터',icon:'🛡️',desc:'수비와 리바운드로 골밑을 지킴',score:s=>s.def*.62+s.reb*.38},
+ {id:'rebounder',n:'리바운드 체이서',icon:'🧲',desc:'리바운드와 피지컬이 뛰어남',score:s=>s.reb*.76+s.phy*.24},
+ {id:'twoway',n:'투웨이 플레이어',icon:'⚖️',desc:'공격과 수비 양면에서 고른 강점',score:s=>((s.shoot+s.fin+s.play)/3)*.5+((s.def+s.reb+s.phy)/3)*.5},
+ {id:'allround',n:'올라운드 플레이어',icon:'🌟',desc:'여섯 핵심 능력치가 고르게 발달',score:s=>K.reduce((a,k)=>a+s[k],0)/K.length,balanced:true}
+];
+const traitTier=v=>v>=94?'레전더리':v>=88?'엘리트':v>=80?'골드':v>=74?'실버':'브론즈';
+function evaluateTraits(s){
+ const vals=K.map(k=>Number(s[k])||0),mean=vals.reduce((a,v)=>a+v,0)/vals.length;
+ const variance=vals.reduce((a,v)=>a+(v-mean)**2,0)/vals.length,sd=Math.sqrt(variance);
+ return TRAIT_DEF.map(t=>({...t,score:Math.round(t.score(s))}))
+  .filter(t=>t.score>=68&&(!t.balanced||(mean>=68&&sd<=9&&vals.every(v=>v>=58))))
+  .sort((a,b)=>b.score-a.score).slice(0,3)
+  .map(t=>({id:t.id,name:t.n,icon:t.icon,desc:t.desc,score:t.score,tier:traitTier(t.score),label:`${traitTier(t.score)} ${t.n}`}));
+}
+const traitMarkup=(traits,empty='뚜렷한 특기 없음')=>traits&&traits.length
+ ?traits.map(t=>`<span class="trait" title="${esc(t.desc||'')}">${t.icon||'🏀'} ${esc(t.label||`${t.tier||''} ${t.name||''}`)}</span>`).join('')
+ :`<span class="trait muted-trait">${empty}</span>`;
+const currentTraits=()=>evaluateTraits(G.s);
+// 특기 등급별 경기 효과: 능력치/OVR 자체는 변경하지 않고 시즌 성적 계산에만 반영한다.
+const TRAIT_EFFECT_BY_TIER={브론즈:.01,실버:.02,골드:.03,엘리트:.04,레전더리:.05};
+const TRAIT_BALANCED_BY_TIER={브론즈:.0025,실버:.005,골드:.0075,엘리트:.01,레전더리:.0125};
+function traitEffects(s){
+ const traits=evaluateTraits(s),eff={ppg:0,rpg:0,apg:0,team:0};
+ for(const t of traits){
+  const r=TRAIT_EFFECT_BY_TIER[t.tier]||0, b=TRAIT_BALANCED_BY_TIER[t.tier]||0;
+  if(t.id==='sniper')eff.ppg+=r;
+  else if(t.id==='slasher')eff.ppg+=r*.5;
+  else if(t.id==='playmaker')eff.apg+=r;
+  else if(t.id==='lockdown'||t.id==='rimprotector')eff.team+=({브론즈:.25,실버:.5,골드:.75,엘리트:1,레전더리:1.25}[t.tier]||0);
+  else if(t.id==='rebounder')eff.rpg+=r;
+  else if(t.id==='twoway'||t.id==='allround'){eff.ppg+=b;eff.rpg+=b;eff.apg+=b;}
+ }
+ // 지표별 상한으로 특기 중첩이 지나치게 강해지는 것을 방지한다.
+ eff.ppg=cl(eff.ppg,0,.08);eff.rpg=cl(eff.rpg,0,.06);eff.apg=cl(eff.apg,0,.06);eff.team=cl(eff.team,0,2);
+ return eff;
+}
+
+
+const sal=()=>{const o=ovr();return{HS:0,UNIV:0,NCAA:0,KBL:.8+Math.max(0,o-50)*.12,GL:.4,MIL:.2,NBA:6+Math.pow(Math.max(0,o-60),2)*.45}[G.lv]};
+const CAND_ARCHETYPES={
+ H:[
+  {id:'floor_general',name:'공격 조율형',base:{shoot:43,fin:42,play:62,def:34,reb:20,phy:39}},
+  {id:'combo_guard',name:'득점형 핸들러',base:{shoot:55,fin:55,play:48,def:29,reb:18,phy:35}},
+  {id:'defensive_guard',name:'수비형 핸들러',base:{shoot:38,fin:42,play:51,def:52,reb:20,phy:37}}
+ ],
+ W:[
+  {id:'three_level_wing',name:'3&D 윙',base:{shoot:57,fin:43,play:37,def:49,reb:23,phy:31}},
+  {id:'slashing_wing',name:'돌파형 윙',base:{shoot:39,fin:61,play:40,def:37,reb:23,phy:40}},
+  {id:'two_way_wing',name:'올라운드 윙',base:{shoot:45,fin:47,play:43,def:44,reb:27,phy:34}}
+ ],
+ B:[
+  {id:'rim_protector',name:'림 프로텍터',base:{shoot:25,fin:48,play:29,def:58,reb:48,phy:32}},
+  {id:'rebound_big',name:'리바운드형 빅맨',base:{shoot:25,fin:48,play:29,def:43,reb:61,phy:34}},
+  {id:'mobile_big',name:'기동력형 빅맨',base:{shoot:34,fin:50,play:34,def:46,reb:43,phy:33}}
+ ]
+};
+
+function cand(p,arch){
+ const archetype=arch||pk(CAND_ARCHETYPES[p]||CAND_ARCHETYPES.W);let best=null,bestScore=Infinity;
+ // 같은 종합 45라도 후보별 핵심 강점이 분명하도록 아키타입을 유지하면서 미세 변형한다.
+ for(let t=0;t<260;t++){
+  const s={};K.forEach(k=>s[k]=cl(rd(archetype.base[k]+rn(-7,7)),18,75));
+  let sum=K.reduce((a,k)=>a+s[k],0);if(sum!==240){
+   const adjust=K.filter(k=>s[k]>20&&s[k]<73).sort((a,b)=>Math.abs(s[b]-archetype.base[b])-Math.abs(s[a]-archetype.base[a]));
+   let delta=240-sum;for(const k of adjust){if(!delta)break;const step=delta>0?Math.min(delta,75-s[k]):Math.max(delta,18-s[k]);s[k]+=step;delta-=step;}if(delta!==0)continue;
+  }
+  const o=ovrOf(s,p);if(o!==45)continue;
+  // archetype 핵심 능력치가 높게 유지되는 표본을 선호한다.
+  const score=K.reduce((a,k)=>a+Math.pow(s[k]-archetype.base[k],2),0);
+  if(score<bestScore){bestScore=score;best={s:{...s},h:rd(rn(...POS[p].h)),arch:archetype.name};if(score<=18)break;}
+ }
+ if(best){best.arch=archetype.name;return best;}
+ // 매우 드문 위치/아키타입 조합에서도 게임 시작이 막히지 않도록 기존 분포에서 가까운 표본을 찾는다.
+ for(let t=0;t<700;t++){let v=K.map(k=>(.5*POS[p].w[k]+1/12)*240*rn(.65,1.35));const m=240/v.reduce((a,b)=>a+b,0);v=v.map(x=>rd(x*m));v[0]+=240-v.reduce((a,b)=>a+b,0);const s={};K.forEach((k,i)=>s[k]=v[i]);if(v.every(x=>x>=18)&&ovrOf(s,p)===45){const lead=K.reduce((a,k)=>s[k]>s[a]?k:a,K[0]);const label={shoot:'슈터형',fin:'돌파·마무리형',play:'플레이메이커형',def:'수비형',reb:'리바운더형',phy:'피지컬형'};return{s,h:rd(rn(...POS[p].h)),arch:archetype.name};}}
+ return{s:{shoot:40,fin:40,play:40,def:40,reb:40,phy:40},h:rd(rn(...POS[p].h)),arch:archetype.name};
+}
+function newC(){const pool=[...(CAND_ARCHETYPES[C.pos]||CAND_ARCHETYPES.W)].sort(()=>Math.random()-.5);C.cs=pool.map(a=>cand(C.pos,a));C.sel=-1}
+function begin(){if(C.sel<0){C.err=1;render();return}const c=C.cs[C.sel];G={name:C.name.trim()||'내 선수',no:C.no||7,pos:C.pos,h:c.h,s:{...c.s},pot:rd(66+Math.pow(R(),1.6)*33),type:pk(['early','normal','normal','late','durable']),age:16,yr:2026,lv:'HS',uy:0,team:rn(42,58),tn:C.st==='US'?C.usSchool:C.krSchool,us:C.st==='US',trust:C.st==='US'?20:30,fame:C.st==='US'?3:0,health:90,focus:[...C.foc],aw:{},hist:[],money:0,staff:{shootingCoach:false,playmakingCoach:false,defenseCoach:false,trainer:false,agent:false},economyLog:[],injury:{gamesOut:0,permanentLoss:0},cy:0,exempt:false,served:false,risk:0,maxO:45,fl:{},note:'',evi:-1};C.err=0;G.evi=R()<.7?pickEv():-1;G.phase=G.evi>=0?'turn':'hub';render()}
+function pickEv(){G.seen=G.seen||[];const petIdx=EV.findIndex(e=>e.t==='반려견 입양');
+// 반려견 입양은 커리어 중 한 번만, 성인 프로 선수에게 아주 낮은 확률로 등장한다.
+if(petIdx>=0&&!G.petAdoptionEventSeen&&G.age>=20&&['KBL','NBA','GL'].includes(G.lv)&&R()<.03){G.petAdoptionEventSeen=true;G.seen.push(petIdx);return petIdx}
+const ok=i=>i!==petIdx&&eventAllowedByStage(EV[i])&&(!EV[i].c||EV[i].c())&&!(EV[i].u&&G.seen.includes(i));let l=EV.map((e,i)=>i).filter(i=>ok(i)&&!G.seen.slice(-7).includes(i));if(!l.length)l=EV.map((e,i)=>i).filter(ok);if(!l.length)return -1;const i=pk(l);G.seen.push(i);return i}
+function fx(f){for(const k in f){if(K.includes(k))G.s[k]=cl(G.s[k]+f[k],10,99);else if(k==='risk')G.risk+=f[k];else G[k]=cl(G[k]+f[k])}}
+const ft=f=>Object.entries(f).map(([k,v])=>k==='risk'?'부상 위험 증가':`${KN[k]} ${v>0?'+':''}${v}`).join(', ');
+function choose(i){const e=EV[G.evi],o=i?e.b:e.a;let f=o[1],bd=0;if(o[2]&&R()>o[3]){f=o[2];bd=1}const s0=sn();fx(f);G.out={t:`${e.t}: ${o[0]}`,bd,n:bd?'뜻대로 되지 않았다.':o[2]?'계획대로 풀렸다.':'',l:df(s0).concat(f.risk?['부상 위험이 올라갔다']:[])};G.phase='out';G.after='hub';render()}
+const sn=()=>({...G.s,health:G.health,trust:G.trust,fame:G.fame});
+const df=a=>Object.keys(a).map(k=>{const n=K.includes(k)?G.s[k]:G[k],d=rd(n)-rd(a[k]);return d?`${KN[k]} ${rd(a[k])} → ${rd(n)} (${d>0?'+':''}${d})`:''}).filter(Boolean);
+function cont(){G.out=null;if(G.after==='route')route();else G.phase='hub';render()}
+function sgn(){if(G.sg>=2){G.phase='result';if(G.last&&!G.last.grown){const before={...G.s};grow();G.last.growth={};K.forEach(k=>G.last.growth[k]=G.s[k]-(G.last.startStats?.[k]??before[k]));G.last.oAfter=ovr();G.last.grown=true;}}else G.sg++;render()}
+function tg(k){let f=G.focus;if(k==='rest')f=f.includes('rest')?[]:['rest'];else{f=f.filter(x=>x!=='rest');f=f.includes(k)?f.filter(x=>x!==k):[...f,k];if(f.length>2)f.shift()}G.focus=f;render()}
+// KBL 신인 입단 팀은 10개 구단 중 균등 무작위로 배정한다.
+function pickKblDraftTeam(){
+  const teams = TN.KBL;
+  return teams[Math.floor(Math.random() * teams.length)];
+}
+function join(l,t){
+  G.lv=l;
+  G.uy=0;
+  // 드래프트로 KBL에 입단하는 경우도 특정 구단(KCC 등)에 고정되지 않도록 별도 무작위 선택.
+  G.tn = l==='KBL' ? pickKblDraftTeam() : pk(TN[l]||['상무']);
+  G.team=t||rn(42,72);
+  G.cy=['KBL','NBA','GL'].includes(l)?rd(rn(2,4)):0;
+}
+function mil(r){G.prevLv=G.lv;G.prevTn=G.tn;G.prevTeam=G.team;G.prevCy=G.cy;G.lv='MIL';G.ms=2;G.cy=0;G.tn='상무';G.team=58;G.served=true;G.reg=r;G.uy=0;G.note=r?'현역으로 입대했다. 2시즌 동안 훈련이 제한된다.':'상무에 선발됐다. 2시즌 복무한다.'}
+function nd(){const sc=ovr()+G.fame*.15+(G.us?3:0)+(G.pos==='B'&&G.h>=205?2:0),p=rd(cl(60-(sc-68)*1.5,1,75));if(p<=60){join('NBA',cl(rd(38+p*.9+rn(-5,5)),35,80));G.cy=p<=30?rd(rn(3,4)):rd(rn(2,3));G.note=`NBA 드래프트 ${p}순위 지명, ${G.tn} 입단 (${p<=30?'1':'2'}라운드)`}else if(sc>=58){join('GL');G.note='언드래프티. G리그 계약/트라이아웃 경로로 NBA 진출을 노린다. 투웨이 계약은 별도 평가가 필요하다.'}else{join('KBL');G.note='언드래프티. KBL로 귀국해 뛴다.'}}
+function nt([i,j]){const n=NT[i],p=n[2](ovr());if(!j){G.trust=cl(G.trust+4);G.note=`${n[0]} 소집을 고사하고 소속팀에 집중했다.`;return}const r=R(),m=r<p*.4?'금메달':r<p*.7?'은메달':r<p?'동메달':'탈락';G.health=cl(G.health-8);G.fame=cl(G.fame+(m==='금메달'?10:m==='탈락'?0:5));let ex='';if(!G.served&&!G.exempt&&((n[3]===1&&m==='금메달')||(n[3]===2&&m!=='탈락'))){ex=' 병역 특례를 받았다!';G.exempt=true}G.note=`${n[0]} 결과: ${m}.${ex}`}
+const ECONOMY_STAFF={shootingCoach:{name:'슈팅 코치',cost:.5,stat:'shoot',desc:'슛 훈련 성장 +25%'},playmakingCoach:{name:'플레이메이킹 코치',cost:.5,stat:'play',desc:'플레이메이킹 훈련 성장 +25%'},defenseCoach:{name:'수비 코치',cost:.5,stat:'def',desc:'수비 훈련 성장 +25%'},trainer:{name:'전담 트레이너',cost:1,desc:'부상 위험 감소 및 회복 보조'},agent:{name:'퍼스널 에이전트',cost:1.5,desc:'명성 증가 효과 +20%'}};
+function buyStaff(id){const x=ECONOMY_STAFF[id];if(!G||!x)return;if(G.staff?.[id]){G.note='이미 고용한 스태프입니다.';render();return}if(G.money<x.cost){G.note='보유 자금이 부족합니다.';render();return}G.money=Math.round((G.money-x.cost)*100)/100;G.staff=G.staff||{};G.staff[id]=true;G.economyLog.push({year:G.yr,type:'staff',name:x.name,amount:-x.cost});G.note=`${x.name}을(를) 고용했습니다.`;sv();render()}
+function economyPanel(){const available=Object.entries(ECONOMY_STAFF).filter(([id])=>!G.staff?.[id]);return `<div class="card"><h3>💰 선수 자산 · ${Number(G.money||0).toFixed(1)}억</h3><p>스태프는 고용비와 매 시즌 유지비가 들며, 자금이 부족하면 효과가 일시 중단됩니다.</p>${available.length?`<div class="economy-grid">${available.map(([id,x])=>`<button onclick="buyStaff('${id}')">${x.name}<small>${x.cost}억 · ${x.desc}</small></button>`).join('')}</div>`:'<p class="good">모든 스태프를 고용했습니다.</p>'}<small>최근 지출: ${(G.economyLog||[]).slice(-3).map(x=>`${esc(x.name||x.type)} ${x.amount}억`).join(' · ')||'없음'}</small></div>`}
+function makeAdvancedStats({ppg,rpg,apg,min,shoot,fin,play,def,phy}){
+ const fgTarget=cl(.36+shoot*.0025+fin*.0008,.34,.62),threeTarget=cl(.20+shoot*.0031,.18,.47),ftTarget=cl(.48+shoot*.0044,.45,.94);
+ const threeRate=cl(.25+shoot*.0025,.22,.52);
+ const fga=Math.max(1,+(ppg/Math.max(.5,2*fgTarget+threeRate*threeTarget+.18*ftTarget)).toFixed(1)),tpa=Math.max(.1,+(fga*threeRate).toFixed(1));
+ const fgm=+(fga*fgTarget).toFixed(1),tpm=+(tpa*threeTarget).toFixed(1),fta=Math.max(.1,+((ppg-2*fgm-tpm)/Math.max(.45,ftTarget)).toFixed(1)),ftm=+(fta*ftTarget).toFixed(1);
+ const stl=+(cl(.25+def*.012+play*.002,.2,2.4)).toFixed(1),blk=+(cl(.08+def*.006+phy*.009,.05,2.3)).toFixed(1),tov=+(cl(3.2-play*.018+apg*.05,.6,4.8)).toFixed(1);
+ const ts=ppg/Math.max(1,2*(fga+.44*fta));
+ // PER은 리그 평균 보정 전의 단순 대체 점수임을 명시한다.
+ const perProxy=cl(8+ppg*.72+rpg*.7+apg*.9+stl*1.8+blk*1.7-tov*1.1,0,45);
+ return {fgm,fga,fgPct:+(fgm/fga).toFixed(3),tpm,tpa,threePct:+(tpm/tpa).toFixed(3),ftm,fta,ftPct:+(ftm/fta).toFixed(3),stl,blk,tov,tsPct:+ts.toFixed(3),perProxy:+perProxy.toFixed(1)};
+}
+function pct(v){return Number.isFinite(v)?(v*100).toFixed(1)+'%':'—'}
+function play(){const L=LV[G.lv],N=L.n,o=ovr(),s=G.s,P=POS[G.pos],b=L.b+(G.us&&G.lv==='HS'?4:0),g=L.g,ro=b+(G.team-50)*.35;
+let min=cl(rd(12+(o-ro)*1.1+(G.trust-30)*.1+rn(-2,2)),0,G.lv==='NBA'?36:34),miss=0,inj='';const seasonStartStats={...s};
+if(G.age>=17&&R()<Math.max(.003,.012+G.risk*.15-(G.staff&&!G.staffSuspended&&G.staff.trainer?.005:0))){miss=g;inj='십자인대 파열, 시즌 아웃';s.phy=cl(s.phy-rd(rn(2,5)),10,99);s.fin=cl(s.fin-rd(rn(1,3)),10,99);G.health=40;min=0}
+else if(R()<.07+G.risk+(G.health<60?(60-G.health)/300:0)+(G.age>=30?.03:0)){miss=rd(g*(R()<.25?rn(.25,.6):rn(.05,.18)));inj=`부상으로 ${miss}경기 결장`}
+const gp=g-miss,me=min*gp/g,d=o-b;
+// 밸런스 수정: OVR 격차의 제곱 보너스는 고교에서 비현실적인 득점을 만들 수 있어 선형·상한 방식으로 제한한다.
+const performance=cl(1+d*.012,.72,1.28),up=cl(1+Math.max(0,d)*.012,1,1.25);
+const traitFx=traitEffects(s);
+const ppg=gp?+(min*.40*performance*P.pm*cl(1+(s.shoot-60)*.003,.85,1.12)*rn(.92,1.08)*(1+traitFx.ppg)).toFixed(1):0;
+const rpg=gp?+(min*Math.pow(s.reb/100,1.2)*.4*up*rn(.9,1.1)*(1+traitFx.rpg)).toFixed(1):0;
+const apg=gp?+(min*Math.pow(s.play/100,1.2)*.32*up*rn(.9,1.1)*(1+traitFx.apg)).toFixed(1):0;
+const te=G.team+(o-ro)*.5*(me/36)+traitFx.team,pct=1/(1+Math.exp(-(te-50)/13)),w=cl(rd(g*pct+rn(-.04,.04)*g),0,g),wp=w/g;
+const sc=ppg+.8*rpg+1.2*apg+30*(wp-.5),riv=Math.max(rn(43,51),rn(41,49),rn(39,47)),nba=G.lv==='NBA',kbl=G.lv==='KBL',aw=[];
+// 리그별 실제 수상 자격을 반영: KBL 주요 개인상/팀 선정은 27경기 이상,
+// NBA All-NBA/All-Defensive는 통상 65경기 기준(82경기 시즌)을 적용.
+const eligible=kbl?gp>=27:nba?gp>=65:gp>=g*.75;
+const add=(n,f)=>{if(!aw.includes(n)){aw.push(n);G.aw[n]=(G.aw[n]||0)+1;G.fame=cl(G.fame+f)}};
+if(eligible&&G.uy===0&&min>=18&&sc>rn(15,26))add(nba?'NBA 신인왕':N+' 신인상',6);
+if(eligible&&min>=22&&sc>=riv-14)add(nba?'NBA 올스타':N+' 올스타',nba?8:3);
+// 리그별 올팀: NBA는 1·2·3팀(각 5명), KBL은 포지션 구분 없는 베스트5.
+// 상대 선수들의 가상 시즌 평가점수와 비교해 선발되므로 매 시즌 결과가 달라짐.
+if(eligible&&min>=24){
+  const peerScores=Array.from({length:nba?35: kbl?25:25},()=>rn(22,62)+rn(-5,5)).sort((a,b)=>b-a);
+  const place=1+peerScores.filter(x=>x>sc).length;
+  if(nba&&place<=5)add('ALL-NBA FIRST TEAM',12);
+  else if(nba&&place<=10)add('ALL-NBA SECOND TEAM',9);
+  else if(nba&&place<=15)add('ALL-NBA THIRD TEAM',6);
+  else if(kbl&&place<=5)add('KBL 베스트5',5);
+}
+// 수비 팀 선정은 수비 능력, 리바운드, 출전 시간, 팀 성적을 반영.
+const defScore=s.def*.55+s.reb*.12+min*.35+wp*12+(G.traits||[]).length;
+if(eligible&&min>=20){
+  const defPeers=Array.from({length:nba?35:kbl?25:25},()=>rn(45,94)).sort((a,b)=>b-a);
+  const defPlace=1+defPeers.filter(x=>x>defScore).length;
+  if(nba&&defPlace<=5)add('ALL-DEFENSIVE FIRST TEAM',10);
+  else if(nba&&defPlace<=10)add('ALL-DEFENSIVE SECOND TEAM',7);
+  else if(kbl&&defPlace<=5)add('KBL 수비 5걸',6);
+}
+if(eligible&&nba&&min>=26&&s.def>=88&&rpg>=6&&R()<.35)add('NBA 올해의 수비수',8);
+const rivalScores=Array.from({length:30},()=>rn(15,40));
+const rank=nba&&eligible&&min>=26&&sc>=riv-10?1+rivalScores.filter(x=>x>sc).length:0;
+if(eligible&&min>=28&&sc>=riv&&wp>=.55&&(!nba||rank===1))add(nba?'NBA MVP':N+' MVP',nba?40:10);
+if(G.lv!=='MIL'&&R()<Math.pow(cl((wp-.55)/.4,0,.9),1.3)){add(N+' 우승',nba?15:6);if(ppg>=20&&min>=28&&gp>=g*.6)add(nba?'파이널 MVP':N+' 결승 MVP',nba?12:4)}
+if(ppg>=15)G.fame=cl(G.fame+(G.staff?.agent?1.2:1));
+if(!inj.startsWith('십자인대'))G.trust=cl(G.trust+(min>=25?6:min<10?-4:-1));G.health=cl(G.health-rd(min*.3)+22+(G.focus.includes('rest')?25:0));
+G.money+=sal();G.maxO=Math.max(G.maxO,o);G.risk=0;
+const advanced=makeAdvancedStats({ppg,rpg,apg,min,shoot:s.shoot,fin:s.fin,play:s.play,def:s.def,phy:s.phy});G.last={age:G.age,lv:G.lv,tn:G.tn,min,ppg,rpg,apg,w,g,gp,miss,inj,aw,rank,o,fr:rn(.94,1.06),traits:evaluateTraits(s),traitFx:{...traitFx},stats:advanced,startStats:seasonStartStats};G.hist.push(G.last);G.note='';G.phase='season';G.sg=0;render()}
+function staffGrowthMultiplier(stat){const map={shoot:'shootingCoach',play:'playmakingCoach',def:'defenseCoach'};return !G.staffSuspended&&map[stat]&&G.staff?.[map[stat]]?1.25:1}
+function grow(){const t=G.type,pe={early:24,normal:26,late:29,durable:27}[t],ds={early:29,normal:31,late:33,durable:35}[t],A=G.age,o=ovr(),s=G.s,w=POS[G.pos].w;let f=1;
+if(G.last&&G.last.inj==='십자인대 파열, 시즌 아웃'&&A<ds)return;
+if(A>=19&&G.last)f=cl(G.last.min/20,.3,1.15);if(G.lv==='MIL'&&G.reg)f*=.4;if(G.focus.includes('rest'))f*=.85;
+if(A<=pe){const gr=(t==='early'&&A<=21)?1.4:(t==='late'&&A>=22)?1.25:1,dO=cl((G.pot-o)*.2*gr*f,0,7);K.forEach(k=>s[k]=cl(rd(s[k]+(dO*(.5+3*w[k]+(G.focus.includes(k)?1.2:0))+rn(-.4,.4))*staffGrowthMultiplier(k)),10,99))}
+else if(A>=ds){const dc=rn(.8,1.6)*(A-ds+1)*.6,m={phy:1.6,fin:1.2,def:1,reb:1,shoot:.4,play:.3};K.forEach(k=>s[k]=cl(rd(s[k]-dc*m[k]*rn(.7,1.3)),10,99))}
+else K.forEach(k=>{if(R()<.3)s[k]=cl(s[k]+pk([-1,0,1]),10,99)})}
+
+function chargeStaffUpkeep(){if(!G)return;const annual={shootingCoach:.18,playmakingCoach:.18,defenseCoach:.18,trainer:.3,agent:.35};let total=0;for(const [id,cost] of Object.entries(annual)){if(G.staff&&G.staff[id])total+=cost;}if(total<=0)return;if((Number(G.money)||0)>=total){G.money=Math.round((G.money-total)*100)/100;G.economyLog=G.economyLog||[];G.economyLog.push({year:G.yr,type:'staff upkeep',name:'스태프 연간 유지비',amount:-total});G.staffSuspended=false;}else{G.staffSuspended=true;G.note=`자금 부족으로 스태프 효과가 일시 중단됐습니다. 연간 유지비 ${total.toFixed(2)}억이 필요합니다.`;}}
+
+function adv(){chargeStaffUpkeep();if(!G.last?.grown)grow();G.age++;G.yr++;G.uy++;G.team=cl(G.team+rn(-5,5),35,85);if(G.lv==='MIL')G.ms--;if(G.cy>0)G.cy--;G.fl={};if(!G.staffSuspended)G.note='';route();render()}
+const op=(l,s,a,x)=>({l,s,a,x});
+function route(){const A=G.age,F=G.fl,set=(t,d,O)=>{G.path={t,d,opts:O};G.phase='path'};
+if(A>=39){G.endReason='age_limit';G.phase='end';return}
+if(G.lv==='MIL'&&G.ms<=0){const returnLv=G.prevLv||'KBL',returnTeam=G.prevTn,returnStrength=G.prevTeam,returnContract=G.prevCy;join(returnLv,returnStrength);G.tn=returnTeam||G.tn;G.team=returnStrength??G.team;G.cy=returnContract>0?returnContract:rd(rn(1,3));G.note=`전역했다. 원소속팀 ${G.tn}에 복귀한다.`;delete G.prevLv;delete G.prevTn;delete G.prevTeam;delete G.prevCy}
+const v=ovr(),L=LV[G.lv],ro=L.b+(G.team-50)*.35;
+if(G.lv==='HS'&&A>=19&&!F.g){F.g=1;return set('고교 졸업','스카우트 평가에 따라 진로 제안이 달라져요.',[op('대학 진학','U리그 4년, 2학년부터 프로 도전','j','UNIV'),...(v>=50?[op('KBL 프로 직행','드래프트 지명 후 입단','j','KBL')]:[]),...(v>=(G.us?50:56)?[op('NCAA 유학','미국 대학, NBA 스카우트에 노출','j','NCAA')]:[])])}
+if(G.lv==='UNIV'&&G.uy>=2&&!F.g){F.g=1;const f=G.uy>=4;return set('프로 도전',f?'졸업이에요. 프로에 입단합니다.':'KBL 드래프트를 신청할 수 있어요.',[...(v>=50||f?[op('KBL 드래프트 신청','지명 후 프로 입단','j','KBL')]:[]),...(f?[]:[op('대학 잔류','한 시즌 더 성장','s')])])}
+if(G.lv==='NCAA'&&G.uy>=1&&!F.g){F.g=1;const f=G.uy>=4;return set('NBA 드래프트','지명 순위는 실력, 명성, 스카우트 평가로 정해져요.',[op('NBA 드래프트 신청','언드래프티면 G리그 투웨이 또는 귀국','nd'),...(f?[]:[op('NCAA 잔류','한 시즌 더 성장','s')]),op('KBL 귀국','','j','KBL')])}
+// KBL에서 NBA로 가는 것은 예외적인 경로다. 벤치/롤플레이어에게 자동으로 투웨이를 제안하지 않고, 실제 시즌 성과가 검증된 리그 최상위권 선수만 드물게 후보가 된다.
+const kblBreakout=G.lv==='KBL'&&G.last&&G.last.lv==='KBL'&&G.last.gp>=40&&G.last.min>=27&&G.last.ppg>=17&&v>=78&&G.fame>=20;
+const kblEliteAwards=G.last&&(G.last.aw||[]).some(a=>['KBL 베스트5','KBL MVP'].includes(a));
+if(kblBreakout&&kblEliteAwards&&A>=20&&!F.o){
+  const nbaRosterCandidate=v>=85&&G.last.ppg>=22&&G.last.min>=30&&(G.last.aw||[]).includes('KBL MVP');
+  const offerChance=nbaRosterCandidate?.12:.025;
+  if(R()<offerChance){F.o=1;return set('NBA 진출 제안',nbaRosterCandidate?'KBL MVP급 시즌을 바탕으로 NBA 로스터 계약 기회가 찾아왔다.':'KBL 베스트5급 시즌을 인정받아 NBA 투웨이 계약 평가 기회가 찾아왔다.',[op('NBA 진출','매우 드문 기회다. 군 문제는 여전히 남아 있다.','nj'),op('KBL 잔류','','s')])}
+}
+if(G.lv==='GL'&&!F.o&&(G.uy>=1||v>=68)){F.o=1;const glSeason=G.last&&G.last.lv==='GL',strongSeason=glSeason&&G.last.min>=22&&G.last.ppg>=12&&G.last.gp>=G.last.g*.65&&v>=68;const nbaOffer=strongSeason&&R()<cl(.12+(v-68)*.012+(G.last.ppg-12)*.012,.12,.55);return set('G리그 시즌 종료',nbaOffer?'좋은 시즌 성적을 바탕으로 NBA 로스터 계약 제안이 도착했다.':'NBA 계약은 보장되지 않았다. 다음 시즌에도 경쟁력을 증명해야 한다.',[...(nbaOffer?[op('NBA 로스터 계약','','j','NBA')]:[]),op('G리그 잔류','','s'),op('KBL 귀국','','j','KBL')])}
+if(!G.served&&!G.exempt&&A>=24&&['KBL','GL','NBA'].includes(G.lv)&&!F.m){F.m=1;if(A>=28)mil(true);else return set('병역','28세까지 미루면 현역으로 입대해야 해요.',[op('상무 지원','2시즌 복무, 선발은 실력 순','ms'),op('현역 입대','2시즌 복무, 훈련 제한으로 성장 둔화','mr'),op('이번엔 미룬다','','s')])}
+if(['KBL','GL','NBA'].includes(G.lv)&&G.cy<=0&&!F.c){F.c=1;const can=G.last&&(G.last.min>=12||v>=ro-4),O=[];
+const nbaUnderperformer=G.lv==='NBA'&&G.last&&G.last.min<10&&v<ro-6&&!(A<=25&&G.pot>=85);
+if(A>=33&&v<ro-10){O.push(op('은퇴','기량이 떨어졌다는 구단의 권고','ret'));if(G.lv==='NBA')O.push(op('KBL 복귀','','j','KBL'))}
+else if(nbaUnderperformer){
+O.push(op('G리그에서 재도전','NBA 계약을 얻기 위해 경기력을 증명한다.','j','GL'));
+O.push(op('KBL 복귀','출전 기회를 찾아 한국 리그에서 뛴다.','j','KBL'));
+if(A>=32)O.push(op('은퇴','','ret'));
+}else{if(can){const y=A>=35?2:A>=33?3:rd(rn(2,4));O.push(op(`${G.tn} 재계약`,`${y}년, 연봉 약 ${rd(sal())}억원`,'rn',y))}const ns=TN[G.lv].filter(n=>n!==G.tn).sort(()=>R()-.5);for(let i=0;i<2;i++){const t=rd(rn(42,76)),y=A>=35?2:A>=33?3:rd(rn(2,4)),n=ns[i];O.push(op(`${n} 이적`,`${y}년, 팀 전력 ${t}`,'tr',[n,t,y]))}if(A>=32)O.push(op('은퇴','','ret'))}
+return set('계약 만료',nbaUnderperformer?'출전 기회가 부족해 NBA 계약을 제안받지 못했다. G리그 재도전 또는 KBL 복귀를 선택할 수 있다.':'재계약과 이적 제안이 도착했다.',O)}
+const ti=NT.findIndex(n=>G.yr>=n[1]&&(G.yr-n[1])%4===0);
+if(ti>=0&&A>=19&&v>=60&&G.lv!=='HS'&&!F.t&&G.yr-(G.ntLast||0)>=2&&R()<.45){F.t=1;G.ntLast=G.yr;const n=NT[ti];return set(`${n[0]} 대표팀 소집`,`국가대표 차출은 매년 보장되지 않는다. 이번 대회에서 국가대표 명단에 올랐다.${n[3]?' 병역 특례가 걸려 있다.':''}`,[op('합류한다','건강 -8, 명성 상승','nt',[ti,1]),op('고사한다','소속팀에 집중, 신뢰 +4','nt',[ti,0])])}
+G.evi=R()<.75?pickEv():-1;G.phase=G.evi>=0?'turn':'hub'}
+function doPath(i){const o=G.path.opts[i],x=o.x,s0=sn();G.path=null;
+switch(o.a){case'j':join(x);G.note=`${LV[G.lv].n} ${G.tn} 입단`;break;
+case's':G.note='이번 시즌은 지금 자리에서 뛴다.';break;
+case'nd':nd();break;
+case'nj':if(ovr()>=72){join('NBA');G.note=`NBA ${G.tn}와 로스터 계약`}else{join('GL');G.note=`${G.tn}와 NBA 투웨이 계약, G리그에서 시작`}break;
+case'ms':if(R()<cl(.55+(ovr()-60)*.01,.3,.9))mil(false);else G.note='상무 선발에서 탈락했다. 내년에 다시 지원할 수 있다.';break;
+case'mr':mil(true);break;
+case'rn':G.cy=x;G.note=`${x}년 재계약`;break;
+case'tr':G.tn=x[0];G.team=x[1];G.cy=x[2];G.trust=cl(G.trust-15,10);G.note=`${x[0]}로 이적`;break;
+case'ret':G.endReason='retired';G.phase='end';sv();render();return;
+case'nt':nt(x);break}
+G.out={t:o.l,l:df(s0),n:G.note};G.note='';G.phase='out';G.after='route';render()}
+const b=(l,s,fn,c='')=>`<button class="${c}" onclick="${fn}">${l}${s?`<small>${s}</small>`:''}</button>`;
+const ch=(on,l,fn)=>`<button class="chip ${on?'on':''}" onclick="${fn}">${l}</button>`;
+function head(){const L=LV[G.lv];const mvpAchieved=!!(G.aw&&G.aw['NBA MVP']);const progress=mvpAchieved?100:Math.min(95,Math.max(0,Math.round(Number(G.fame)||0)));return `<div class="game-headline">ZERO TO <span>MVP</span></div><div class="track" role="progressbar" aria-label="NBA MVP 목표 진행도" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${progress}"><div class="track-labels"><span>벤치</span><strong>${mvpAchieved?'목표 달성 · ':'목표 진행도 · '}${progress}%</strong><span>NBA MVP</span></div><div class="track-rail"><div class="track-fill" style="width:${progress}%"></div></div></div><div class="meta"><span><b>${esc(G.name)}</b> #${G.no} ${POS[G.pos].n} ${G.h}cm</span><span>${G.age}세, ${G.yr}/${String((G.yr+1)%100).padStart(2,'0')} 시즌</span><span><b>${L.n}</b> ${esc(G.tn)}</span></div>${ovrBox(ovr(), '현재 능력치 · 포지션 가중치 반영')}`}
+const panel=()=>`<div class="card"><div class="meta"><span>OVERALL <b>${ovr()}</b> · ${ovrTier(ovr())}</span><span>건강 <b>${rd(G.health)}</b></span><span>감독 신뢰 <b>${rd(G.trust)}</b></span><span>명성 <b>${rd(G.fame)}</b></span>${G.cy?`<span>계약 <b>${G.cy}년</b> 남음</span>`:''}</div><div class="trait-section"><div class="trait-title">현재 특기 · 능력치 기반 자동 판정</div>${traitMarkup(currentTraits())}</div>${K.map(k=>`<div class="row"><span>${KN[k]}${G.focus.includes(k)?' ★':''}</span><div class="bar"><b style="width:${G.s[k]}%"></b></div><b>${G.s[k]}</b></div>`).join('')}</div>`;
+const note=()=>G.note?`<p class="good">${esc(G.note)}</p>`:'';
+function setStatView(view){statView=view;render()}
+const table=()=>`<div class="card tbl"><div class="stat-tabs"><button class="${statView==='basic'?'active':''}" onclick="setStatView('basic')">기본 통계</button><button class="${statView==='advanced'?'active':''}" onclick="setStatView('advanced')">세부·고급 통계</button></div><table>${statView==='basic'?`<tr><th>나이</th><th>OVR</th><th>리그</th><th>팀</th><th>경기</th><th>분</th><th>득점</th><th>리바</th><th>어시</th><th>승</th><th>시즌 특기</th></tr>${G.hist.map(h=>`<tr><td>${h.age}</td><td><b>${h.o??'—'}</b></td><td>${(LV[h.lv]||{n:h.lv}).n}</td><td>${esc(h.tn)}</td><td>${h.gp}</td><td>${h.min}</td><td>${h.ppg}</td><td>${h.rpg}</td><td>${h.apg}</td><td>${h.w}</td><td>${(h.traits||[]).map(t=>esc(t.label||t.name)).join(', ')||'—'}</td></tr>`).join('')}`:`<tr><th>나이</th><th>FG%</th><th>3P%</th><th>FT%</th><th>SPG</th><th>BPG</th><th>TOPG</th><th>TS%</th><th>PER*</th></tr>${G.hist.map(h=>{const x=h.stats||makeAdvancedStats({ppg:h.ppg||0,rpg:h.rpg||0,apg:h.apg||0,min:h.min||0,...G.s});return `<tr><td>${h.age}</td><td>${pct(x.fgPct)}</td><td>${pct(x.threePct)}</td><td>${pct(x.ftPct)}</td><td>${x.stl}</td><td>${x.blk}</td><td>${x.tov}</td><td>${pct(x.tsPct)}</td><td>${x.perProxy}</td></tr>`}).join('')}</table><small>* PER은 현재 게임의 기록을 활용한 대체 지표이며, 공식 PER 산식과는 다릅니다. 이전 세이브의 상세 스탯은 추정값으로 표시될 수 있습니다.</small>`}</div>`;
+function startUI(){const s=ld();if(!C.cs.length)newC();return `<section class="brand-hero" aria-label="ZERO TO MVP"><div class="brand-wordmark">ZERO TO <span>MVP</span></div><div class="brand-kicker">Basketball Career Simulator · v45</div><p class="brand-tagline"><em>Every Legend Starts at the Bottom.</em></p><p class="brand-copy">고등학교에서 시작해 농구계의 정상까지.<br>네 커리어를 직접 만들어라.</p><div class="brand-actions"><button type="button" class="brand-primary" onclick="document.getElementById('careerSetup').scrollIntoView({behavior:'smooth',block:'start'})">NEW CAREER</button>${s?`<button type="button" class="brand-secondary" onclick="resume()">CONTINUE · ${esc(s.name)}</button>`:`<button type="button" class="brand-secondary" disabled aria-disabled="true" title="저장된 커리어가 없습니다">CONTINUE · NO SAVE</button>`}</div></section><div id="careerSetup" class="brand-section-title">Create Your Player / 선수 생성</div><div class="card"><b>선수 만들기</b><input value="${esc(C.name)}" placeholder="이름(닉네임)" maxlength="10" oninput="C.name=this.value" aria-label="이름"><input type="number" value="${C.no}" min="0" max="99" oninput="C.no=this.value" aria-label="등번호"><div>${Object.keys(POS).map(k=>ch(C.pos===k,POS[k].n,`C.pos='${k}';C.foc=[];newC();render()`)).join('')}</div><div>${ch(C.st==='KR','한국 고교 농구부',`C.st='KR';render()`)}${ch(C.st==='US','미국 프렙스쿨 유학',`C.st='US';C.usSchool=C.usSchool||'Montverde Academy';render()`)}</div>${C.st==='US'?`<div style="margin-top:10px"><label for="usSchool"><b>유학할 고등학교 선택</b></label><select id="usSchool" onchange="C.usSchool=this.value" style="width:100%;font:16px 'Noto Sans KR',sans-serif;padding:10px;margin-top:6px;border:2px solid var(--ink);border-radius:4px;background:var(--card);color:var(--ink)">${US_SCHOOLS.map(x=>`<option value="${x.name}" ${C.usSchool===x.name?'selected':''}>${x.name} — ${x.state}</option>`).join('')}</select><small style="display:block;color:var(--mute);margin-top:5px">학교 선택은 커리어 기록에 표시돼. 실제 입학 가능성이나 팀 로스터를 뜻하지는 않아.</small></div>`:`<div style="margin-top:10px"><label for="krSchool"><b>진학할 한국 고등학교 선택</b></label><select id="krSchool" onchange="C.krSchool=this.value" style="width:100%;font:16px 'Noto Sans KR',sans-serif;padding:10px;margin-top:6px;border:2px solid var(--ink);border-radius:4px;background:var(--card);color:var(--ink)">${KR_SCHOOLS.map(x=>`<option value="${x.name}" ${C.krSchool===x.name?'selected':''}>${x.name} — ${x.state}</option>`).join('')}</select></div>`}</div></div>${C.cs.map((c,i)=>`<button class="cand ${C.sel===i?'on':''}" aria-pressed="${C.sel===i?'true':'false'}" onclick="C.sel=${i};render()"><span class="cand-title">${C.sel===i?'✓ 선택됨　':''}후보 ${i+1} · ${c.arch||'선수 유형'}, 키 ${c.h}cm, 종합 ${ovrOf(c.s,C.pos)}</span><small>${K.map(k=>`${KN[k]} ${c.s[k]}`).join(', ')}</small></button>`).join('')}${b('다른 후보 보기','','newC();render()')}<div class="card"><b>집중 육성 (최대 2개)</b><div>${K.map(k=>ch(C.foc.includes(k),KN[k],`kg('${k}')`)).join('')}</div></div>${C.err?'<p class="bad">후보를 먼저 골라주세요.</p>':''}${b('커리어 시작','','begin()','go')}`}
+function kg(k){C.foc=C.foc.includes(k)?C.foc.filter(x=>x!==k):[...C.foc,k].slice(-2);render()}
+function resume(){G=ld();render()}
+function exitGame(){
+  const active=!!G;
+  const message=active
+    ? '게임을 종료하고 시작 화면으로 돌아갈까요? 현재 진행 상황은 저장되어 나중에 이어할 수 있습니다.'
+    : '시작 화면입니다. 새로고침할까요?';
+  let accepted=false;
+  try { accepted=window.confirm(message); } catch(e) { accepted=false; }
+  if(!accepted){
+    // confirm()이 웹뷰에서 차단되는 경우에도 사용자가 선택할 수 있도록 화면 내 확인창을 표시한다.
+    if(document.getElementById('exitConfirmOverlay')) return;
+    const overlay=document.createElement('div');
+    overlay.id='exitConfirmOverlay';
+    overlay.style.cssText='position:fixed;inset:0;z-index:99999;background:#0009;display:flex;align-items:center;justify-content:center;padding:20px;';
+    overlay.innerHTML='<div style="background:var(--card);color:var(--ink);border:2px solid var(--ink);border-radius:8px;padding:18px;max-width:360px;width:100%;box-shadow:0 8px 30px #0005"><b>게임 종료</b><p>'+message+'</p><button type="button" id="exitConfirmYes">확인하고 시작 화면으로</button><button type="button" id="exitConfirmNo">취소</button></div>';
+    document.body.appendChild(overlay);
+    document.getElementById('exitConfirmYes').addEventListener('click',function(){ overlay.remove(); if(active){try{sv()}catch(e){} G=null;} render(); window.scrollTo(0,0); });
+    document.getElementById('exitConfirmNo').addEventListener('click',function(){overlay.remove()});
+    return;
+  }
+  if(active){
+    try { sv(); } catch(e) { console.warn('진행 상황 저장 중 오류:',e); }
+    G=null;
+  }
+  render();
+  window.scrollTo({top:0,behavior:'auto'});
+}
+// HTML inline handler 환경 차이에 의존하지 않도록 명시적으로 클릭 이벤트를 연결한다.
+window.exitGame=exitGame;
+// 종료 버튼은 다른 게임 버튼과 동일하게 HTML onclick 방식으로 실행한다.
+// 캡처 단계 이벤트도 추가해 브라우저/웹뷰의 인라인 이벤트 처리 차이에 대비한다.
+document.addEventListener('click',function(event){
+  const target=event.target && event.target.closest ? event.target.closest('#exitGameBtn') : null;
+  if(target){ event.preventDefault(); event.stopPropagation(); window.exitGame(); }
+},true);
+function careerTotals(filter='all'){
+  const seasons=(G?.hist||[]).filter(h=>filter==='all'||h.lv===filter);
+  const games=seasons.reduce((n,h)=>n+(Number(h.gp)||0),0);
+  const points=seasons.reduce((n,h)=>n+(Number(h.ppg)||0)*(Number(h.gp)||0),0);
+  const rebounds=seasons.reduce((n,h)=>n+(Number(h.rpg)||0)*(Number(h.gp)||0),0);
+  const assists=seasons.reduce((n,h)=>n+(Number(h.apg)||0)*(Number(h.gp)||0),0);
+  return {seasons,games,points,rebounds,assists,
+    ppg:games?points/games:0,rpg:games?rebounds/games:0,apg:games?assists/games:0};
+}
+function getPlayerNickname(){
+  if(!G)return '코트 위의 도전자';
+  const awards=G.aw||{},nba=careerTotals('NBA'),all=careerTotals('all');
+  const sample=nba.games?nba:all;
+  const mvp=Number(awards['NBA MVP'])||0;
+  if(mvp>=3)return '농구의 신 (GOAT)';
+  if(mvp>=1)return '시대를 지배한 MVP';
+  if(sample.ppg>=25)return '코트 위의 폭격기';
+  if(sample.apg>=8)return '패스의 마술사';
+  if(sample.rpg>=10)return '골밑의 지배자';
+  if((Number(G.maxO)||0)>=85)return '올스타 슈퍼스타';
+  if((Number(awards['NBA 올해의 수비수'])||0)>0 || (Number(awards['ALL-DEFENSIVE FIRST TEAM'])||0)>=3)return '코트의 수호자';
+  if((Number(awards['NBA 우승'])||0)>=3)return '왕조의 심장';
+  if((Number(awards['NBA 올스타'])||Number(awards['올스타'])||0)>0)return '올스타 플레이어';
+  if((Number(awards['ALL-NBA FIRST TEAM'])||0)>0)return '퍼스트 팀 스타';
+  if(nba.games>0)return 'NBA 무대를 밟은 사나이';
+  if((G.hist||[]).some(h=>h.lv==='KBL'))return 'KBL의 자부심';
+  if((G.hist||[]).some(h=>h.lv==='NCAA'||h.lv==='UNIV'))return '코트를 거친 승부사';
+  return '끝까지 달린 도전자';
+}
+function getMajorAwards(){
+  const awards=G?.aw||{};
+  const preferred=['NBA MVP','파이널 MVP','NBA 파이널 MVP','NBA 우승','NBA 올스타','ALL-NBA FIRST TEAM','ALL-NBA SECOND TEAM','ALL-NBA THIRD TEAM','NBA 올해의 수비수','NBA 신인왕','KBL MVP','KBL 베스트5','KBL 수비 5걸'];
+  const rows=[];
+  for(const name of preferred){const count=Number(awards[name])||0;if(count>0)rows.push({name,count});}
+  if(!rows.length){for(const [name,count0] of Object.entries(awards)){const count=Number(count0)||0;if(count>0)rows.push({name,count});}}
+  return rows.sort((a,b)=>b.count-a.count).slice(0,8);
+}
+function buildCareerSummary(){
+  const nba=careerTotals('NBA'),awards=getMajorAwards(),nickname=getPlayerNickname();
+  const awardText=awards.length?awards.map(a=>`${a.name}${a.count>1?` ${a.count}회`:''}`).join(', '):'주요 수상 없음';
+  const pos=POS[G.pos]?.n||G.pos||'미정';
+  return [
+    '🏀 ZERO TO MVP | CAREER SUMMARY',
+    `선수: ${G.name||'이름 없음'}`,
+    `등번호 / 포지션: #${G.no??'—'} · ${pos}`,
+    `커리어 칭호: ${nickname}`,
+    `최고 OVR: ${Number(G.maxO)||0}`,
+    '',
+    '【NBA 통산 기록】',
+    `경기: ${nba.games}경기`,
+    `득점: ${Math.round(nba.points).toLocaleString('ko-KR')}점 (평균 ${nba.ppg.toFixed(1)}점)`,
+    `리바운드: ${Math.round(nba.rebounds).toLocaleString('ko-KR')}개 (평균 ${nba.rpg.toFixed(1)}개)`,
+    `어시스트: ${Math.round(nba.assists).toLocaleString('ko-KR')}개 (평균 ${nba.apg.toFixed(1)}개)`,
+    '',
+    '【주요 수상】',
+    awardText,
+    `총 자산: ${Number(G.money||0).toFixed(1)}억`,
+    '',
+    '#ZEROTOMVP #BasketballCareerSimulator'
+  ].join('\n');
+}
+async function copyCareerSummary(){
+  if(!G){alert('복사할 커리어 기록이 없습니다.');return;}
+  const text=buildCareerSummary();
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      await navigator.clipboard.writeText(text);
+    }else{
+      const area=document.createElement('textarea');area.value=text;area.setAttribute('readonly','');
+      area.style.position='fixed';area.style.opacity='0';area.style.pointerEvents='none';document.body.appendChild(area);area.select();
+      const ok=document.execCommand('copy');area.remove();if(!ok)throw new Error('clipboard unavailable');
+    }
+    alert('커리어 요약이 클립보드에 복사되었습니다!');
+  }catch(err){
+    console.error('커리어 요약 복사 실패:',err);
+    alert('클립보드 복사에 실패했습니다. 브라우저 권한을 확인해 주세요.');
+  }
+}
+
+function saveManager(){
+ const slots=readSlots();
+ const rows=[1,2,3].map(n=>{const g=slots[n],meta=g?`${esc(g.name||'선수')} · ${g.age||'—'}세 · ${(LV[g.lv]||{n:g.lv||'—'}).n} · ${g.yr||'—'} 시즌`:'비어 있는 슬롯';return `<div class="save-slot"><div class="save-slot-info"><div class="save-slot-name">슬롯 ${n}${activeSaveSlot===n?'<span class="save-current">현재</span>':''}</div><div class="save-slot-meta">${meta}</div></div><div class="save-slot-actions"><button onclick="saveToSlot(${n})">저장</button><button class="save-primary" ${g?'':'disabled'} onclick="loadFromSlot(${n})">불러오기</button></div></div>`}).join('');
+ const back=document.createElement('div');back.className='save-modal-backdrop';back.id='saveModal';back.innerHTML=`<div class="save-modal" role="dialog" aria-modal="true" aria-label="커리어 저장 관리"><div class="save-modal-head"><h3>커리어 저장 관리</h3><button onclick="closeSaveManager()">닫기</button></div><p class="save-modal-desc">브라우저에 커리어를 최대 3개까지 저장할 수 있어요. 다른 기기로 옮기려면 JSON 내보내기를 이용하세요.</p>${rows}<div class="save-slot-actions"><button onclick="exportSave()">JSON 내보내기</button><button onclick="document.getElementById('saveImportInput').click()">JSON 불러오기</button><input id="saveImportInput" type="file" accept=".json,application/json" style="display:none" onchange="importSaveFile(this.files&&this.files[0]);this.value=''"></div><div class="save-modal-foot">저장 데이터는 현재 브라우저의 저장 공간에 보관됩니다.</div></div>`;back.addEventListener('click',e=>{if(e.target===back)closeSaveManager()});document.body.appendChild(back);
+}
+function closeSaveManager(){const m=document.getElementById('saveModal');if(m)m.remove()}
+
+
+function seasonCompetitionRows(l){
+ const name=(LV[l.lv]||{n:l.lv||'리그'}).n,winPct=(Number(l.w)||0)/Math.max(1,Number(l.g)||1),inj=l.inj==='십자인대 파열, 시즌 아웃';
+ const rows=[];
+ if(l.lv==='HS'){
+  rows.push({icon:'🏟️',title:'고교 리그 정규시즌',sub:`${l.g}경기 기준`,result:inj?'부상으로 이탈':winPct>=.65?'상위권 성적':winPct>=.45?'중위권 성적':'하위권 성적',tone:winPct>=.65?'good':''});
+  rows.push({icon:'🏆',title:'전국대회',sub:'시즌 중 토너먼트 성적',result:inj?'출전 제한':l.aw.includes('고교 우승')?'우승':winPct>=.55?'본선 경쟁':'본선 진출 도전',tone:l.aw.includes('고교 우승')?'good':''});
+ }else if(l.lv==='UNIV'){
+  rows.push({icon:'🏟️',title:'U리그 정규시즌',sub:`${l.g}경기 기준`,result:winPct>=.65?'상위권 성적':winPct>=.45?'중위권 성적':'하위권 성적',tone:winPct>=.65?'good':''});
+  rows.push({icon:'🏆',title:'대학 플레이오프',sub:'팀 성적 기반 평가',result:l.aw.includes('대학 우승')?'우승':winPct>=.5?'플레이오프 경쟁':'진출 실패',tone:l.aw.includes('대학 우승')?'good':'bad'});
+ }else if(l.lv==='KBL'||l.lv==='NBA'||l.lv==='GL'||l.lv==='NCAA'){
+  rows.push({icon:'🏟️',title:`${name} 정규시즌`,sub:`${l.g}경기 기준 · ${l.w}승 ${l.g-l.w}패`,result:winPct>=.65?'상위 시드 경쟁':winPct>=.5?'플레이오프권': '하위권 성적',tone:winPct>=.5?'good':'bad'});
+  rows.push({icon:'🏆',title:'플레이오프',sub:'시즌 성적 기반 시뮬레이션',result:l.aw.some(a=>a.includes('우승'))?'챔피언':winPct>=.5?'포스트시즌 도전 종료':'진출 실패',tone:l.aw.some(a=>a.includes('우승'))?'good':'bad'});
+ }else rows.push({icon:'🪖',title:'상무 복무 시즌',sub:'개인 기록 및 훈련 제한 반영',result:'시즌 완료',tone:''});
+ return rows;
+}
+function seasonReactions(l){
+ const inj=l.inj==='십자인대 파열, 시즌 아웃',star=l.ppg>=20&&l.min>=25,solid=l.ppg>=12||l.apg>=4||l.rpg>=7;
+ if(inj)return [{source:'스포츠 기사',quote:'부상으로 아쉬움을 남겼다. 건강을 회복하고 돌아오는 것이 최우선이다.'},{source:'팬 반응',quote:'무리하지 말고 재활 잘해서 다음 시즌에 건강하게 돌아오자.'}];
+ if(star)return [{source:'스포츠 기사',quote:'확실한 존재감을 드러냈다. 다음 시즌 더 큰 역할을 맡을 수 있을까?'},{source:'팬 반응',quote:'이번 시즌 폼 미쳤다. 다음 시즌도 이 페이스 유지하자.'}];
+ if(solid)return [{source:'스포츠 기사',quote:'꾸준히 기여했지만, 더 높은 단계로 도약하려면 한 가지 무기가 필요하다.'},{source:'팬 반응',quote:'조급해하지 말자. 아직 보여줄 게 더 많은 선수다.'}];
+ return [{source:'스포츠 기사',quote:'아직 보여준 것보다 보여줄 것이 많은 선수. 출전 기회를 늘리는 것이 과제다.'},{source:'팬 반응',quote:'조급해하지 마. 아직 시간 많다. 다음 시즌엔 더 성장하자.'}];
+}
+function seasonReportMarkup(l){
+ const cur=ovr(),prevO=l.o??cur,delta=cur-prevO,stats=[['득점',l.ppg,'PPG'],['리바운드',l.rpg,'RPG'],['어시스트',l.apg,'APG'],['출전 경기',l.gp,'GP'],['평균 출전 시간',l.min,'MPG'],['팀 승리',l.w,'W']];
+ const growth=K.map(k=>{const start=l.startStats?.[k],end=G.s[k],d=Number.isFinite(start)?end-start:0;return `<div class="sr-growth-item"><span>${KN[k]}</span><b class="${d>0?'up':d<0?'down':''}">${start==null?end:`${start} → ${end}`} ${d>0?`<span class="up">+${d}</span>`:d<0?`<span class="down">${d}</span>`:''}</b></div>`}).join('');
+ const comps=seasonCompetitionRows(l).map(x=>`<div class="sr-competition"><div class="sr-icon">${x.icon}</div><div class="sr-comp-main"><b>${x.title}</b><small>${x.sub}</small></div><div class="sr-comp-result ${x.tone||''}">${x.result}</div></div>`).join('');
+ const reactions=seasonReactions(l).map((x,i)=>i===0?`<div class="sr-reaction"><div class="sr-source">📰 ${x.source}</div><div class="sr-quote">${x.quote}</div></div>`:`<div class="sr-fan"><div class="sr-avatar">팬</div><div><p>${x.quote}</p><small>${x.source} · 방금 전</small></div></div>`).join('');
+ const awards=l.aw.length?l.aw.map(x=>`<span class="sr-award">🏅 ${esc(x)}</span>`).join(''):'<span style="font-size:13px;color:#7b8796">이번 시즌 수상 기록 없음</span>';
+ return `<section class="season-report" aria-label="시즌 종료 리포트"><header class="sr-head"><div class="sr-kicker">Season Review · ${l.age}세</div><h2>${esc(G.name||'선수')}의 시즌 결산</h2><div class="sr-sub">${esc((LV[l.lv]||{n:l.lv}).n)} · ${esc(l.tn)} · ${l.gp}/${l.g}경기 출전</div><div class="sr-ovr"><div class="sr-ovr-num">${cur}</div><div class="sr-ovr-label"><b>종합 능력치</b>${delta>0?`지난 시즌 기준 대비 +${delta} OVR`:delta<0?`지난 시즌 기준 대비 ${delta} OVR`:'현재 종합 능력치'}<br><span style="font-size:11px">※ 능력치 변화는 시즌 종료 시점 기준</span></div></div></header><div class="sr-body"><section class="sr-section"><h3>📊 시즌 기록</h3><div class="sr-stats">${stats.map(x=>`<div class="sr-stat"><strong>${typeof x[1]==='number'?Number(x[1]).toFixed(x[2]==='PPG'||x[2]==='RPG'||x[2]==='APG'?1:0):x[1]}</strong><span>${x[0]}</span></div>`).join('')}</div></section><section class="sr-section"><h3>🏆 대회 결과</h3>${comps}</section><section class="sr-section"><h3>📈 능력치 변화</h3><div class="sr-growth">${growth}</div></section><section class="sr-section"><h3>🏅 개인 수상</h3><div class="sr-awards">${awards}</div></section><section class="sr-section"><h3>🗞️ 언론 · 팬 반응</h3>${reactions}</section></div></section>`;
+}
+
+function render(){const a=$('app');if(!G){a.innerHTML=startUI();return}/* 기존 저장 데이터에 잘못 남은 조기 종료 상태 복구 */if(G.phase==='end'&&G.age<39&&G.endReason!=='retired'){G.phase=G.last?'result':'hub';}sv();let h=head()+`<div class="save-access"><button onclick="saveManager()">저장 · 불러오기</button></div>`;
+if(G.phase==='turn'){const e=EV[G.evi];h+=note()+`<div class="card"><h2>${e.t}</h2><p>${e.d}</p></div>${b(e.a[0],ft(e.a[1]),'choose(0)')}${b(e.b[0],ft(e.b[1]),'choose(1)')}`}
+else if(G.phase==='hub')h+=note()+panel()+economyPanel()+`<div class="card"><b>이번 시즌 집중 훈련 (최대 2개)</b><div>${K.map(k=>ch(G.focus.includes(k),KN[k],`tg('${k}')`)).join('')}${ch(G.focus.includes('rest'),'휴식·재활',`tg('rest')`)}</div></div>${b('시즌 진행','','play()','go')}${b('커리어 기록','','G.sh=!G.sh;render()')}${G.sh?table():''}`;
+else if(G.phase==='out'){const o=G.out;h+=`<div class="card"><h2>${esc(o.t)}</h2>${o.n?`<p class="${o.bd?'bad':'good'}">${esc(o.n)}</p>`:''}${o.l.map(x=>`<div>${esc(x)}</div>`).join('')}</div>`+b('계속','','cont()','go')}
+else if(G.phase==='season'){const l=G.last,sg=G.sg,gh=rd(l.g/2),wh=cl(rd(l.w/2*l.fr),0,gh),f=sg?1:l.fr,rec=sg?`${l.w}승 ${l.g-l.w}패`:`${wh}승 ${gh-wh}패`;h+=`<div class="card"><h2>${['시즌 전반','시즌 후반','포스트시즌'][sg]}</h2>`+(sg<2?`<p>${sg?l.g:gh}경기, ${rec}</p><div class="big">${(l.ppg*f).toFixed(1)}점 ${(l.rpg*f).toFixed(1)}리바 ${(l.apg*f).toFixed(1)}어시</div><p>${l.inj==='십자인대 파열, 시즌 아웃'?'부상으로 시즌 대부분을 놓쳤다.':l.min<10?'벤치에서 기회를 기다렸다.':l.min>=28?'팀의 주축으로 뛰고 있다.':'로테이션의 한 자리를 지키고 있다.'}</p>${sg&&l.inj?`<p class="bad">${l.inj}</p>`:''}`:`<p>${l.lv==='MIL'?'상무 시즌이 끝났다.':l.aw.includes((l.lv==='UNIV'?'대학':Pn[l.lv])+' 우승')?'우승! 정상에 올랐다.':l.w/l.g>=.5?'플레이오프에서 탈락했다.':'플레이오프에 오르지 못했다.'}</p>`)+`</div>`+b(['후반기로','포스트시즌으로','시즌 결산 보기'][sg],'','sgn()','go')}
+else if(G.phase==='result'){const l=G.last;h+=seasonReportMarkup(l)+`${l.rank?`<div class="card">NBA MVP 투표 순위: <b>${l.rank}위</b></div>`:''}${l.aw.includes('NBA MVP')&&G.aw['NBA MVP']===1?'<div class="card good"><b>NBA MVP 달성! 목표를 이뤘어요. 커리어는 계속 이어갈 수 있어요.</b></div>':''}<div class="card"><h3>이번 시즌 특기</h3>${traitMarkup(l.traits||[])}</div>${panel()}${economyPanel()}${b('다음 시즌','','adv()','go')}`}
+else{
+const nba=careerTotals('NBA'),A=G.aw||{},nm=Number(A['NBA MVP'])||0,nickname=getPlayerNickname(),major=getMajorAwards();
+const awardMarkup=major.length?major.map(x=>`<span class="hof-award">${esc(x.name)}${x.count>1?` · ${x.count}회`:''}</span>`).join(''):'<span class="hof-award">주요 수상 기록 없음</span>';
+h=`<div class="game-headline">ZERO TO <span>MVP</span> · CAREER ENDED</div>
+<section class="hof-card" aria-label="명예의 전당 커리어 결산 카드">
+  <div class="hof-kicker">🏆 Hall of Fame · Career Legacy</div>
+  <div class="hof-title">${esc(nickname)}</div>
+  <div class="hof-name">${esc(G.name||'선수')} · #${esc(G.no??'—')} · ${esc(POS[G.pos]?.n||G.pos||'선수')} · ${G.age}세 ${G.endReason==='retired'?'은퇴':'커리어 종료'}</div>
+  <span class="hof-badge">ZERO TO MVP · LEGACY CARD</span>
+  <div class="hof-stats">
+    <div class="hof-stat"><strong>${Number(G.maxO)||0}</strong><span>CAREER HIGH OVR</span></div>
+    <div class="hof-stat"><strong>${nm}</strong><span>NBA MVP</span></div>
+    <div class="hof-stat"><strong>${Number(A['NBA 우승'])||0}</strong><span>NBA CHAMPIONSHIPS</span></div>
+    <div class="hof-stat"><strong>${nba.games.toLocaleString('ko-KR')}</strong><span>NBA GAMES</span></div>
+    <div class="hof-stat"><strong>${nba.ppg.toFixed(1)}</strong><span>NBA PPG</span></div>
+    <div class="hof-stat"><strong>${nba.rpg.toFixed(1)} / ${nba.apg.toFixed(1)}</strong><span>RPG / APG</span></div>
+  </div>
+  <div class="hof-detail"><b>NBA 통산 기록</b><p>${Math.round(nba.points).toLocaleString('ko-KR')}점 · ${Math.round(nba.rebounds).toLocaleString('ko-KR')}리바운드 · ${Math.round(nba.assists).toLocaleString('ko-KR')}어시스트</p></div>
+  <div class="hof-detail"><b>주요 수상</b><div class="hof-awards">${awardMarkup}</div></div>
+  <div class="hof-detail"><b>선수 자산</b><p>${Number(G.money||0).toFixed(1)}억 · 성장 유형 ${esc(TY[G.type]||G.type||'—')}</p></div>
+  <button type="button" class="hof-copy" onclick="copyCareerSummary()">📋 커리어 요약 텍스트 복사하기</button>
+</section>
+${table()}${b('새 선수로 다시 시작','','clr();G=null;C.cs=[];render()','go')}`}
+
+a.innerHTML=h}
+render();
+</script></body></html>
