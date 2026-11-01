@@ -734,7 +734,8 @@ function generateOpponent(league,currentTeam){
 function leagueGameMinutes(league){return league==='NBA'||league==='KBL'||league==='GL'?48:league==='HS'?32:40}
 function simulatePlayerStats(context,gameContext){
  const {s,pos,ovr:overall,trust,health,focus,traits}=context,P=POS[pos]||POS.H,traitFx=context.traitFx||{ppg:0,rpg:0,apg:0,team:0};
- const minutes=cl(rd(context.baseMinutes+(s.phy-50)*.05+rn(-3.5,3.5)+(health<45?-2:health<65?-1:0)),0,Math.min(gameContext.gameMinutes,context.maxPlayerMinutes||gameContext.gameMinutes));
+ const healthPenalty=health<70?(70-health)*.075:0;
+ const minutes=cl(rd(context.baseMinutes+(s.phy-50)*.05+rn(-3.5,3.5)-healthPenalty),0,Math.min(gameContext.gameMinutes,context.maxPlayerMinutes||gameContext.gameMinutes));
  if(minutes<=0)return zeroBox();
  const shoot=cl(s.shoot+overall*.08,10,110),fin=cl(s.fin+overall*.04,10,110),play=cl(s.play,10,110),def=cl(s.def,10,110),reb=cl(s.reb,10,110),phy=cl(s.phy,10,110);
  const usage=gameContext.league==='NBA'?cl(.19+(overall-60)*.0030+(shoot-65)*.0010+(fin-65)*.00065+(pos==='H'?.012:pos==='B'?.004:0),.13,.43):cl(.17+(overall-50)*.0015+(shoot-50)*.0008+(fin-50)*.0005,.12,.34);
@@ -742,13 +743,15 @@ function simulatePlayerStats(context,gameContext){
  const threeShare=cl(.24+(shoot-50)*.003+(pos==='H'?.08:pos==='B'?-.08:0),.12,.58);
  const threeAttempted=Math.min(fga,rd(fga*threeShare));
  const twoAttempted=Math.max(0,fga-threeAttempted);
- const threePct=cl(.285+(shoot-50)*.0032+traitFx.ppg*.18,.20,.49);
- const twoPct=cl(.405+(fin-50)*.0022+(shoot-50)*.0008+traitFx.ppg*.12,.30,.68);
+ // 건강이 낮으면 하체 피로와 집중력 저하로 슛 성공률이 단계적으로 하락한다.
+ const conditioning=cl(1-Math.max(0,70-health)*.0022-Math.max(0,45-health)*.0028,.72,1);
+ const threePct=cl((.285+(shoot-50)*.0032+traitFx.ppg*.18)*conditioning,.16,.49);
+ const twoPct=cl((.405+(fin-50)*.0022+(shoot-50)*.0008+traitFx.ppg*.12)*conditioning,.24,.68);
  const threeMade=Math.min(threeAttempted,rd(threeAttempted*cl(rn(threePct-.13,threePct+.13),.05,.85)));
  const twoMade=Math.min(twoAttempted,rd(twoAttempted*cl(rn(twoPct-.14,twoPct+.14),.05,.9)));
  const fgMade=threeMade+twoMade;
  const ftAttempted=rd(minutes*(.035+Math.max(0,fin-45)*.00075+traitFx.ppg*.12)*rn(.65,1.4));
- const ftPct=cl(.62+(shoot-50)*.003+fin*.0007+traitFx.ppg*.08,.48,.94);
+ const ftPct=cl((.62+(shoot-50)*.003+fin*.0007+traitFx.ppg*.08)*(1-Math.max(0,55-health)*.0015),.40,.94);
  const ftMade=Math.min(ftAttempted,rd(ftAttempted*cl(rn(ftPct-.12,ftPct+.12),0,1)));
  const points=2*fgMade+threeMade+ftMade;
  const reboundRate=(.075+Math.max(0,reb-40)*.00105+(pos==='B'?.045:pos==='W'?.008:-.018)+Math.max(0,phy-55)*.00035)*(1+traitFx.rpg);
@@ -756,7 +759,7 @@ function simulatePlayerStats(context,gameContext){
  const assists=Math.max(0,rd(minutes*(.025+Math.max(0,play-40)*.00105+(pos==='H'?.045:pos==='W'?.012:0))*(1+traitFx.apg)*rn(.55,1.5)));
  const steals=Math.max(0,rd(minutes*(.006+Math.max(0,def-40)*.00023)*rn(.45,1.7)));
  const blocks=Math.max(0,rd(minutes*(.002+Math.max(0,def-45)*.00016+Math.max(0,phy-50)*.00008+(pos==='B'?.012:0))*rn(.4,1.8)));
- const turnovers=Math.max(0,rd(minutes*(.018+Math.max(0,usage-.2)*.09-Math.max(0,play-50)*.00013)*(1-traitFx.apg*.5)*rn(.55,1.5)));
+ const turnovers=Math.max(0,rd(minutes*(.018+Math.max(0,usage-.2)*.09-Math.max(0,play-50)*.00013+Math.max(0,55-health)*.00035)*(1-traitFx.apg*.5)*rn(.55,1.5)));
  return {points,rebounds,assists,minutes,fgMade,fgAttempted:fga,threeMade,threeAttempted,ftMade,ftAttempted,steals,blocks,turnovers};
 }
 function simulateTeamScore(context,opponent,playerStats){
@@ -838,7 +841,7 @@ function play(){
  let injuryGames=0,inj='';
  const aclRisk=Math.max(.003,.012+(Number(G.risk)||0)*.15);
  if(G.age>=17&&R()<aclRisk){injuryGames=g;inj='십자인대 파열, 시즌 아웃';s.phy=cl(s.phy-rd(rn(2,5)),10,99);s.fin=cl(s.fin-rd(rn(1,3)),10,99);G.health=40;}
- else if(R()<.07+(Number(G.risk)||0)+(G.health<60?(60-G.health)/300:0)+(G.age>=30?.03:0)){injuryGames=cl(rd(g*(R()<.25?rn(.25,.6):rn(.05,.18))),0,g);if(injuryGames>0)inj=`부상으로 ${injuryGames}경기 결장`;}
+ else if(R()<.07+(Number(G.risk)||0)+(G.health<70?(70-G.health)/260:0)+(G.age>=30?.03:0)){injuryGames=cl(rd(g*(R()<.25?rn(.25,.6):rn(.05,.18))),0,g);if(injuryGames>0)inj=`부상으로 ${injuryGames}경기 결장`;}
  const missedGames=new Set();while(missedGames.size<injuryGames&&missedGames.size<g)missedGames.add(1+Math.floor(R()*g));
  const nbaCareer=league==='NBA'?nbaCareerContext():null;
  const baseMinutes=league==='NBA'?nbaRoleMinutes(o,G.trust,G.team,G.health,nbaCareer):cl(rd(17+(o-ro)*.75+(G.trust-30)*.1+(league==='HS'?(SCH_DEP[G.sch]||0):0)),8,34);
@@ -959,8 +962,8 @@ function head(){const L=LV[G.lv];const mvpAchieved=!!(G.aw&&G.aw['NBA MVP']);con
 const panel=()=>`<div class="card"><div class="meta"><span>OVERALL <b>${ovr()}</b> · ${ovrTier(ovr())}</span><span>건강 <b>${rd(G.health)}</b></span><span>감독 신뢰 <b>${rd(G.trust)}</b></span><span>명성 <b>${rd(G.fame)}</b></span>${G.cy?`<span>계약 <b>${G.cy}년</b> 남음</span>`:''}</div><div class="trait-section"><div class="trait-title">현재 특기 · 능력치 기반 자동 판정</div>${traitMarkup(currentTraits())}</div>${K.map(k=>`<div class="row"><span>${KN[k]}${G.focus.includes(k)?' ★':''}</span><div class="bar"><b style="width:${G.s[k]}%"></b></div><b>${G.s[k]}</b></div>`).join('')}</div>`;
 const note=()=>G.note?`<p class="good">${esc(G.note)}</p>`:'';
 function setStatView(view){statView=view;render()}
-const table=()=>`<div class="card tbl"><div class="stat-tabs"><button class="${statView==='basic'?'active':''}" onclick="setStatView('basic')">기본 통계</button><button class="${statView==='advanced'?'active':''}" onclick="setStatView('advanced')">세부·고급 통계</button></div><table>${statView==='basic'?`<tr><th>나이</th><th>OVR</th><th>리그</th><th>팀</th><th>경기</th><th>분</th><th>득점</th><th>리바</th><th>어시</th><th>승</th><th>시즌 특기</th></tr>${G.hist.map(h=>`<tr><td>${h.age}</td><td><b>${h.o??'—'}</b></td><td>${(LV[h.lv]||{n:h.lv}).n}</td><td>${esc(h.tn)}</td><td>${h.gp}</td><td>${h.min}</td><td>${h.ppg}</td><td>${h.rpg}</td><td>${h.apg}</td><td>${h.w}</td><td>${(h.traits||[]).map(t=>esc(t.label||t.name)).join(', ')||'—'}</td></tr>`).join('')}`:`<tr><th>나이</th><th>FG%</th><th>3P%</th><th>FT%</th><th>SPG</th><th>BPG</th><th>TOPG</th><th>TS%</th><th>PER*</th></tr>${G.hist.map(h=>{const x=h.stats||makeAdvancedStats({ppg:h.ppg||0,rpg:h.rpg||0,apg:h.apg||0,min:h.min||0,...G.s});return `<tr><td>${h.age}</td><td>${pct(x.fgPct)}</td><td>${pct(x.threePct)}</td><td>${pct(x.ftPct)}</td><td>${x.stl}</td><td>${x.blk}</td><td>${x.tov}</td><td>${pct(x.tsPct)}</td><td>${x.perProxy}</td></tr>`}).join('')}</table><small>* PER은 현재 게임의 기록을 활용한 대체 지표이며, 공식 PER 산식과는 다릅니다. 이전 세이브의 상세 스탯은 추정값으로 표시될 수 있습니다.</small>`}</div>`;
-function startUI(){const s=ld();if(!C.cs.length)newC();return `<section class="brand-hero" aria-label="ZERO TO MVP"><div class="brand-wordmark">ZERO TO <span>MVP</span></div><div class="brand-kicker">Basketball Career Simulator · v67.1</div><p class="brand-tagline"><em>Every Legend Starts at the Bottom.</em></p><p class="brand-copy">고등학교에서 시작해 농구계의 정상까지.<br>네 커리어를 직접 만들어라.</p><div class="brand-actions"><button type="button" class="brand-primary" onclick="document.getElementById('careerSetup').scrollIntoView({behavior:'smooth',block:'start'})">NEW CAREER</button>${s?`<button type="button" class="brand-secondary" onclick="resume()">CONTINUE · ${esc(s.name)}</button>`:`<button type="button" class="brand-secondary" disabled aria-disabled="true" title="저장된 커리어가 없습니다">CONTINUE · NO SAVE</button>`}</div></section><div id="careerSetup" class="brand-section-title">Create Your Player / 선수 생성</div><div class="card"><b>선수 만들기</b><input value="${esc(C.name)}" placeholder="이름(닉네임)" maxlength="10" oninput="C.name=this.value" aria-label="이름"><input type="number" value="${C.no}" min="0" max="99" oninput="C.no=this.value" aria-label="등번호"><div>${Object.keys(POS).map(k=>ch(C.pos===k,POS[k].n,`C.pos='${k}';C.foc=[];newC();render()`)).join('')}</div><div>${ch(C.st==='KR','한국 고교 농구부',`C.st='KR';render()`)}${ch(C.st==='US','미국 프렙스쿨 유학',`C.st='US';C.usSchool=C.usSchool||'Montverde Academy';render()`)}</div>${C.st==='US'?`<div style="margin-top:10px"><label for="usSchool"><b>유학할 고등학교 선택</b></label><select id="usSchool" onchange="C.usSchool=this.value" style="width:100%;font:16px 'Noto Sans KR',sans-serif;padding:10px;margin-top:6px;border:2px solid var(--ink);border-radius:4px;background:var(--card);color:var(--ink)">${US_SCHOOLS.map(x=>`<option value="${x.name}" ${C.usSchool===x.name?'selected':''}>${x.name} — ${x.state}</option>`).join('')}</select><small style="display:block;color:var(--mute);margin-top:5px">학교 선택은 커리어 기록에 표시돼. 실제 입학 가능성이나 팀 로스터를 뜻하지는 않아.</small></div>`:`<div style="margin-top:10px"><label for="krSchool"><b>진학할 한국 고등학교 선택</b></label><select id="krSchool" onchange="C.krSchool=this.value" style="width:100%;font:16px 'Noto Sans KR',sans-serif;padding:10px;margin-top:6px;border:2px solid var(--ink);border-radius:4px;background:var(--card);color:var(--ink)">${KR_SCHOOLS.map(x=>`<option value="${x.name}" ${C.krSchool===x.name?'selected':''}>${x.name} — ${x.state}</option>`).join('')}</select></div>`}</div></div>${C.cs.map((c,i)=>`<button class="cand ${C.sel===i?'on':''}" aria-pressed="${C.sel===i?'true':'false'}" onclick="C.sel=${i};render()"><span class="cand-title">${C.sel===i?'✓ 선택됨　':''}후보 ${i+1} · ${c.arch||'선수 유형'}, 키 ${c.h}cm, 종합 ${ovrOf(c.s,C.pos)}</span><small>${K.map(k=>`${KN[k]} ${c.s[k]}`).join(', ')}</small></button>`).join('')}${b('다른 후보 보기','','newC();render()')}<div class="card"><b>집중 육성 (최대 2개)</b><div>${K.map(k=>ch(C.foc.includes(k),KN[k],`kg('${k}')`)).join('')}</div></div>${C.err?'<p class="bad">후보를 먼저 골라주세요.</p>':''}${b('커리어 시작','','begin()','go')}`}
+const table=()=>`<div class="card tbl"><div class="stat-tabs"><button class="${statView==='basic'?'active':''}" onclick="setStatView('basic')">기본 통계</button><button class="${statView==='advanced'?'active':''}" onclick="setStatView('advanced')">세부·고급 통계</button></div><table>${statView==='basic'?`<tr><th>나이</th><th>OVR</th><th>리그</th><th>팀</th><th>경기</th><th>분</th><th>득점</th><th>리바</th><th>어시</th><th>승</th><th>시즌 특기</th></tr>${G.hist.map(h=>`<tr><td>${h.age}</td><td><b>${h.o??'—'}</b></td><td>${(LV[h.lv]||{n:h.lv}).n}</td><td>${esc(h.tn)}</td><td>${h.gp}</td><td>${h.min}</td><td>${h.ppg}</td><td>${h.rpg}</td><td>${h.apg}</td><td>${h.w}</td><td>${(h.traits||[]).map(t=>esc(t.label||t.name)).join(', ')||'—'}</td></tr>`).join('')}`:`<tr><th>나이</th><th>야투 성공/시도</th><th>FG%</th><th>3점 성공/시도</th><th>3P%</th><th>자유투 성공/시도</th><th>FT%</th><th>SPG</th><th>BPG</th><th>TOPG</th><th>TS%</th><th>PER*</th></tr>${G.hist.map(h=>{const x=h.stats||makeAdvancedStats({ppg:h.ppg||0,rpg:h.rpg||0,apg:h.apg||0,min:h.min||0,...G.s});return `<tr><td>${h.age}</td><td>${x.fgm}/${x.fga}</td><td>${pct(x.fgPct)}</td><td>${x.tpm}/${x.tpa}</td><td>${pct(x.threePct)}</td><td>${x.ftm}/${x.fta}</td><td>${pct(x.ftPct)}</td><td>${x.stl}</td><td>${x.blk}</td><td>${x.tov}</td><td>${pct(x.tsPct)}</td><td>${x.perProxy}</td></tr>`}).join('')}</table><small>* PER은 현재 게임의 기록을 활용한 대체 지표이며, 공식 PER 산식과는 다릅니다. 이전 세이브의 상세 스탯은 추정값으로 표시될 수 있습니다.</small>`}</div>`;
+function startUI(){const s=ld();if(!C.cs.length)newC();return `<section class="brand-hero" aria-label="ZERO TO MVP"><div class="brand-wordmark">ZERO TO <span>MVP</span></div><div class="brand-kicker">Basketball Career Simulator · v67.2</div><p class="brand-tagline"><em>Every Legend Starts at the Bottom.</em></p><p class="brand-copy">고등학교에서 시작해 농구계의 정상까지.<br>네 커리어를 직접 만들어라.</p><div class="brand-actions"><button type="button" class="brand-primary" onclick="document.getElementById('careerSetup').scrollIntoView({behavior:'smooth',block:'start'})">NEW CAREER</button>${s?`<button type="button" class="brand-secondary" onclick="resume()">CONTINUE · ${esc(s.name)}</button>`:`<button type="button" class="brand-secondary" disabled aria-disabled="true" title="저장된 커리어가 없습니다">CONTINUE · NO SAVE</button>`}</div></section><div id="careerSetup" class="brand-section-title">Create Your Player / 선수 생성</div><div class="card"><b>선수 만들기</b><input value="${esc(C.name)}" placeholder="이름(닉네임)" maxlength="10" oninput="C.name=this.value" aria-label="이름"><input type="number" value="${C.no}" min="0" max="99" oninput="C.no=this.value" aria-label="등번호"><div>${Object.keys(POS).map(k=>ch(C.pos===k,POS[k].n,`C.pos='${k}';C.foc=[];newC();render()`)).join('')}</div><div>${ch(C.st==='KR','한국 고교 농구부',`C.st='KR';render()`)}${ch(C.st==='US','미국 프렙스쿨 유학',`C.st='US';C.usSchool=C.usSchool||'Montverde Academy';render()`)}</div>${C.st==='US'?`<div style="margin-top:10px"><label for="usSchool"><b>유학할 고등학교 선택</b></label><select id="usSchool" onchange="C.usSchool=this.value" style="width:100%;font:16px 'Noto Sans KR',sans-serif;padding:10px;margin-top:6px;border:2px solid var(--ink);border-radius:4px;background:var(--card);color:var(--ink)">${US_SCHOOLS.map(x=>`<option value="${x.name}" ${C.usSchool===x.name?'selected':''}>${x.name} — ${x.state}</option>`).join('')}</select><small style="display:block;color:var(--mute);margin-top:5px">학교 선택은 커리어 기록에 표시돼. 실제 입학 가능성이나 팀 로스터를 뜻하지는 않아.</small></div>`:`<div style="margin-top:10px"><label for="krSchool"><b>진학할 한국 고등학교 선택</b></label><select id="krSchool" onchange="C.krSchool=this.value" style="width:100%;font:16px 'Noto Sans KR',sans-serif;padding:10px;margin-top:6px;border:2px solid var(--ink);border-radius:4px;background:var(--card);color:var(--ink)">${KR_SCHOOLS.map(x=>`<option value="${x.name}" ${C.krSchool===x.name?'selected':''}>${x.name} — ${x.state}</option>`).join('')}</select></div>`}</div></div>${C.cs.map((c,i)=>`<button class="cand ${C.sel===i?'on':''}" aria-pressed="${C.sel===i?'true':'false'}" onclick="C.sel=${i};render()"><span class="cand-title">${C.sel===i?'✓ 선택됨　':''}후보 ${i+1} · ${c.arch||'선수 유형'}, 키 ${c.h}cm, 종합 ${ovrOf(c.s,C.pos)}</span><small>${K.map(k=>`${KN[k]} ${c.s[k]}`).join(', ')}</small></button>`).join('')}${b('다른 후보 보기','','newC();render()')}<div class="card"><b>집중 육성 (최대 2개)</b><div>${K.map(k=>ch(C.foc.includes(k),KN[k],`kg('${k}')`)).join('')}</div></div>${C.err?'<p class="bad">후보를 먼저 골라주세요.</p>':''}${b('커리어 시작','','begin()','go')}`}
 function kg(k){C.foc=C.foc.includes(k)?C.foc.filter(x=>x!==k):[...C.foc,k].slice(-2);render()}
 function resume(){G=ld();render()}
 function exitGame(){
@@ -1002,11 +1005,18 @@ function careerTotals(filter='all'){
   const logged=(G?.seasons||[]).filter(se=>filter==='all'||se.league===filter);
   const loggedIds=new Set(logged.map(se=>se.seasonId));
   const legacy=seasons.filter(h=>!h.seasonId||!loggedIds.has(h.seasonId));
-  const games=logged.reduce((n,se)=>n+aggregateSeason(se.games||[]).gp,0)+legacy.reduce((n,h)=>n+(Number(h.gp)||0),0);
-  const points=logged.reduce((n,se)=>n+aggregateSeason(se.games||[]).points,0)+legacy.reduce((n,h)=>n+(Number(h.ppg)||0)*(Number(h.gp)||0),0);
-  const rebounds=logged.reduce((n,se)=>n+aggregateSeason(se.games||[]).rebounds,0)+legacy.reduce((n,h)=>n+(Number(h.rpg)||0)*(Number(h.gp)||0),0);
-  const assists=logged.reduce((n,se)=>n+aggregateSeason(se.games||[]).assists,0)+legacy.reduce((n,h)=>n+(Number(h.apg)||0)*(Number(h.gp)||0),0);
-  return {seasons,games,points,rebounds,assists,
+  const exact=logged.map(se=>aggregateSeason(se.games||[]));
+  const sumExact=k=>exact.reduce((n,a)=>n+(Number(a[k])||0),0);
+  const legacySum=k=>legacy.reduce((n,h)=>n+(Number(h.totals?.[k])||0),0);
+  const games=sumExact('gp')+legacy.reduce((n,h)=>n+(Number(h.gp)||0),0);
+  const points=sumExact('points')+legacy.reduce((n,h)=>n+(Number(h.totals?.points)||((Number(h.ppg)||0)*(Number(h.gp)||0))),0);
+  const rebounds=sumExact('rebounds')+legacy.reduce((n,h)=>n+(Number(h.totals?.rebounds)||((Number(h.rpg)||0)*(Number(h.gp)||0))),0);
+  const assists=sumExact('assists')+legacy.reduce((n,h)=>n+(Number(h.totals?.assists)||((Number(h.apg)||0)*(Number(h.gp)||0))),0);
+  const fgMade=sumExact('fgMade')+legacySum('fgMade'),fgAttempted=sumExact('fgAttempted')+legacySum('fgAttempted');
+  const threeMade=sumExact('threeMade')+legacySum('threeMade'),threeAttempted=sumExact('threeAttempted')+legacySum('threeAttempted');
+  const ftMade=sumExact('ftMade')+legacySum('ftMade'),ftAttempted=sumExact('ftAttempted')+legacySum('ftAttempted');
+  return {seasons,games,points,rebounds,assists,fgMade,fgAttempted,threeMade,threeAttempted,ftMade,ftAttempted,
+    fgPct:fgAttempted?fgMade/fgAttempted:0,threePct:threeAttempted?threeMade/threeAttempted:0,ftPct:ftAttempted?ftMade/ftAttempted:0,
     ppg:games?points/games:0,rpg:games?rebounds/games:0,apg:games?assists/games:0};
 }
 function getPlayerNickname(){
@@ -1249,6 +1259,7 @@ h=`<div class="game-headline">ZERO TO <span>MVP</span> · CAREER ENDED</div>
     <div class="hof-stat"><strong>${nba.rpg.toFixed(1)} / ${nba.apg.toFixed(1)}</strong><span>RPG / APG</span></div>
   </div>
   <div class="hof-detail"><b>NBA 통산 기록</b><p>${Math.round(nba.points).toLocaleString('ko-KR')}점 · ${Math.round(nba.rebounds).toLocaleString('ko-KR')}리바운드 · ${Math.round(nba.assists).toLocaleString('ko-KR')}어시스트</p></div>
+  <div class="hof-detail"><b>슈팅 세부 기록</b><p>야투 ${nba.fgMade.toLocaleString('ko-KR')}/${nba.fgAttempted.toLocaleString('ko-KR')} (${pct(nba.fgPct)})</p><p>3점슛 ${nba.threeMade.toLocaleString('ko-KR')}/${nba.threeAttempted.toLocaleString('ko-KR')} (${pct(nba.threePct)})</p><p>자유투 ${nba.ftMade.toLocaleString('ko-KR')}/${nba.ftAttempted.toLocaleString('ko-KR')} (${pct(nba.ftPct)})</p></div>
   <div class="hof-detail"><b>주요 수상</b><div class="hof-awards">${awardMarkup}</div></div>
   <div class="hof-detail"><b>성장 유형</b><p>${esc(TY[G.type]||G.type||'—')}</p></div>
   <button type="button" class="hof-copy" onclick="copyCareerSummary()">📋 커리어 요약 텍스트 복사하기</button>
