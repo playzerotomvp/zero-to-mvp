@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ZERO TO MVP — Basketball Career Simulator v42</title>
+<title>ZERO TO MVP — Basketball Career Simulator v65</title>
 <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0d1520;--plank:#253649;--card:#1a2939;--ink:#f3f7fc;--mute:#b6c7d8;--blue:#70baff;--org:#ff8047;--line:#455c70;--good:#72df9e;--bad:#ff9999;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -168,6 +168,91 @@ input::placeholder{color:#9aa5b3!important}
 .sr-reaction{background:#f5f8fc!important;border:1px solid #edf1f6!important;border-radius:14px!important}.sr-source{color:#8a96a4!important}.sr-quote{color:#26313f!important}.sr-fan{border-bottom-color:#edf0f4!important}.sr-avatar{background:#e5f0ff!important;color:#3182f6!important}.sr-fan p{color:#354254!important}.sr-fan small{color:#8a96a4!important}.sr-award{background:#eaf3ff!important;color:#2168c4!important;border-color:#d3e5ff!important;border-radius:8px!important}
 @media(max-width:520px){#app{padding:12px 12px 32px}.card{padding:15px!important}.brand-hero{padding:22px!important;border-radius:20px!important}.season-report{border-radius:18px!important}}
 
+
+/* v46: Toss-inspired product UI — clarity, whitespace, one primary action */
+:root{--bg:#f5f7fa;--plank:#edf2f7;--card:#ffffff;--ink:#191f28;--mute:#6b7684;--blue:#3182f6;--org:#3182f6;--line:#e5e8eb;--good:#16a36a;--bad:#e5484d;color-scheme:light}
+:root[data-theme="light"],:root[data-theme="dark"]{--bg:#f5f7fa;--plank:#edf2f7;--card:#ffffff;--ink:#191f28;--mute:#6b7684;--blue:#3182f6;--org:#3182f6;--line:#e5e8eb;--good:#16a36a;--bad:#e5484d;color-scheme:light}
+body{background:#f5f7fa!important;color:#191f28!important;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif!important}
+main{max-width:680px;padding:12px 20px 48px!important}
+.top-actions{position:static!important;max-width:680px;margin:0 auto;padding:10px 20px 0;justify-content:flex-end}
+button.exit-btn{background:transparent!important;color:#6b7684!important;border:0!important;box-shadow:none!important;font-size:13px!important;padding:6px 8px!important}
+.brand-hero{background:#fff!important;color:#191f28!important;border:0!important;border-radius:20px!important;padding:28px 24px!important;margin:8px 0 26px!important;box-shadow:0 1px 2px #1018280a!important}
+.brand-wordmark{color:#191f28!important;font-size:clamp(2.4rem,10vw,4.3rem)!important;letter-spacing:-.07em!important}
+.brand-wordmark span{color:#3182f6!important}
+.brand-kicker{color:#8b95a1!important;letter-spacing:.12em!important}
+.brand-tagline{color:#191f28!important}
+.brand-copy{color:#6b7684!important}
+h1,h2,.game-headline{color:#191f28!important}
+.game-headline{font-size:1.3rem!important;letter-spacing:-.04em!important}
+.card,.save-modal,.hof-card,.season-report{background:#fff!important;color:#191f28!important;border:0!important;border-radius:16px!important;box-shadow:0 1px 2px #1018280a!important;padding:20px!important}
+.card{margin:12px 0 16px!important}
+.meta,.subtle,.save-modal-desc,.save-slot-meta{color:#6b7684!important}
+.meta b,.ovrlabel,.game-log-row b{color:#191f28!important}
+button{background:#f2f4f6!important;color:#191f28!important;border:1px solid #e5e8eb!important;border-left:1px solid #e5e8eb!important;border-radius:12px!important;box-shadow:none!important;padding:13px 16px!important;font-weight:650!important;min-height:46px}
+button:hover{background:#e9eef5!important;border-color:#d5dce5!important}
+button.go,.brand-actions .brand-primary,.save-slot-actions .save-primary{background:#3182f6!important;color:#fff!important;border:1px solid #3182f6!important}
+button.go:hover,.brand-actions .brand-primary:hover{background:#1b6fe5!important}
+.brand-actions .brand-secondary{background:#f2f4f6!important;color:#191f28!important;border:1px solid #e5e8eb!important}
+button.on,button.chip.on,button.cand.on{background:#e8f3ff!important;color:#1769d2!important;border:1px solid #9bc7ff!important;box-shadow:none!important;transform:none!important}
+button.cand{background:#fff!important;border:1px solid #e5e8eb!important;border-radius:14px!important;margin:7px 0!important}
+button.cand.on{border:2px solid #3182f6!important}
+button small{color:#6b7684!important}
+input,select{background:#f7f8fa!important;color:#191f28!important;border:1px solid #dfe3e8!important;border-radius:10px!important;min-height:46px}
+input::placeholder{color:#aab2bc!important}
+.ovrbox{background:#f5f8fc!important;border:0!important;border-radius:14px!important;color:#191f28!important;padding:16px!important}
+.ovrnum{color:#3182f6!important}
+.track{background:#fff!important;border:0!important;border-radius:14px!important;padding:12px 14px!important}
+.track-rail{background:#e9eef5!important;border:0!important;height:9px!important}
+.track-fill{background:#3182f6!important}
+.track-labels strong{color:#3182f6!important}
+.bar{background:#e9eef5!important;border-radius:99px!important}.bar b{background:#3182f6!important;border-radius:99px!important}
+.trait{background:#e8f3ff!important;color:#1769d2!important;border:0!important;border-radius:7px!important}
+.muted-trait{background:#f2f4f6!important;color:#8b95a1!important}
+.aw,.hof-badge{background:#e8f3ff!important;color:#1769d2!important}
+.hof-card{border-top:0!important}
+.hof-title,.hof-stat strong{color:#191f28!important}
+.hof-stat{background:#f7f8fa!important;border:0!important;border-radius:12px!important}
+.hof-stat span{color:#6b7684!important}
+.save-access button{background:transparent!important;color:#3182f6!important;border:0!important}
+.save-modal-backdrop{background:#10182866!important}
+.save-modal{border-radius:20px!important}
+.stat-tabs button.active{background:#e8f3ff!important;color:#1769d2!important;border-color:#9bc7ff!important}
+.game-log-card{background:#fff;border-radius:16px;padding:18px 20px;margin:16px 0;box-shadow:0 1px 2px #1018280a}
+.game-log-card summary{display:flex;justify-content:space-between;gap:12px;cursor:pointer;font-weight:750;list-style:none}
+.game-log-card summary::-webkit-details-marker{display:none}
+.game-log-card summary b{color:#3182f6;font-size:13px}
+.game-log-list{display:grid;gap:10px;margin-top:12px}
+.game-log-row{border:1px solid #edf0f3;border-radius:12px;padding:12px}
+.game-log-top{display:flex;align-items:center;gap:9px;min-width:0}
+.game-result{font-size:12px;font-weight:800;padding:3px 7px;border-radius:6px}.game-result.win{background:#e8f8f0;color:#128354}.game-result.loss{background:#fff0f0;color:#d33b43}
+.game-score{margin-left:auto;font-weight:800;font-variant-numeric:tabular-nums}
+.game-log-sub{font-size:12px;color:#8b95a1;margin:5px 0 10px}
+.game-box-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.game-box-grid>div{background:#f7f8fa;border-radius:8px;padding:8px;text-align:center;min-width:0}
+.game-box-grid b{display:block;font-size:14px;font-variant-numeric:tabular-nums}
+.game-box-grid small{font-size:11px;color:#8b95a1}
+@media(max-width:520px){main{padding:8px 14px 36px!important}.top-actions{padding:6px 14px 0}.brand-hero{padding:24px 18px!important}.card{padding:16px!important}.hof-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.game-box-grid{gap:6px}.game-box-grid>div{padding:7px 4px}}
+
+
+/* v50: 진로 선택 카드의 텍스트 정렬을 모든 단계에서 일관되게 왼쪽으로 고정 */
+#app button.path-choice,
+#app button.path-choice.go {
+  display:block!important;
+  width:100%!important;
+  text-align:left!important;
+  padding:16px 20px!important;
+}
+#app button.path-choice small {
+  display:block!important;
+  text-align:left!important;
+  color:#687586!important;
+  font-weight:400!important;
+  line-height:1.45!important;
+}
+#app button.path-choice.go small {
+  color:rgba(255,255,255,.88)!important;
+}
+
 </style></head><body><div class="top-actions"><button type="button" id="exitGameBtn" class="exit-btn" aria-label="게임 종료">게임 종료 ✕</button></div><main id="app"></main>
 <script>
 const R=Math.random,rn=(a,b)=>a+R()*(b-a),cl=(v,a=0,b=100)=>Math.max(a,Math.min(b,v)),rd=Math.round,pk=a=>a[Math.floor(R()*a.length)];
@@ -233,7 +318,7 @@ const US_SCHOOLS=[
 const TY={early:'조숙형',normal:'보통형',late:'대기만성형',durable:'장수형'};
 const NT=[['아시안게임',2026,o=>cl((o-60)/70+.05,0,.75),1],['FIBA 월드컵',2027,o=>cl((o-62)/80,0,.4),0],['올림픽',2028,o=>cl((o-84)/60,0,.35),2],['FIBA 아시아컵',2029,o=>cl((o-60)/75,0,.55),0]];
 const EV=[
-{t:'슈팅 전문 코치',d:'유명한 슈팅 코치가 특별 훈련을 제안한다.',a:['특훈을 받는다',{shoot:3,health:-8,trust:3}],b:['일정대로 간다',{health:4}]},
+{t:'슈팅 전문 코치',d:'유명한 슈팅 코치가 특별 훈련을 제안한다.',a:['특훈을 받는다',{shoot:3,health:-8,trust:3}],b:['일정대로 간다',{shoot:1,health:4}]},
 {t:'복싱 크로스 트레이닝',d:'트레이너가 복싱으로 몸싸움을 키우자고 한다.',a:['도전한다',{phy:3,def:1,health:-10},{health:-15,risk:.06},.7],b:['하지 않는다',{trust:1}]},
 {t:'반대 손 훈련',d:'코치가 약한 손으로 마무리하는 훈련을 권한다.',a:['도전한다',{fin:3,play:1,health:-6}],b:['강점을 더 키운다',{shoot:1,fin:1}]},
 {t:'유튜브 채널 제안',u:1,d:'구단 홍보팀이 개인 채널을 열자고 한다.',a:['개설한다',{fame:6,trust:-5}],b:['거절한다',{trust:3}]},
@@ -263,7 +348,35 @@ const EV=[
 {t:'역할 변화의 신호',c:()=>G.age>=30&&['KBL','NBA','GL'].includes(G.lv)&&G.last&&G.last.min<20,d:'젊은 선수에게 기회가 늘면서 출전 시간이 줄었다. 경험을 살려 새로운 역할을 찾아야 한다.',a:['수비와 리더십에 집중한다',{def:2,trust:3}],b:['주전 자리를 되찾기 위해 강하게 훈련한다',{shoot:1,phy:1,health:-6}]},
 {t:'젊은 선수 멘토링',c:()=>G.age>=30&&['KBL','NBA','GL'].includes(G.lv)&&G.trust>=35,d:'코치가 젊은 선수의 적응을 도와달라고 부탁했다. 팀 내 리더십을 보여줄 기회다.',a:['훈련을 함께한다',{trust:5,play:1}],b:['내 훈련 루틴을 우선한다',{shoot:1,health:2}]},
 {t:'은퇴 이후를 생각하다',c:()=>G.age>=34&&['KBL','NBA','GL'].includes(G.lv),d:'시즌이 길어질수록 코트 밖의 삶도 생각하게 된다. 당장 은퇴할 필요는 없지만 다음 단계를 준비할 수 있다.',a:['지도자·코치 과정을 알아본다',{trust:3,fame:1}],b:['선수 생활에 집중한다',{play:1,health:-2}]},
-{t:'지도자 전향 제안',c:()=>G.age>=35&&['KBL','NBA','GL'].includes(G.lv)&&G.fame>=18,d:'구단 관계자가 은퇴 후 코치 역할에 관심이 있는지 조심스럽게 물어본다. 아직 정식 계약 제안은 아니다.',a:['은퇴 후 진로 상담을 한다',{trust:4,fame:2}],b:['선수로 더 뛰겠다고 말한다',{play:1,trust:1}]}];
+{t:'지도자 전향 제안',c:()=>G.age>=35&&['KBL','NBA','GL'].includes(G.lv)&&G.fame>=18,d:'구단 관계자가 은퇴 후 코치 역할에 관심이 있는지 조심스럽게 물어본다. 아직 정식 계약 제안은 아니다.',a:['은퇴 후 진로 상담을 한다',{trust:4,fame:2}],b:['선수로 더 뛰겠다고 말한다',{play:1,trust:1}]},
+{t:'경기 중 작전 충돌',c:()=>['UNIV','NCAA','KBL','NBA','GL'].includes(G.lv),d:'중요한 경기 막판, 동료가 감독의 작전과 다른 선택을 했다. 코트 위에서 의견이 엇갈린다.',a:['팀원에게 맞춰 빠르게 수습한다',{trust:3,play:1}],b:['코트에서 강하게 항의한다',{trust:-5,fame:1}]},
+{t:'라커룸 리더십',c:()=>G.trust>=35&&['UNIV','NCAA','KBL','NBA','GL'].includes(G.lv),d:'연패가 이어지며 라커룸 분위기가 가라앉았다. 동료들이 먼저 말을 꺼내주길 기다리는 눈치다.',a:['선수들을 모아 대화를 나눈다',{trust:5,health:2}],b:['각자 경기력으로 보여주자고 한다',{play:1,trust:-1}]},
+{t:'팀 동료와 절친이 되다',c:()=>['UNIV','NCAA','KBL','NBA','GL'].includes(G.lv),d:'훈련과 원정 생활을 함께한 동료와 가까워졌다. 코트 밖에서도 서로 의지하는 사이가 됐다.',a:['함께 시간을 보낸다',{trust:4,health:3}],b:['개인 루틴을 지킨다',{shoot:1}]},
+{t:'주전 경쟁자의 견제',c:()=>['UNIV','NCAA','KBL','NBA','GL'].includes(G.lv)&&G.last&&G.last.min>=15,d:'같은 포지션의 경쟁자가 인터뷰에서 주전 자리는 실력으로 따내겠다고 말했다.',a:['훈련 강도를 높인다',{phy:1,play:1,health:-5}],b:['경쟁자와 대화한다',{trust:3,def:1}]},
+{t:'연인과의 기념일',c:()=>G.age>=18&&['UNIV','NCAA','KBL','NBA','GL'].includes(G.lv),d:'시즌 중 중요한 기념일이 다가왔다. 연인은 바쁜 일정을 이해하지만 함께 시간을 보내길 바란다.',a:['하루 시간을 내 함께한다',{health:5,trust:1}],b:['경기 준비를 우선한다',{play:1,health:-3}]},
+{t:'연인과 장거리 연애',c:()=>G.age>=18&&['NCAA','NBA','GL'].includes(G.lv),d:'원정과 훈련 일정 때문에 연인과 보내는 시간이 줄었다. 서로의 생활을 이해하려는 노력이 필요하다.',a:['솔직하게 일정을 공유한다',{health:3,trust:2}],b:['당분간 농구에 집중한다고 말한다',{play:1,health:-4}]},
+{t:'연인과의 갈등',c:()=>G.age>=18&&G.fame>=8&&['UNIV','NCAA','KBL','NBA','GL'].includes(G.lv),d:'중요한 경기와 미디어 일정이 겹치며 약속을 지키지 못했다. 연인이 서운함을 표현한다.',a:['먼저 사과하고 시간을 만든다',{health:4,trust:2}],b:['서로의 상황을 이해해달라고 말한다',{play:1,health:-2}]},
+{t:'열애설 보도',c:()=>G.age>=19&&G.fame>=18&&['KBL','NBA','GL'].includes(G.lv),d:'파파라치 사진이 온라인에 퍼지며 사생활 관련 기사가 나왔다.',a:['사생활이라며 짧게 선을 긋는다',{fame:2,trust:1}],b:['팬들에게 직접 상황을 설명한다',{fame:3,health:-3}]},
+{t:'논란이 된 인터뷰',c:()=>G.fame>=10&&['UNIV','NCAA','KBL','NBA','GL'].includes(G.lv),d:'경기 후 인터뷰에서 한 발언이 맥락과 다르게 편집돼 논란이 되고 있다.',a:['정정 인터뷰를 진행한다',{trust:3,fame:-1}],b:['대응하지 않고 경기로 답한다',{play:1,trust:-2}]},
+{t:'스포츠 다큐멘터리 출연',c:()=>G.fame>=20&&['KBL','NBA','GL'].includes(G.lv),d:'스포츠 스트리밍 플랫폼에서 선수의 성장 과정을 다큐멘터리로 제작하고 싶다고 연락했다.',a:['출연해 진솔하게 이야기한다',{fame:6,health:-2}],b:['훈련과 경기에 집중한다',{trust:2}]},
+{t:'브랜드 광고 촬영',c:()=>G.fame>=15&&['KBL','NBA','GL'].includes(G.lv),d:'스포츠 브랜드가 광고 모델을 제안했다. 촬영 일정은 훈련 시간과 겹친다.',a:['촬영에 참여한다',{fame:5,health:-2}],b:['비시즌으로 일정을 미룬다',{trust:2}]},
+{t:'SNS 악성 댓글',c:()=>G.fame>=8,d:'부진한 경기 이후 SNS에 악성 댓글이 쏟아졌다. 주변에서는 반응하지 말라고 조언한다.',a:['SNS를 잠시 멀리한다',{health:5}],b:['다음 경기에서 보여주겠다고 글을 올린다',{fame:2,trust:1}]},
+{t:'팬의 따뜻한 편지',c:()=>G.fame>=3,d:'어려운 시기를 버티고 있다는 팬의 손편지를 받았다. 작은 응원이 큰 힘이 된다.',a:['직접 답장을 보낸다',{health:5,fame:1}],b:['훈련에 집중하며 마음에 새긴다',{trust:2,play:1}]},
+{t:'올스타 주말 초청 행사',c:()=>G.fame>=20&&['NBA','KBL'].includes(G.lv),d:'리그 행사와 미디어 인터뷰가 몰려 있다. 팬들과 교류할 좋은 기회지만 휴식 시간은 줄어든다.',a:['행사에 적극 참여한다',{fame:5,health:-3}],b:['회복을 위해 일부 일정을 조정한다',{health:4,trust:1}]},
+{t:'감독의 전술 변경',c:()=>['UNIV','NCAA','KBL','NBA','GL'].includes(G.lv),d:'감독이 팀 전술을 바꾸며 선수에게 새로운 역할을 맡기려 한다.',a:['새 역할을 빠르게 익힌다',{play:2,def:1,trust:2}],b:['기존 강점을 살려달라고 요청한다',{shoot:1,trust:-1}]},
+{t:'팀 동료의 부상',c:()=>['UNIV','NCAA','KBL','NBA','GL'].includes(G.lv),d:'함께 뛰던 주전 동료가 부상으로 이탈했다. 팀은 빈자리를 메울 선수를 찾고 있다.',a:['더 많은 역할을 맡는다',{play:1,phy:1,trust:3,health:-4}],b:['동료의 회복을 돕고 기존 역할에 집중한다',{trust:4,health:2}]},
+{t:'플레이오프 압박',c:()=>['KBL','NBA','GL'].includes(G.lv)&&G.last&&G.last.gp>=G.last.g*.65,d:'플레이오프를 앞두고 미디어가 우승 가능성과 선수의 활약을 집중 조명한다.',a:['압박을 즐기며 준비한다',{play:2,fame:2,health:-3}],b:['평소 루틴을 유지한다',{health:3,trust:1}]},
+{t:'국가대표 차출',c:()=>G.age>=18&&ovr()>=60&&['KBL','NBA','GL','NCAA'].includes(G.lv),d:'국가대표팀 예비 명단에 이름이 올랐다. 소집에 응하면 영광이지만 휴식 기간이 줄어든다.',a:['대표팀에 합류한다',{fame:4,phy:1,health:-5}],b:['몸 상태 회복을 우선한다',{health:6,trust:-1}]},
+{t:'개인 트레이너의 제안',c:()=>G.age>=18&&['KBL','NBA','GL','NCAA','UNIV'].includes(G.lv),d:'오프시즌 전문 트레이너가 약점 보완 프로그램을 제안했다.',a:['약점 중심 프로그램을 진행한다',{phy:1,def:1,health:-4}],b:['기술 훈련에 집중한다',{shoot:1,play:1}]},
+{t:'팀 회식과 친목',c:()=>['UNIV','NCAA','KBL','NBA','GL'].includes(G.lv),d:'동료들이 팀 분위기를 다지기 위해 저녁 식사를 제안했다. 다음 날 훈련은 오전이다.',a:['참석해 동료들과 어울린다',{trust:4,health:2}],b:['일찍 귀가해 회복한다',{health:4}]},
+{t:'에이스와의 신경전',c:()=>['KBL','NBA','GL'].includes(G.lv)&&G.last&&G.last.ppg>=12,d:'팀의 또 다른 에이스와 공격 기회 배분을 두고 미묘한 신경전이 생겼다.',a:['역할 분담을 먼저 제안한다',{trust:4,play:1}],b:['경쟁심을 드러내며 맞선다',{fame:1,trust:-4}]},
+{t:'픽앤롤 핸들링 집중 훈련',c:()=>G.pos==='H',d:'코치가 핸들러에게 픽앤롤 상황에서 수비를 읽고 패스와 돌파를 선택하는 훈련을 제안했다.',a:['볼 핸들링과 판단 훈련을 소화한다',{play:3,fin:1,health:-5}],b:['개인 득점 기술을 더 다듬는다',{fin:2,shoot:1,health:-3}]},
+{t:'압박 탈출 드리블 캠프',c:()=>G.pos==='H',d:'강한 압박을 받는 상황에서 공을 지키고 공격을 전개하는 특별 세션이 열린다.',a:['강도 높은 압박 훈련에 참가한다',{play:2,phy:1,health:-4}],b:['실전 영상 분석을 선택한다',{play:1,def:1,trust:2}]},
+{t:'캐치앤슛 3점 특훈',c:()=>G.pos==='W',d:'윙 전문 슈팅 코치가 코너와 45도에서 빠르게 올라가는 3점 슛 훈련을 제안한다.',a:['반복 슈팅 훈련을 진행한다',{shoot:3,health:-5}],b:['드리블 풀업까지 함께 연습한다',{shoot:2,fin:1,health:-4}]},
+{t:'윙 수비 풋워크 훈련',c:()=>G.pos==='W',d:'상대 에이스를 막기 위해 사이드 스텝과 클로즈아웃을 집중적으로 훈련할 기회가 생겼다.',a:['수비 전문 세션에 참가한다',{def:3,phy:1,health:-5}],b:['공격 밸런스를 유지한다',{shoot:1,fin:1,health:2}]},
+{t:'스크린 앤 롤 마스터 클래스',c:()=>G.pos==='B',d:'빅맨 코치가 스크린 각도와 타이밍, 롤인 이후 마무리 동작을 집중적으로 지도한다.',a:['스크린과 롤 기술을 연마한다',{play:2,fin:2,health:-5}],b:['포스트업 기술을 보완한다',{fin:2,reb:1,health:-3}]},
+{t:'림 프로텍팅과 박스아웃 훈련',c:()=>G.pos==='B',d:'골밑 존재감을 키우기 위해 블록 타이밍과 리바운드 위치 선정 훈련을 제안받았다.',a:['수비와 리바운드에 집중한다',{def:2,reb:3,health:-5}],b:['기동력과 체력 훈련을 선택한다',{phy:2,def:1,health:-3}]}
+];
 // 이벤트 단계별 허용표: HS=고등학교, COLLEGE=대학, PRO=프로, VETERAN=30세 이상 프로 베테랑, MIL=군 복무.
 const EVENT_STAGE_RULES={
 '슈팅 전문 코치':['HS','COLLEGE','PRO','VETERAN','MIL'],
@@ -296,7 +409,34 @@ const EVENT_STAGE_RULES={
 '역할 변화의 신호':['VETERAN'],
 '젊은 선수 멘토링':['VETERAN'],
 '은퇴 이후를 생각하다':['VETERAN'],
-'지도자 전향 제안':['VETERAN']
+'지도자 전향 제안':['VETERAN'],
+'경기 중 작전 충돌':['COLLEGE','PRO','VETERAN'],
+'라커룸 리더십':['COLLEGE','PRO','VETERAN'],
+'팀 동료와 절친이 되다':['COLLEGE','PRO','VETERAN'],
+'주전 경쟁자의 견제':['COLLEGE','PRO','VETERAN'],
+'연인과의 기념일':['COLLEGE','PRO','VETERAN'],
+'연인과 장거리 연애':['COLLEGE','PRO','VETERAN'],
+'연인과의 갈등':['COLLEGE','PRO','VETERAN'],
+'열애설 보도':['PRO','VETERAN'],
+'논란이 된 인터뷰':['COLLEGE','PRO','VETERAN'],
+'스포츠 다큐멘터리 출연':['PRO','VETERAN'],
+'브랜드 광고 촬영':['PRO','VETERAN'],
+'SNS 악성 댓글':['COLLEGE','PRO','VETERAN'],
+'팬의 따뜻한 편지':['HS','COLLEGE','PRO','VETERAN','MIL'],
+'올스타 주말 초청 행사':['PRO','VETERAN'],
+'감독의 전술 변경':['COLLEGE','PRO','VETERAN'],
+'팀 동료의 부상':['COLLEGE','PRO','VETERAN'],
+'플레이오프 압박':['PRO','VETERAN'],
+'국가대표 차출':['COLLEGE','PRO','VETERAN'],
+'개인 트레이너의 제안':['COLLEGE','PRO','VETERAN'],
+'팀 회식과 친목':['COLLEGE','PRO','VETERAN'],
+'에이스와의 신경전':['PRO','VETERAN'],
+'픽앤롤 핸들링 집중 훈련':['HS','COLLEGE','PRO','VETERAN','MIL'],
+'압박 탈출 드리블 캠프':['HS','COLLEGE','PRO','VETERAN','MIL'],
+'캐치앤슛 3점 특훈':['HS','COLLEGE','PRO','VETERAN','MIL'],
+'윙 수비 풋워크 훈련':['HS','COLLEGE','PRO','VETERAN','MIL'],
+'스크린 앤 롤 마스터 클래스':['HS','COLLEGE','PRO','VETERAN','MIL'],
+'림 프로텍팅과 박스아웃 훈련':['HS','COLLEGE','PRO','VETERAN','MIL']
 };
 function careerStage(){if(G.lv==='HS')return 'HS';if(['UNIV','NCAA'].includes(G.lv))return 'COLLEGE';if(G.lv==='MIL')return 'MIL';if(['KBL','NBA','GL'].includes(G.lv))return G.age>=30?'VETERAN':'PRO';return 'HS'}
 function eventAllowedByStage(e){const allowed=EVENT_STAGE_RULES[e.t];return !!allowed&&allowed.includes(careerStage())}
@@ -312,20 +452,93 @@ function readSlots(){
   try{localStorage.setItem(SLOT_KEY,JSON.stringify(slots))}catch(e){}
   return slots;
 }
-function migrateSaveData(g){
+const MOMENT_QUEUE_STATUSES = ['PENDING','DISPLAYING','COMPLETED','SKIPPED'];
+function initCareerMomentsData(g){
   if(!g||typeof g!=='object')return g;
-  g.staff = g.staff || {shootingCoach:false,playmakingCoach:false,defenseCoach:false,trainer:false,agent:false};
-  g.economyLog = g.economyLog || []; g.injury = g.injury || {gamesOut:0,permanentLoss:0};
-  g.hist = g.hist || []; g.aw = g.aw || {}; g.s = g.s || {};
-  for(const k of K) if(!Number.isFinite(g.s[k]))g.s[k]=40;
+  if(!Array.isArray(g.moments))g.moments=[];
+  if(!g.momentFlags||typeof g.momentFlags!=='object'||Array.isArray(g.momentFlags))g.momentFlags={};
+  if(!Array.isArray(g.momentQueue))g.momentQueue=[];
+  if(!Number.isFinite(g.momentVersion)||g.momentVersion<1)g.momentVersion=1;
+
+  // 기존 하이라이트를 기준으로 일회성 플래그를 복구한다.
+  for(const m of g.moments){
+    if(!m||typeof m!=='object'||!m.momentId||!m.eventId)continue;
+    const flag=g.momentFlags[m.momentId];
+    if(flag&&typeof flag==='object'){
+      flag.completed=true;
+      if(!flag.eventId)flag.eventId=m.eventId;
+    }
+  }
+
+  const knownIds=new Set(g.moments.filter(m=>m&&m.eventId).map(m=>m.eventId));
+  const seenQueue=new Set();
+  g.momentQueue=g.momentQueue.filter(q=>q&&typeof q==='object'&&knownIds.has(q.eventId)&&!seenQueue.has(q.eventId)&&seenQueue.add(q.eventId));
+  for(const q of g.momentQueue){
+    if(!MOMENT_QUEUE_STATUSES.includes(q.status))q.status='PENDING';
+    if(!Number.isFinite(q.priority))q.priority=50;
+    if(!Number.isFinite(q.createdAt))q.createdAt=Date.now();
+    if(q.status==='DISPLAYING')q.status='PENDING'; // 비정상 종료 후 다시 표시 가능하도록 복구
+    if(q.status==='COMPLETED'||q.status==='SKIPPED'){
+      q.displayedAt=q.displayedAt||q.createdAt;
+      q.completedAt=q.completedAt||q.displayedAt;
+    }
+    const linkedMoment=g.moments.find(m=>m&&m.eventId===q.eventId);
+    if(linkedMoment)linkedMoment.status=q.status;
+  }
+  // 기록은 있지만 대기열 등록이 누락된 이벤트는 안전하게 다시 대기시킨다.
+  for(const m of g.moments){
+    if(!m||!m.eventId||seenQueue.has(m.eventId))continue;
+    const status=MOMENT_QUEUE_STATUSES.includes(m.status)?m.status:'PENDING';
+    g.momentQueue.push({eventId:m.eventId,priority:Number.isFinite(m.priority)?m.priority:50,status:status==='DISPLAYING'?'PENDING':status,createdAt:Number.isFinite(m.createdAt)?m.createdAt:Date.now(),displayedAt:m.displayedAt||null,completedAt:m.completedAt||null});
+    seenQueue.add(m.eventId);
+  }
   return g;
 }
-function sv(){try{if(!G)return;localStorage.setItem(SK,JSON.stringify(G));}catch(e){console.warn('저장 실패',e)}}
+function migrateSaveData(g){
+  if(!g||typeof g!=='object')return g;
+  g.injury = g.injury || {gamesOut:0,permanentLoss:0};
+  g.hist = g.hist || []; g.aw = g.aw || {}; g.s = g.s || {};
+  if (!Array.isArray(g.seasons)) g.seasons = [];
+  if (!g.gameLogVersion) g.gameLogVersion = 1;
+  for(const k of K) if(!Number.isFinite(g.s[k]))g.s[k]=40;
+  return initCareerMomentsData(g);
+}
+function registerCareerMoment(data, options={}){
+  if(!G||!data||!data.momentId)return null;
+  const momentId=String(data.momentId), oneTime=options.oneTime===true;
+  const existingFlag=G.momentFlags[momentId];
+  if(oneTime&&existingFlag&&existingFlag.completed)return G.moments.find(m=>m.eventId===existingFlag.eventId)||null;
+  const eventId=String(data.eventId||`${momentId}_${Date.now()}_${Math.random().toString(36).slice(2,8)}`);
+  if(G.moments.some(m=>m&&m.eventId===eventId))return G.moments.find(m=>m.eventId===eventId)||null;
+  const now=Date.now();
+  const moment={eventId,momentId,category:data.category||'UNDERDOG',importance:Number.isFinite(data.importance)?data.importance:2,title:String(data.title||momentId),description:String(data.description||''),age:Number.isFinite(data.age)?data.age:G.age,year:Number.isFinite(data.year)?data.year:G.yr,league:String(data.league||G.lv||''),seasonId:data.seasonId||null,gameId:data.gameId||null,payload:data.payload&&typeof data.payload==='object'?JSON.parse(JSON.stringify(data.payload)):{},status:'PENDING',createdAt:now,priority:Number.isFinite(data.priority)?data.priority:(Number.isFinite(data.importance)?data.importance*20:40)};
+  G.moments.push(moment);
+  G.momentQueue.push({eventId,priority:moment.priority,status:'PENDING',createdAt:now,displayedAt:null,completedAt:null});
+  if(oneTime)G.momentFlags[momentId]={completed:true,eventId};
+  sv();
+  return moment;
+}
+function setCareerMomentStatus(eventId,status){
+  if(!G||!MOMENT_QUEUE_STATUSES.includes(status))return false;
+  const q=G.momentQueue.find(x=>x&&x.eventId===eventId);
+  const m=G.moments.find(x=>x&&x.eventId===eventId);
+  if(!q||!m)return false;
+  const now=Date.now();q.status=status;m.status=status;
+  if(status==='DISPLAYING')q.displayedAt=now;
+  if(status==='COMPLETED'||status==='SKIPPED')q.completedAt=now;
+  sv();return true;
+}
+function getNextCareerMoment(){
+  if(!G)return null;
+  const q=G.momentQueue.filter(x=>x&&x.status==='PENDING').sort((a,b)=>(b.priority-a.priority)||(a.createdAt-b.createdAt))[0];
+  return q?G.moments.find(m=>m&&m.eventId===q.eventId)||null:null;
+}
+function sv(){try{if(!G)return;G=migrateSaveData(G);localStorage.setItem(SK,JSON.stringify(G));}catch(e){console.warn('저장 실패',e)}}
 function ld(){try{const direct=JSON.parse(localStorage.getItem(SK)||'null');if(direct)return migrateSaveData(direct);const slots=readSlots();const legacy=slots[activeSaveSlot]||slots[1]||slots[2]||slots[3]||null;if(legacy){const migrated=migrateSaveData(legacy);localStorage.setItem(SK,JSON.stringify(migrated));return migrated;}return null}catch(e){return null}}
 function clr(){try{const slots=readSlots();slots[activeSaveSlot]=null;localStorage.setItem(SLOT_KEY,JSON.stringify(slots));localStorage.removeItem(SK)}catch(e){}} 
-function saveToSlot(slot){if(![1,2,3].includes(Number(slot))||!G)return;const slots=readSlots();if(slots[slot]&&!confirm(`슬롯 ${slot}의 기존 커리어를 덮어쓸까요?`))return;slots[slot]=JSON.parse(JSON.stringify(G));localStorage.setItem(SLOT_KEY,JSON.stringify(slots));activeSaveSlot=Number(slot);localStorage.setItem(SK,JSON.stringify(G));G.note=`커리어를 슬롯 ${slot}에 저장했습니다.`;render()}
+function saveToSlot(slot){if(![1,2,3].includes(Number(slot))||!G)return;G=migrateSaveData(G);const slots=readSlots();if(slots[slot]&&!confirm(`슬롯 ${slot}의 기존 커리어를 덮어쓸까요?`))return;slots[slot]=JSON.parse(JSON.stringify(G));localStorage.setItem(SLOT_KEY,JSON.stringify(slots));activeSaveSlot=Number(slot);localStorage.setItem(SK,JSON.stringify(G));G.note=`커리어를 슬롯 ${slot}에 저장했습니다.`;render()}
 function loadFromSlot(slot){const slots=readSlots();if(!slots[slot]){G&&(G.note=`슬롯 ${slot}은 비어 있습니다.`);render();return}activeSaveSlot=Number(slot);localStorage.setItem('zeroToMvpActiveSlot',String(slot));G=migrateSaveData(JSON.parse(JSON.stringify(slots[slot])));sv();render()}
-function exportSave(){if(!G){alert('내보낼 커리어가 없습니다.');return}const data={format:'ZERO_TO_MVP_SAVE',version:1,exportedAt:new Date().toISOString(),game:G};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`zero-to-mvp-slot${activeSaveSlot}-${String(G.name||'career').replace(/[^\w가-힣-]/g,'_')}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+function exportSave(){if(!G){alert('내보낼 커리어가 없습니다.');return}G=migrateSaveData(G);const data={format:'ZERO_TO_MVP_SAVE',version:1,exportedAt:new Date().toISOString(),game:G};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`zero-to-mvp-slot${activeSaveSlot}-${String(G.name||'career').replace(/[^\w가-힣-]/g,'_')}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 function importSaveFile(file){if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const data=JSON.parse(reader.result);const g=data.format==='ZERO_TO_MVP_SAVE'?data.game:data;if(!g||!g.s||!Array.isArray(g.hist)||!Number.isFinite(g.age)||!g.lv||!LV[g.lv])throw Error('저장 파일 구조 오류');for(const k of K)if(!Number.isFinite(g.s[k])||g.s[k]<0||g.s[k]>100)throw Error('능력치 데이터 오류');G=migrateSaveData(g);sv();render();alert('커리어를 불러왔습니다.')}catch(e){alert('유효하지 않은 ZERO TO MVP 저장 파일입니다.');console.error(e)}};reader.readAsText(file)}
 const ovrOf=(s,p)=>rd(K.reduce((a,k)=>a+s[k]*POS[p].w[k],0)),ovr=()=>ovrOf(G.s,G.pos);
 // NBA 2K 스타일을 참고한 게임 내 등급 구간(공식 NBA 2K 산식 복제는 아님)
@@ -375,7 +588,6 @@ function traitEffects(s){
 }
 
 
-const sal=()=>{const o=ovr();return{HS:0,UNIV:0,NCAA:0,KBL:.8+Math.max(0,o-50)*.12,GL:.4,MIL:.2,NBA:6+Math.pow(Math.max(0,o-60),2)*.45}[G.lv]};
 const CAND_ARCHETYPES={
  H:[
   {id:'floor_general',name:'공격 조율형',base:{shoot:43,fin:42,play:62,def:34,reb:20,phy:39}},
@@ -414,7 +626,7 @@ function cand(p,arch){
  return{s:{shoot:40,fin:40,play:40,def:40,reb:40,phy:40},h:rd(rn(...POS[p].h)),arch:archetype.name};
 }
 function newC(){const pool=[...(CAND_ARCHETYPES[C.pos]||CAND_ARCHETYPES.W)].sort(()=>Math.random()-.5);C.cs=pool.map(a=>cand(C.pos,a));C.sel=-1}
-function begin(){if(C.sel<0){C.err=1;render();return}const c=C.cs[C.sel];G={name:C.name.trim()||'내 선수',no:C.no||7,pos:C.pos,h:c.h,s:{...c.s},pot:rd(66+Math.pow(R(),1.6)*33),type:pk(['early','normal','normal','late','durable']),age:16,yr:2026,lv:'HS',uy:0,team:rn(42,58),tn:C.st==='US'?C.usSchool:C.krSchool,us:C.st==='US',trust:C.st==='US'?20:30,fame:C.st==='US'?3:0,health:90,focus:[...C.foc],aw:{},hist:[],money:0,staff:{shootingCoach:false,playmakingCoach:false,defenseCoach:false,trainer:false,agent:false},economyLog:[],injury:{gamesOut:0,permanentLoss:0},cy:0,exempt:false,served:false,risk:0,maxO:45,fl:{},note:'',evi:-1};C.err=0;G.evi=R()<.7?pickEv():-1;G.phase=G.evi>=0?'turn':'hub';render()}
+function begin(){if(C.sel<0){C.err=1;render();return}const c=C.cs[C.sel];G={name:C.name.trim()||'내 선수',no:C.no||7,pos:C.pos,h:c.h,s:{...c.s},pot:rd(66+Math.pow(R(),1.6)*33),type:pk(['early','normal','normal','late','durable']),age:16,yr:2026,lv:'HS',uy:0,team:rn(42,58),tn:C.st==='US'?C.usSchool:C.krSchool,us:C.st==='US',trust:C.st==='US'?20:30,fame:C.st==='US'?3:0,health:90,focus:[...C.foc],aw:{},hist:[],seasons:[],gameLogVersion:1,moments:[],momentFlags:{},momentQueue:[],momentVersion:1,injury:{gamesOut:0,permanentLoss:0},cy:0,exempt:false,served:false,risk:0,maxO:45,fl:{},note:'',evi:-1};C.err=0;G.evi=R()<.7?pickEv():-1;G.phase=G.evi>=0?'turn':'hub';render()}
 function pickEv(){G.seen=G.seen||[];const petIdx=EV.findIndex(e=>e.t==='반려견 입양');
 // 반려견 입양은 커리어 중 한 번만, 성인 프로 선수에게 아주 낮은 확률로 등장한다.
 if(petIdx>=0&&!G.petAdoptionEventSeen&&G.age>=20&&['KBL','NBA','GL'].includes(G.lv)&&R()<.03){G.petAdoptionEventSeen=true;G.seen.push(petIdx);return petIdx}
@@ -440,82 +652,206 @@ function join(l,t){
   G.team=t||rn(42,72);
   G.cy=['KBL','NBA','GL'].includes(l)?rd(rn(2,4)):0;
 }
+function militaryName(reg=G?.reg){return reg?'현역':'상무'}
 function mil(r){G.prevLv=G.lv;G.prevTn=G.tn;G.prevTeam=G.team;G.prevCy=G.cy;G.lv='MIL';G.ms=2;G.cy=0;G.tn='상무';G.team=58;G.served=true;G.reg=r;G.uy=0;G.note=r?'현역으로 입대했다. 2시즌 동안 훈련이 제한된다.':'상무에 선발됐다. 2시즌 복무한다.'}
 function nd(){const sc=ovr()+G.fame*.15+(G.us?3:0)+(G.pos==='B'&&G.h>=205?2:0),p=rd(cl(60-(sc-68)*1.5,1,75));if(p<=60){join('NBA',cl(rd(38+p*.9+rn(-5,5)),35,80));G.cy=p<=30?rd(rn(3,4)):rd(rn(2,3));G.note=`NBA 드래프트 ${p}순위 지명, ${G.tn} 입단 (${p<=30?'1':'2'}라운드)`}else if(sc>=58){join('GL');G.note='언드래프티. G리그 계약/트라이아웃 경로로 NBA 진출을 노린다. 투웨이 계약은 별도 평가가 필요하다.'}else{join('KBL');G.note='언드래프티. KBL로 귀국해 뛴다.'}}
 function nt([i,j]){const n=NT[i],p=n[2](ovr());if(!j){G.trust=cl(G.trust+4);G.note=`${n[0]} 소집을 고사하고 소속팀에 집중했다.`;return}const r=R(),m=r<p*.4?'금메달':r<p*.7?'은메달':r<p?'동메달':'탈락';G.health=cl(G.health-8);G.fame=cl(G.fame+(m==='금메달'?10:m==='탈락'?0:5));let ex='';if(!G.served&&!G.exempt&&((n[3]===1&&m==='금메달')||(n[3]===2&&m!=='탈락'))){ex=' 병역 특례를 받았다!';G.exempt=true}G.note=`${n[0]} 결과: ${m}.${ex}`}
-const ECONOMY_STAFF={shootingCoach:{name:'슈팅 코치',cost:.5,stat:'shoot',desc:'슛 훈련 성장 +25%'},playmakingCoach:{name:'플레이메이킹 코치',cost:.5,stat:'play',desc:'플레이메이킹 훈련 성장 +25%'},defenseCoach:{name:'수비 코치',cost:.5,stat:'def',desc:'수비 훈련 성장 +25%'},trainer:{name:'전담 트레이너',cost:1,desc:'부상 위험 감소 및 회복 보조'},agent:{name:'퍼스널 에이전트',cost:1.5,desc:'명성 증가 효과 +20%'}};
-function buyStaff(id){const x=ECONOMY_STAFF[id];if(!G||!x)return;if(G.staff?.[id]){G.note='이미 고용한 스태프입니다.';render();return}if(G.money<x.cost){G.note='보유 자금이 부족합니다.';render();return}G.money=Math.round((G.money-x.cost)*100)/100;G.staff=G.staff||{};G.staff[id]=true;G.economyLog.push({year:G.yr,type:'staff',name:x.name,amount:-x.cost});G.note=`${x.name}을(를) 고용했습니다.`;sv();render()}
-function economyPanel(){const available=Object.entries(ECONOMY_STAFF).filter(([id])=>!G.staff?.[id]);return `<div class="card"><h3>💰 선수 자산 · ${Number(G.money||0).toFixed(1)}억</h3><p>스태프는 고용비와 매 시즌 유지비가 들며, 자금이 부족하면 효과가 일시 중단됩니다.</p>${available.length?`<div class="economy-grid">${available.map(([id,x])=>`<button onclick="buyStaff('${id}')">${x.name}<small>${x.cost}억 · ${x.desc}</small></button>`).join('')}</div>`:'<p class="good">모든 스태프를 고용했습니다.</p>'}<small>최근 지출: ${(G.economyLog||[]).slice(-3).map(x=>`${esc(x.name||x.type)} ${x.amount}억`).join(' · ')||'없음'}</small></div>`}
-function makeAdvancedStats({ppg,rpg,apg,min,shoot,fin,play,def,phy}){
- const fgTarget=cl(.36+shoot*.0025+fin*.0008,.34,.62),threeTarget=cl(.20+shoot*.0031,.18,.47),ftTarget=cl(.48+shoot*.0044,.45,.94);
- const threeRate=cl(.25+shoot*.0025,.22,.52);
- const fga=Math.max(1,+(ppg/Math.max(.5,2*fgTarget+threeRate*threeTarget+.18*ftTarget)).toFixed(1)),tpa=Math.max(.1,+(fga*threeRate).toFixed(1));
- const fgm=+(fga*fgTarget).toFixed(1),tpm=+(tpa*threeTarget).toFixed(1),fta=Math.max(.1,+((ppg-2*fgm-tpm)/Math.max(.45,ftTarget)).toFixed(1)),ftm=+(fta*ftTarget).toFixed(1);
- const stl=+(cl(.25+def*.012+play*.002,.2,2.4)).toFixed(1),blk=+(cl(.08+def*.006+phy*.009,.05,2.3)).toFixed(1),tov=+(cl(3.2-play*.018+apg*.05,.6,4.8)).toFixed(1);
- const ts=ppg/Math.max(1,2*(fga+.44*fta));
- // PER은 리그 평균 보정 전의 단순 대체 점수임을 명시한다.
- const perProxy=cl(8+ppg*.72+rpg*.7+apg*.9+stl*1.8+blk*1.7-tov*1.1,0,45);
- return {fgm,fga,fgPct:+(fgm/fga).toFixed(3),tpm,tpa,threePct:+(tpm/tpa).toFixed(3),ftm,fta,ftPct:+(ftm/fta).toFixed(3),stl,blk,tov,tsPct:+ts.toFixed(3),perProxy:+perProxy.toFixed(1)};
+function makeAdvancedStats({ppg=0,rpg=0,apg=0,min=0,shoot=50,fin=50,play=50,def=50,phy=50,totals=null}){
+ const t=totals||{};
+ const fgm=Number(t.fgMade)||0,fga=Number(t.fgAttempted)||0,tpm=Number(t.threeMade)||0,tpa=Number(t.threeAttempted)||0,ftm=Number(t.ftMade)||0,fta=Number(t.ftAttempted)||0;
+ const stl=Number(t.steals)!=null?Number(t.steals):0,blk=Number(t.blocks)!=null?Number(t.blocks):0,tov=Number(t.turnovers)!=null?Number(t.turnovers):0;
+ const fgPct=fga?fgm/fga:0,threePct=tpa?tpm/tpa:0,ftPct=fta?ftm/fta:0;
+ const tsDen=2*(fga+.44*fta),tsPct=tsDen?(Number(t.points)||0)/tsDen:0;
+ const perProxy=cl(8+ppg*.72+rpg*.7+apg*.9+(totals&&totals.gp?stl/totals.gp:0)*1.8+(totals&&totals.gp?blk/totals.gp:0)*1.7-(totals&&totals.gp?tov/totals.gp:0)*1.1,0,45);
+ return {fgm,fga,fgPct:+fgPct.toFixed(3),tpm,tpa,threePct:+threePct.toFixed(3),ftm,fta,ftPct:+ftPct.toFixed(3),stl:+(totals&&totals.gp?stl/totals.gp:0).toFixed(1),blk:+(totals&&totals.gp?blk/totals.gp:0).toFixed(1),tov:+(totals&&totals.gp?tov/totals.gp:0).toFixed(1),tsPct:+tsPct.toFixed(3),perProxy:+perProxy.toFixed(1)};
 }
 function pct(v){return Number.isFinite(v)?(v*100).toFixed(1)+'%':'—'}
-function play(){const L=LV[G.lv],N=L.n,o=ovr(),s=G.s,P=POS[G.pos],b=L.b+(G.us&&G.lv==='HS'?4:0),g=L.g,ro=b+(G.team-50)*.35;
-let min=cl(rd(12+(o-ro)*1.1+(G.trust-30)*.1+rn(-2,2)),0,G.lv==='NBA'?36:34),miss=0,inj='';const seasonStartStats={...s};
-if(G.age>=17&&R()<Math.max(.003,.012+G.risk*.15-(G.staff&&!G.staffSuspended&&G.staff.trainer?.005:0))){miss=g;inj='십자인대 파열, 시즌 아웃';s.phy=cl(s.phy-rd(rn(2,5)),10,99);s.fin=cl(s.fin-rd(rn(1,3)),10,99);G.health=40;min=0}
-else if(R()<.07+G.risk+(G.health<60?(60-G.health)/300:0)+(G.age>=30?.03:0)){miss=rd(g*(R()<.25?rn(.25,.6):rn(.05,.18)));inj=`부상으로 ${miss}경기 결장`}
-const gp=g-miss,me=min*gp/g,d=o-b;
-// 밸런스 수정: OVR 격차의 제곱 보너스는 고교에서 비현실적인 득점을 만들 수 있어 선형·상한 방식으로 제한한다.
-const performance=cl(1+d*.012,.72,1.28),up=cl(1+Math.max(0,d)*.012,1,1.25);
-const traitFx=traitEffects(s);
-const ppg=gp?+(min*.40*performance*P.pm*cl(1+(s.shoot-60)*.003,.85,1.12)*rn(.92,1.08)*(1+traitFx.ppg)).toFixed(1):0;
-const rpg=gp?+(min*Math.pow(s.reb/100,1.2)*.4*up*rn(.9,1.1)*(1+traitFx.rpg)).toFixed(1):0;
-const apg=gp?+(min*Math.pow(s.play/100,1.2)*.32*up*rn(.9,1.1)*(1+traitFx.apg)).toFixed(1):0;
-const te=G.team+(o-ro)*.5*(me/36)+traitFx.team,pct=1/(1+Math.exp(-(te-50)/13)),w=cl(rd(g*pct+rn(-.04,.04)*g),0,g),wp=w/g;
-const sc=ppg+.8*rpg+1.2*apg+30*(wp-.5),riv=Math.max(rn(43,51),rn(41,49),rn(39,47)),nba=G.lv==='NBA',kbl=G.lv==='KBL',aw=[];
-// 리그별 실제 수상 자격을 반영: KBL 주요 개인상/팀 선정은 27경기 이상,
-// NBA All-NBA/All-Defensive는 통상 65경기 기준(82경기 시즌)을 적용.
-const eligible=kbl?gp>=27:nba?gp>=65:gp>=g*.75;
-const add=(n,f)=>{if(!aw.includes(n)){aw.push(n);G.aw[n]=(G.aw[n]||0)+1;G.fame=cl(G.fame+f)}};
-if(eligible&&G.uy===0&&min>=18&&sc>rn(15,26))add(nba?'NBA 신인왕':N+' 신인상',6);
-if(eligible&&min>=22&&sc>=riv-14)add(nba?'NBA 올스타':N+' 올스타',nba?8:3);
-// 리그별 올팀: NBA는 1·2·3팀(각 5명), KBL은 포지션 구분 없는 베스트5.
-// 상대 선수들의 가상 시즌 평가점수와 비교해 선발되므로 매 시즌 결과가 달라짐.
-if(eligible&&min>=24){
-  const peerScores=Array.from({length:nba?35: kbl?25:25},()=>rn(22,62)+rn(-5,5)).sort((a,b)=>b-a);
-  const place=1+peerScores.filter(x=>x>sc).length;
-  if(nba&&place<=5)add('ALL-NBA FIRST TEAM',12);
-  else if(nba&&place<=10)add('ALL-NBA SECOND TEAM',9);
-  else if(nba&&place<=15)add('ALL-NBA THIRD TEAM',6);
-  else if(kbl&&place<=5)add('KBL 베스트5',5);
+const SCH_DEP={3:-3,2:0,1:3};
+const zeroBox=()=>({points:0,rebounds:0,assists:0,minutes:0,fgMade:0,fgAttempted:0,threeMade:0,threeAttempted:0,ftMade:0,ftAttempted:0,steals:0,blocks:0,turnovers:0});
+function generateOpponent(league,currentTeam){
+ const teams=Array.isArray(TN[league])?TN[league]:[];
+ const candidates=teams.filter(t=>t&&t!==currentTeam);
+ if(candidates.length)return pk(candidates);
+ // MIL에는 별도 TN.MIL이 없으므로 실제로 존재하지 않는 팀명을 만들어내지 않는다.
+ return league==='MIL'?'상대 팀 미정':(currentTeam||'상대 팀 미정');
 }
-// 수비 팀 선정은 수비 능력, 리바운드, 출전 시간, 팀 성적을 반영.
-const defScore=s.def*.55+s.reb*.12+min*.35+wp*12+(G.traits||[]).length;
-if(eligible&&min>=20){
-  const defPeers=Array.from({length:nba?35:kbl?25:25},()=>rn(45,94)).sort((a,b)=>b-a);
-  const defPlace=1+defPeers.filter(x=>x>defScore).length;
-  if(nba&&defPlace<=5)add('ALL-DEFENSIVE FIRST TEAM',10);
-  else if(nba&&defPlace<=10)add('ALL-DEFENSIVE SECOND TEAM',7);
-  else if(kbl&&defPlace<=5)add('KBL 수비 5걸',6);
+function leagueGameMinutes(league){return league==='NBA'||league==='KBL'||league==='GL'?48:league==='HS'?32:40}
+function simulatePlayerStats(context,gameContext){
+ const {s,pos,ovr:overall,trust,health,focus,traits}=context,P=POS[pos]||POS.H,traitFx=context.traitFx||{ppg:0,rpg:0,apg:0,team:0};
+ const minutes=cl(rd(context.baseMinutes+(s.phy-50)*.05+rn(-3.5,3.5)+(health<45?-2:health<65?-1:0)),0,Math.min(gameContext.gameMinutes,context.maxPlayerMinutes||gameContext.gameMinutes));
+ if(minutes<=0)return zeroBox();
+ const shoot=cl(s.shoot+overall*.08,10,110),fin=cl(s.fin+overall*.04,10,110),play=cl(s.play,10,110),def=cl(s.def,10,110),reb=cl(s.reb,10,110),phy=cl(s.phy,10,110);
+ const usage=gameContext.league==='NBA'?cl(.19+(overall-60)*.0030+(shoot-65)*.0010+(fin-65)*.00065+(pos==='H'?.012:pos==='B'?.004:0),.13,.43):cl(.17+(overall-50)*.0015+(shoot-50)*.0008+(fin-50)*.0005,.12,.34);
+ const fga=Math.max(0,rd(minutes*usage*(gameContext.league==='NBA'?1.02:.92)*rn(gameContext.league==='NBA'?.88:.82,gameContext.league==='NBA'?1.12:1.18)));
+ const threeShare=cl(.24+(shoot-50)*.003+(pos==='H'?.08:pos==='B'?-.08:0),.12,.58);
+ const threeAttempted=Math.min(fga,rd(fga*threeShare));
+ const twoAttempted=Math.max(0,fga-threeAttempted);
+ const threePct=cl(.285+(shoot-50)*.0032+traitFx.ppg*.18,.20,.49);
+ const twoPct=cl(.405+(fin-50)*.0022+(shoot-50)*.0008+traitFx.ppg*.12,.30,.68);
+ const threeMade=Math.min(threeAttempted,rd(threeAttempted*cl(rn(threePct-.13,threePct+.13),.05,.85)));
+ const twoMade=Math.min(twoAttempted,rd(twoAttempted*cl(rn(twoPct-.14,twoPct+.14),.05,.9)));
+ const fgMade=threeMade+twoMade;
+ const ftAttempted=rd(minutes*(.035+Math.max(0,fin-45)*.00075+traitFx.ppg*.12)*rn(.65,1.4));
+ const ftPct=cl(.62+(shoot-50)*.003+fin*.0007+traitFx.ppg*.08,.48,.94);
+ const ftMade=Math.min(ftAttempted,rd(ftAttempted*cl(rn(ftPct-.12,ftPct+.12),0,1)));
+ const points=2*fgMade+threeMade+ftMade;
+ const reboundRate=(.075+Math.max(0,reb-40)*.00105+(pos==='B'?.045:pos==='W'?.008:-.018)+Math.max(0,phy-55)*.00035)*(1+traitFx.rpg);
+ const rebounds=Math.max(0,rd(minutes*reboundRate*rn(.55,1.5)));
+ const assists=Math.max(0,rd(minutes*(.025+Math.max(0,play-40)*.00105+(pos==='H'?.045:pos==='W'?.012:0))*(1+traitFx.apg)*rn(.55,1.5)));
+ const steals=Math.max(0,rd(minutes*(.006+Math.max(0,def-40)*.00023)*rn(.45,1.7)));
+ const blocks=Math.max(0,rd(minutes*(.002+Math.max(0,def-45)*.00016+Math.max(0,phy-50)*.00008+(pos==='B'?.012:0))*rn(.4,1.8)));
+ const turnovers=Math.max(0,rd(minutes*(.018+Math.max(0,usage-.2)*.09-Math.max(0,play-50)*.00013)*(1-traitFx.apg*.5)*rn(.55,1.5)));
+ return {points,rebounds,assists,minutes,fgMade,fgAttempted:fga,threeMade,threeAttempted,ftMade,ftAttempted,steals,blocks,turnovers};
 }
-if(eligible&&nba&&min>=26&&s.def>=88&&rpg>=6&&R()<.35)add('NBA 올해의 수비수',8);
-const rivalScores=Array.from({length:30},()=>rn(15,40));
-const rank=nba&&eligible&&min>=26&&sc>=riv-10?1+rivalScores.filter(x=>x>sc).length:0;
-if(eligible&&min>=28&&sc>=riv&&wp>=.55&&(!nba||rank===1))add(nba?'NBA MVP':N+' MVP',nba?40:10);
-if(G.lv!=='MIL'&&R()<Math.pow(cl((wp-.55)/.4,0,.9),1.3)){add(N+' 우승',nba?15:6);if(ppg>=20&&min>=28&&gp>=g*.6)add(nba?'파이널 MVP':N+' 결승 MVP',nba?12:4)}
-if(ppg>=15)G.fame=cl(G.fame+(G.staff?.agent?1.2:1));
-if(!inj.startsWith('십자인대'))G.trust=cl(G.trust+(min>=25?6:min<10?-4:-1));G.health=cl(G.health-rd(min*.3)+22+(G.focus.includes('rest')?25:0));
-G.money+=sal();G.maxO=Math.max(G.maxO,o);G.risk=0;
-const advanced=makeAdvancedStats({ppg,rpg,apg,min,shoot:s.shoot,fin:s.fin,play:s.play,def:s.def,phy:s.phy});G.last={age:G.age,lv:G.lv,tn:G.tn,min,ppg,rpg,apg,w,g,gp,miss,inj,aw,rank,o,fr:rn(.94,1.06),traits:evaluateTraits(s),traitFx:{...traitFx},stats:advanced,startStats:seasonStartStats};G.hist.push(G.last);G.note='';G.phase='season';G.sg=0;render()}
-function staffGrowthMultiplier(stat){const map={shoot:'shootingCoach',play:'playmakingCoach',def:'defenseCoach'};return !G.staffSuspended&&map[stat]&&G.staff?.[map[stat]]?1.25:1}
+function simulateTeamScore(context,opponent,playerStats){
+ const league=context.league,base={HS:66,UNIV:72,NCAA:74,KBL:78,GL:108,MIL:72,NBA:112}[league]||75;
+ const home=context.homeAway==='home'?2.2:context.homeAway==='away'?-2.2:0;
+ const own=Number(context.teamPower)||50,opp=Number(context.opponentPower)||50;
+ const defense=(context.s.def-50)*.035+(context.s.phy-50)*.018+(context.traitFx?.team||0)*.7;
+ const offense=(context.ovr-50)*.06+(context.s.shoot-50)*.025+(context.s.fin-50)*.025+(context.s.play-50)*.015;
+ let opponentScore=rd(cl(base+(opp-own)*.42-home*.45-defense+rn(-15,15),42,160));
+ let teamScore=rd(cl(base+(own-opp)*.42+home+offense+rn(-15,15),42,160));
+ // 선수 득점은 팀 득점에 포함되며, 나머지는 동료 득점으로 처리한다.
+ teamScore=Math.max(teamScore,(playerStats.points||0)+rd(rn(8,22)));
+ if(teamScore===opponentScore)opponentScore+=R()<.5?1:-1;
+ if(opponentScore<0)opponentScore=0;
+ return {teamScore,opponentScore};
+}
+function validateGameResult(game){
+ const s=game&&game.stats;if(!s)return false;
+ const ints=['points','rebounds','assists','minutes','fgMade','fgAttempted','threeMade','threeAttempted','ftMade','ftAttempted','steals','blocks','turnovers'];
+ if(ints.some(k=>!Number.isFinite(s[k])||s[k]<0))return false;
+ if(s.fgMade>s.fgAttempted||s.threeMade>s.threeAttempted||s.threeMade>s.fgMade||s.threeAttempted>s.fgAttempted||s.ftMade>s.ftAttempted)return false;
+ if(s.points!==2*s.fgMade+s.threeMade+s.ftMade)return false;
+ if(game.result!==(game.teamScore>game.opponentScore?'W':'L'))return false;
+ if(game.teamScore===game.opponentScore)return false;
+ if(s.minutes===0&&ints.some(k=>k!=='minutes'&&s[k]!==0))return false;
+ return true;
+}
+function simulateGame(context,gameNumber){
+ const opponent=generateOpponent(context.league,context.team);
+ const homeAway=gameNumber%2===1?'home':'away';
+ const opponentPower=cl(50+rn(-13,13),30,75);
+ const gameContext={gameMinutes:context.gameMinutes,gameNumber};
+ const stats=context.missedGames.has(gameNumber)?zeroBox():simulatePlayerStats(context,{...gameContext,homeAway});
+ const scores=simulateTeamScore({...context,homeAway,opponentPower},opponent,stats);
+ const game={gameId:`${context.seasonId}-G${String(gameNumber).padStart(3,'0')}`,gameNumber,seasonYear:context.year,age:context.age,league:context.league,gameType:'regular',opponent,homeAway,result:scores.teamScore>scores.opponentScore?'W':'L',teamScore:scores.teamScore,opponentScore:scores.opponentScore,stats};
+ if(!validateGameResult(game))throw new Error(`경기 기록 정합성 오류: ${game.gameId}`);
+ return game;
+}
+function aggregateSeason(games){
+ const totals={games:games.length,gp:0,w:0,l:0,points:0,rebounds:0,assists:0,minutes:0,fgMade:0,fgAttempted:0,threeMade:0,threeAttempted:0,ftMade:0,ftAttempted:0,steals:0,blocks:0,turnovers:0};
+ for(const game of games){if(game.result==='W')totals.w++;else totals.l++;const s=game.stats||zeroBox();if(s.minutes>0)totals.gp++;for(const k of ['points','rebounds','assists','minutes','fgMade','fgAttempted','threeMade','threeAttempted','ftMade','ftAttempted','steals','blocks','turnovers'])totals[k]+=Number(s[k])||0;}
+ const avg=k=>totals.gp?+(totals[k]/totals.gp).toFixed(1):0;
+ const rate=(made,attempted)=>totals[attempted]?+(totals[made]/totals[attempted]).toFixed(3):0;
+ return {...totals,ppg:avg('points'),rpg:avg('rebounds'),apg:avg('assists'),min:avg('minutes'),stl:avg('steals'),blk:avg('blocks'),tov:avg('turnovers'),fgPct:rate('fgMade','fgAttempted'),threePct:rate('threeMade','threeAttempted'),ftPct:rate('ftMade','ftAttempted')};
+}
+// NBA 커리어 역할: 진출 자체보다 시즌 성과와 누적 경험에 따라 역할이 점진적으로 변한다.
+function nbaCareerContext(){
+ const nbaHist=(G.hist||[]).filter(h=>h&&h.lv==='NBA');
+ const prev=nbaHist.length?nbaHist[nbaHist.length-1]:null;
+ return {nbaSeasons:nbaHist.length+1,prev};
+}
+function nbaRoleLabel(min){return min>=34?'올스타 에이스':min>=28?'주전':min>=20?'핵심 로테이션':min>=12?'벤치 로테이션':'벤치·육성';}
+function nbaRoleMinutes(overall,trust,team,health,career){
+ const prev=career.prev;
+ const experience=Math.min(4.5,Math.max(0,career.nbaSeasons-1)*.55);
+ let momentum=0;
+ if(prev){
+  if(prev.min>=28)momentum+=2.2; else if(prev.min>=20)momentum+=1.5; else if(prev.min>=12)momentum+=.6; else momentum-=1.0;
+  if(prev.ppg>=20)momentum+=2.0; else if(prev.ppg>=14)momentum+=1.0; else if(prev.ppg<6)momentum-=1.0;
+  if((prev.aw||[]).some(a=>['NBA 올스타','ALL-NBA FIRST TEAM','ALL-NBA SECOND TEAM','ALL-NBA THIRD TEAM'].includes(a)))momentum+=1.5;
+  if(prev.gp>0&&prev.gp<55)momentum-=Math.min(2,(65-prev.gp)*.045);
+ }
+ const talent=(overall-68)*.78;
+ const teamFit=(Number(team)-50)*.075;
+ const trustFit=(Number(trust)-30)*.075;
+ const healthPenalty=health<45?-3:health<60?-1.5:0;
+ return cl(rd(10+talent+experience+momentum+teamFit+trustFit+healthPenalty),6,38);
+}
+function play(){
+ if(!G||!LV[G.lv])return;
+ const L=LV[G.lv],league=G.lv,o=ovr(),s=G.s,g=Math.max(0,Number(L.g)||0),ro=L.b+(G.us&&league==='HS'?4:0)+(G.team-50)*.35;
+ if(!Array.isArray(G.seasons))G.seasons=[];
+ const seasonId=`${G.yr}-${league}-${G.age}-${G.seasons.length+1}`;
+ // 신인 여부는 현재 리그에서의 첫 시즌으로 고정한다.
+ // G.uy는 커리어 단계 전환 시 초기화될 수 있으므로 언론 반응 판정에 직접 사용하지 않는다.
+ const leagueSeasonNumber=G.seasons.filter(se=>se&&se.completed&&se.league===league).length+1;
+ const rookieSeason=['NBA','KBL','GL'].includes(league)&&leagueSeasonNumber===1;
+ const seasonStartStats={...s};
+ let injuryGames=0,inj='';
+ const aclRisk=Math.max(.003,.012+(Number(G.risk)||0)*.15);
+ if(G.age>=17&&R()<aclRisk){injuryGames=g;inj='십자인대 파열, 시즌 아웃';s.phy=cl(s.phy-rd(rn(2,5)),10,99);s.fin=cl(s.fin-rd(rn(1,3)),10,99);G.health=40;}
+ else if(R()<.07+(Number(G.risk)||0)+(G.health<60?(60-G.health)/300:0)+(G.age>=30?.03:0)){injuryGames=cl(rd(g*(R()<.25?rn(.25,.6):rn(.05,.18))),0,g);if(injuryGames>0)inj=`부상으로 ${injuryGames}경기 결장`;}
+ const missedGames=new Set();while(missedGames.size<injuryGames&&missedGames.size<g)missedGames.add(1+Math.floor(R()*g));
+ const nbaCareer=league==='NBA'?nbaCareerContext():null;
+ const baseMinutes=league==='NBA'?nbaRoleMinutes(o,G.trust,G.team,G.health,nbaCareer):cl(rd(17+(o-ro)*.75+(G.trust-30)*.1+(league==='HS'?(SCH_DEP[G.sch]||0):0)),8,34);
+ const context={seasonId,year:G.yr,age:G.age,league,team:G.tn,teamPower:G.team,s:{...s},pos:G.pos,ovr:o,trust:G.trust,health:G.health,focus:G.focus||[],traits:evaluateTraits(s),traitFx:traitEffects(s),baseMinutes,maxPlayerMinutes:league==='NBA'?38:34,gameMinutes:leagueGameMinutes(league),missedGames};
+ const games=[];for(let n=1;n<=g;n++)games.push(simulateGame(context,n));
+ const agg=aggregateSeason(games),gp=agg.gp,ppg=agg.ppg,rpg=agg.rpg,apg=agg.apg,min=agg.min,wp=g?agg.w/g:0;
+ const traitFx=traitEffects(s),sc=ppg+.8*rpg+1.2*apg+30*(wp-.5),nba=league==='NBA',kbl=league==='KBL',aw=[];
+ const eligible=league==='MIL'?false:kbl?gp>=27:nba?gp>=58:gp>=g*.75;
+ const CUT=kbl?{as:26.5,b5:29.5,mvp:32.5}:{as:36.6,mvp:45.7},j=()=>rn(-1,1),c1=CUT.mvp+j();
+ const add=(name,fame)=>{if(!aw.includes(name)){aw.push(name);G.aw[name]=(G.aw[name]||0)+1;G.fame=cl(G.fame+fame)}};
+ // Rookie awards are tied to the player's first season in that league, never to the resettable career-stage counter.
+ if(eligible&&rookieSeason&&min>=12&&((nba&&ppg>=7)||( !nba&&sc>rn(15,26))))add(nba?'NBA 신인왕':L.n+' 신인상',6);
+ if(nba&&eligible&&min>=20){
+   const tsPct=makeAdvancedStats({ppg,rpg,apg,min,totals:{...agg,gp}}).tsPct;
+   const stlpg=agg.steals/Math.max(1,gp),blkpg=agg.blocks/Math.max(1,gp);
+   const allStarScore=ppg+apg*1.15+rpg*.72+stlpg*.9+blkpg*.8+(tsPct-.54)*10;
+   const allStarCase=(ppg>=19&&min>=25&&allStarScore>=27)||(ppg>=16&&apg>=6.5&&min>=26&&allStarScore>=27)||(ppg>=15&&rpg>=10&&min>=26&&allStarScore>=27)||(ppg>=14&&rpg>=8&&apg>=7&&min>=27&&allStarScore>=28);
+   if(allStarCase&&wp>=.30&&R()<cl(.58+(allStarScore-27)*.025+(min-28)*.008,.38,.88))add('NBA 올스타',8);
+ } else if(eligible&&min>=22&&sc>CUT.as+j())add(L.n+' 올스타',3);
+ if(nba&&eligible&&gp>=58&&min>=28){
+   const allNbaScore=ppg+apg*1.35+rpg*.72+(agg.stl/Math.max(1,gp))*1.4+(agg.blocks/Math.max(1,gp))*1.2+(wp-.5)*12;
+   if(allNbaScore>=39&&ppg>=23)add('ALL-NBA FIRST TEAM',12);
+   else if(allNbaScore>=34&&ppg>=20)add('ALL-NBA SECOND TEAM',9);
+   else if(allNbaScore>=30&&ppg>=18)add('ALL-NBA THIRD TEAM',6);
+ } else if(kbl&&eligible&&min>=24&&sc>CUT.b5+j())add('KBL 베스트5',5);
+ const defScore=s.def*.55+s.reb*.12+min*.35+wp*12;
+ if(eligible&&min>=20){if(nba&&defScore>86+j())add('ALL-DEFENSIVE FIRST TEAM',10);else if(nba&&defScore>84.4+j())add('ALL-DEFENSIVE SECOND TEAM',7);else if(kbl&&defScore>85.7+j())add('KBL 수비 5걸',6);}
+ if(eligible&&nba&&min>=26&&s.def>=88&&rpg>=6&&R()<.35)add('NBA 올해의 수비수',8);
+ // NBA MVP uses recognizable NBA production: scoring, playmaking, rebounding,
+ // efficiency, availability, minutes and team record. It is deliberately rare.
+ const fgPct=agg.fgPct||0,threePct=agg.threePct||0,ftPct=agg.ftPct||0;
+ const tsPct=makeAdvancedStats({ppg,rpg,apg,min,totals:{...agg,gp}}).tsPct;
+ const mvpCaseScore=nba?(
+   (ppg-22)*1.05+(apg-5)*.55+(rpg-6)*.38+(min-30)*.42+
+   (wp-.50)*28+(tsPct-.54)*42+(o-80)*.16+
+   ((aw.includes('ALL-NBA FIRST TEAM')?3:aw.includes('ALL-NBA SECOND TEAM')?1.5:0))
+ ):0;
+ const sigmoid=x=>1/(1+Math.exp(-x));
+ const mvpChance=nba&&eligible&&min>=31&&gp>=65&&ppg>=24&&wp>=.50?cl(sigmoid((mvpCaseScore-13)/3.8)*.22,0,.22):0;
+ const topFiveChance=nba&&eligible&&min>=27&&gp>=58&&ppg>=18?cl(sigmoid((mvpCaseScore-5)/5.0)*.48,0,.48):0;
+ let rank=0;
+ if(nba&&topFiveChance>0&&R()<topFiveChance){rank=R()<mvpChance?1:2+Math.floor(R()*4);}
+ if(eligible&&min>=28&&sc>c1&&wp>=.55&&!nba)add(L.n+' MVP',10);
+ if(nba&&rank===1)add('NBA MVP',40);
+ // Team championships are team outcomes, not an almost-guaranteed individual reward.
+ // A strong record improves the odds, but even elite teams do not win every season.
+ const titleBase=cl((wp-.52)/.38,0,1);
+ const titleChance=league==='NBA'?.015+Math.pow(titleBase,2.0)*.19:Math.pow(cl((wp-.58)/.36,0,.85),1.7)*.24;
+ if(league!=='MIL'&&R()<titleChance){add(L.n+' 우승',nba?15:6);if(ppg>=22&&min>=30&&gp>=g*.65)add(nba?'파이널 MVP':L.n+' 결승 MVP',nba?12:4);}
+ if(ppg>=15)G.fame=cl(G.fame+1);
+ if(!inj.startsWith('십자인대'))G.trust=cl(G.trust+(min>=25?6:min<10?-4:-1));
+ G.health=cl(G.health-rd(min*.3)+22+(G.focus.includes('rest')?25:0));
+ G.maxO=Math.max(G.maxO,o);G.risk=0;
+ const advanced=makeAdvancedStats({ppg,rpg,apg,min,totals:{...agg,gp}});
+ const nbaCareerSeason=league==='NBA'?((nbaCareer?.nbaSeasons)||1):null;
+ const nbaRole=league==='NBA'?nbaRoleLabel(min):null;
+ const season={seasonId,age:G.age,year:G.yr,league,team:G.tn,reg:league==='MIL'?!!G.reg:undefined,games,regularSeasonGames:g,playoffGames:0,completed:true,...(league==='NBA'?{nbaCareerSeason,nbaRole}: {})};
+ G.seasons.push(season);
+ G.last={startStats:{...seasonStartStats},age:G.age,lv:league,tn:G.tn,reg:league==='MIL'?!!G.reg:undefined,min,ppg,rpg,apg,w:agg.w,g:agg.games,gp,miss:injuryGames,inj,aw,rank,o,fr:1,rookieSeason,leagueSeasonNumber,...(league==='NBA'?{nbaCareerSeason,nbaRole}:{}),traits:evaluateTraits(s),traitFx:{...traitFx},stats:advanced,totals:{...agg},seasonId};
+ G.hist.push(G.last);G.note='';G.phase='season';G.sg=0;render();
+}
 function grow(){const t=G.type,pe={early:24,normal:26,late:29,durable:27}[t],ds={early:29,normal:31,late:33,durable:35}[t],A=G.age,o=ovr(),s=G.s,w=POS[G.pos].w;let f=1;
 if(G.last&&G.last.inj==='십자인대 파열, 시즌 아웃'&&A<ds)return;
 if(A>=19&&G.last)f=cl(G.last.min/20,.3,1.15);if(G.lv==='MIL'&&G.reg)f*=.4;if(G.focus.includes('rest'))f*=.85;
-if(A<=pe){const gr=(t==='early'&&A<=21)?1.4:(t==='late'&&A>=22)?1.25:1,dO=cl((G.pot-o)*.2*gr*f,0,7);K.forEach(k=>s[k]=cl(rd(s[k]+(dO*(.5+3*w[k]+(G.focus.includes(k)?1.2:0))+rn(-.4,.4))*staffGrowthMultiplier(k)),10,99))}
+if(A<=pe){const gr=(t==='early'&&A<=21)?1.4:(t==='late'&&A>=22)?1.25:1,dO=cl((G.pot-o)*.2*gr*f,0,7);K.forEach(k=>s[k]=cl(rd(s[k]+(dO*(.5+3*w[k]+(G.focus.includes(k)?1.2:0))+rn(-.4,.4))),10,99))}
 else if(A>=ds){const dc=rn(.8,1.6)*(A-ds+1)*.6,m={phy:1.6,fin:1.2,def:1,reb:1,shoot:.4,play:.3};K.forEach(k=>s[k]=cl(rd(s[k]-dc*m[k]*rn(.7,1.3)),10,99))}
 else K.forEach(k=>{if(R()<.3)s[k]=cl(s[k]+pk([-1,0,1]),10,99)})}
 
-function chargeStaffUpkeep(){if(!G)return;const annual={shootingCoach:.18,playmakingCoach:.18,defenseCoach:.18,trainer:.3,agent:.35};let total=0;for(const [id,cost] of Object.entries(annual)){if(G.staff&&G.staff[id])total+=cost;}if(total<=0)return;if((Number(G.money)||0)>=total){G.money=Math.round((G.money-total)*100)/100;G.economyLog=G.economyLog||[];G.economyLog.push({year:G.yr,type:'staff upkeep',name:'스태프 연간 유지비',amount:-total});G.staffSuspended=false;}else{G.staffSuspended=true;G.note=`자금 부족으로 스태프 효과가 일시 중단됐습니다. 연간 유지비 ${total.toFixed(2)}억이 필요합니다.`;}}
-
-function adv(){chargeStaffUpkeep();if(!G.last?.grown)grow();G.age++;G.yr++;G.uy++;G.team=cl(G.team+rn(-5,5),35,85);if(G.lv==='MIL')G.ms--;if(G.cy>0)G.cy--;G.fl={};if(!G.staffSuspended)G.note='';route();render()}
+function adv(){if(!G.last?.grown)grow();G.age++;G.yr++;G.uy++;G.team=cl(G.team+rn(-5,5),35,85);if(G.lv==='MIL')G.ms--;if(G.cy>0)G.cy--;G.fl={};G.note='';route();render()}
 const op=(l,s,a,x)=>({l,s,a,x});
 function route(){const A=G.age,F=G.fl,set=(t,d,O)=>{G.path={t,d,opts:O};G.phase='path'};
 if(A>=39){G.endReason='age_limit';G.phase='end';return}
@@ -525,14 +861,14 @@ if(G.lv==='HS'&&A>=19&&!F.g){F.g=1;return set('고교 졸업','스카우트 평�
 if(G.lv==='UNIV'&&G.uy>=2&&!F.g){F.g=1;const f=G.uy>=4;return set('프로 도전',f?'졸업이에요. 프로에 입단합니다.':'KBL 드래프트를 신청할 수 있어요.',[...(v>=50||f?[op('KBL 드래프트 신청','지명 후 프로 입단','j','KBL')]:[]),...(f?[]:[op('대학 잔류','한 시즌 더 성장','s')])])}
 if(G.lv==='NCAA'&&G.uy>=1&&!F.g){F.g=1;const f=G.uy>=4;return set('NBA 드래프트','지명 순위는 실력, 명성, 스카우트 평가로 정해져요.',[op('NBA 드래프트 신청','언드래프티면 G리그 투웨이 또는 귀국','nd'),...(f?[]:[op('NCAA 잔류','한 시즌 더 성장','s')]),op('KBL 귀국','','j','KBL')])}
 // KBL에서 NBA로 가는 것은 예외적인 경로다. 벤치/롤플레이어에게 자동으로 투웨이를 제안하지 않고, 실제 시즌 성과가 검증된 리그 최상위권 선수만 드물게 후보가 된다.
-const kblBreakout=G.lv==='KBL'&&G.last&&G.last.lv==='KBL'&&G.last.gp>=40&&G.last.min>=27&&G.last.ppg>=17&&v>=78&&G.fame>=20;
+const kblBreakout=G.lv==='KBL'&&G.last&&G.last.lv==='KBL'&&G.last.gp>=36&&G.last.min>=24&&G.last.ppg>=14&&v>=74&&G.fame>=15;
 const kblEliteAwards=G.last&&(G.last.aw||[]).some(a=>['KBL 베스트5','KBL MVP'].includes(a));
 if(kblBreakout&&kblEliteAwards&&A>=20&&!F.o){
-  const nbaRosterCandidate=v>=85&&G.last.ppg>=22&&G.last.min>=30&&(G.last.aw||[]).includes('KBL MVP');
-  const offerChance=nbaRosterCandidate?.12:.025;
+  const nbaRosterCandidate=v>=82&&G.last.ppg>=19&&G.last.min>=27&&(G.last.aw||[]).some(a=>['KBL MVP','KBL 베스트5'].includes(a));
+  const offerChance=nbaRosterCandidate?.35:.15;
   if(R()<offerChance){F.o=1;return set('NBA 진출 제안',nbaRosterCandidate?'KBL MVP급 시즌을 바탕으로 NBA 로스터 계약 기회가 찾아왔다.':'KBL 베스트5급 시즌을 인정받아 NBA 투웨이 계약 평가 기회가 찾아왔다.',[op('NBA 진출','매우 드문 기회다. 군 문제는 여전히 남아 있다.','nj'),op('KBL 잔류','','s')])}
 }
-if(G.lv==='GL'&&!F.o&&(G.uy>=1||v>=68)){F.o=1;const glSeason=G.last&&G.last.lv==='GL',strongSeason=glSeason&&G.last.min>=22&&G.last.ppg>=12&&G.last.gp>=G.last.g*.65&&v>=68;const nbaOffer=strongSeason&&R()<cl(.12+(v-68)*.012+(G.last.ppg-12)*.012,.12,.55);return set('G리그 시즌 종료',nbaOffer?'좋은 시즌 성적을 바탕으로 NBA 로스터 계약 제안이 도착했다.':'NBA 계약은 보장되지 않았다. 다음 시즌에도 경쟁력을 증명해야 한다.',[...(nbaOffer?[op('NBA 로스터 계약','','j','NBA')]:[]),op('G리그 잔류','','s'),op('KBL 귀국','','j','KBL')])}
+if(G.lv==='GL'&&!F.o&&(G.uy>=1||v>=68)){F.o=1;const glSeason=G.last&&G.last.lv==='GL',strongSeason=glSeason&&G.last.min>=22&&G.last.ppg>=8.5&&G.last.gp>=G.last.g*.65&&v>=68;const nbaOffer=strongSeason&&R()<cl(.22+(v-68)*.018+(G.last.ppg-8.5)*.015,.22,.75);return set('G리그 시즌 종료',nbaOffer?'좋은 시즌 성적을 바탕으로 NBA 로스터 계약 제안이 도착했다.':'NBA 계약은 보장되지 않았다. 다음 시즌에도 경쟁력을 증명해야 한다.',[...(nbaOffer?[op('NBA 로스터 계약','','j','NBA')]:[]),op('G리그 잔류','','s'),op('KBL 귀국','','j','KBL')])}
 if(!G.served&&!G.exempt&&A>=24&&['KBL','GL','NBA'].includes(G.lv)&&!F.m){F.m=1;if(A>=28)mil(true);else return set('병역','28세까지 미루면 현역으로 입대해야 해요.',[op('상무 지원','2시즌 복무, 선발은 실력 순','ms'),op('현역 입대','2시즌 복무, 훈련 제한으로 성장 둔화','mr'),op('이번엔 미룬다','','s')])}
 if(['KBL','GL','NBA'].includes(G.lv)&&G.cy<=0&&!F.c){F.c=1;const can=G.last&&(G.last.min>=12||v>=ro-4),O=[];
 const nbaUnderperformer=G.lv==='NBA'&&G.last&&G.last.min<10&&v<ro-6&&!(A<=25&&G.pot>=85);
@@ -541,7 +877,7 @@ else if(nbaUnderperformer){
 O.push(op('G리그에서 재도전','NBA 계약을 얻기 위해 경기력을 증명한다.','j','GL'));
 O.push(op('KBL 복귀','출전 기회를 찾아 한국 리그에서 뛴다.','j','KBL'));
 if(A>=32)O.push(op('은퇴','','ret'));
-}else{if(can){const y=A>=35?2:A>=33?3:rd(rn(2,4));O.push(op(`${G.tn} 재계약`,`${y}년, 연봉 약 ${rd(sal())}억원`,'rn',y))}const ns=TN[G.lv].filter(n=>n!==G.tn).sort(()=>R()-.5);for(let i=0;i<2;i++){const t=rd(rn(42,76)),y=A>=35?2:A>=33?3:rd(rn(2,4)),n=ns[i];O.push(op(`${n} 이적`,`${y}년, 팀 전력 ${t}`,'tr',[n,t,y]))}if(A>=32)O.push(op('은퇴','','ret'))}
+}else{if(can){const y=A>=35?2:A>=33?3:rd(rn(2,4));O.push(op(`${G.tn} 재계약`,`${y}년 계약`,'rn',y))}const ns=TN[G.lv].filter(n=>n!==G.tn).sort(()=>R()-.5);for(let i=0;i<2;i++){const t=rd(rn(42,76)),y=A>=35?2:A>=33?3:rd(rn(2,4)),n=ns[i];O.push(op(`${n} 이적`,`${y}년, 팀 전력 ${t}`,'tr',[n,t,y]))}if(A>=32)O.push(op('은퇴','','ret'))}
 return set('계약 만료',nbaUnderperformer?'출전 기회가 부족해 NBA 계약을 제안받지 못했다. G리그 재도전 또는 KBL 복귀를 선택할 수 있다.':'재계약과 이적 제안이 도착했다.',O)}
 const ti=NT.findIndex(n=>G.yr>=n[1]&&(G.yr-n[1])%4===0);
 if(ti>=0&&A>=19&&v>=60&&G.lv!=='HS'&&!F.t&&G.yr-(G.ntLast||0)>=2&&R()<.45){F.t=1;G.ntLast=G.yr;const n=NT[ti];return set(`${n[0]} 대표팀 소집`,`국가대표 차출은 매년 보장되지 않는다. 이번 대회에서 국가대표 명단에 올랐다.${n[3]?' 병역 특례가 걸려 있다.':''}`,[op('합류한다','건강 -8, 명성 상승','nt',[ti,1]),op('고사한다','소속팀에 집중, 신뢰 +4','nt',[ti,0])])}
@@ -560,12 +896,12 @@ case'nt':nt(x);break}
 G.out={t:o.l,l:df(s0),n:G.note};G.note='';G.phase='out';G.after='route';render()}
 const b=(l,s,fn,c='')=>`<button class="${c}" onclick="${fn}">${l}${s?`<small>${s}</small>`:''}</button>`;
 const ch=(on,l,fn)=>`<button class="chip ${on?'on':''}" onclick="${fn}">${l}</button>`;
-function head(){const L=LV[G.lv];const mvpAchieved=!!(G.aw&&G.aw['NBA MVP']);const progress=mvpAchieved?100:Math.min(95,Math.max(0,Math.round(Number(G.fame)||0)));return `<div class="game-headline">ZERO TO <span>MVP</span></div><div class="track" role="progressbar" aria-label="NBA MVP 목표 진행도" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${progress}"><div class="track-labels"><span>벤치</span><strong>${mvpAchieved?'목표 달성 · ':'목표 진행도 · '}${progress}%</strong><span>NBA MVP</span></div><div class="track-rail"><div class="track-fill" style="width:${progress}%"></div></div></div><div class="meta"><span><b>${esc(G.name)}</b> #${G.no} ${POS[G.pos].n} ${G.h}cm</span><span>${G.age}세, ${G.yr}/${String((G.yr+1)%100).padStart(2,'0')} 시즌</span><span><b>${L.n}</b> ${esc(G.tn)}</span></div>${ovrBox(ovr(), '현재 능력치 · 포지션 가중치 반영')}`}
+function head(){const L=LV[G.lv];const mvpAchieved=!!(G.aw&&G.aw['NBA MVP']);const baseProgress=G.lv==='HS'?10:['UNIV','NCAA'].includes(G.lv)?25:G.lv==='MIL'?42:G.lv==='KBL'?55:G.lv==='GL'?62:G.lv==='NBA'?76:0;const awardProgress=(Number(G.aw?.['NBA 올스타'])||0)>0?5:0;const teamProgress=(Number(G.aw?.['ALL-NBA FIRST TEAM'])||0)>0?9:(Number(G.aw?.['ALL-NBA SECOND TEAM'])||0)>0?7:(Number(G.aw?.['ALL-NBA THIRD TEAM'])||0)>0?5:0;const progress=mvpAchieved?100:Math.min(95,baseProgress+awardProgress+teamProgress+(G.last?.rank&&G.last.rank<=5?4:0));return `<div class="game-headline">ZERO TO <span>MVP</span></div><div class="track" role="progressbar" aria-label="NBA MVP 목표 진행도" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${progress}"><div class="track-labels"><span>벤치</span><strong>${mvpAchieved?'목표 달성 · ':'목표 진행도 · '}${progress}%</strong><span>NBA MVP</span></div><div class="track-rail"><div class="track-fill" style="width:${progress}%"></div></div></div><div class="meta"><span><b>${esc(G.name)}</b> #${G.no} ${POS[G.pos].n} ${G.h}cm</span><span>${G.age}세, ${G.yr}/${String((G.yr+1)%100).padStart(2,'0')} 시즌</span><span><b>${G.lv==='MIL'?militaryName():L.n}</b> ${esc(G.tn)}</span></div>${ovrBox(ovr(), '현재 능력치 · 포지션 가중치 반영')}`}
 const panel=()=>`<div class="card"><div class="meta"><span>OVERALL <b>${ovr()}</b> · ${ovrTier(ovr())}</span><span>건강 <b>${rd(G.health)}</b></span><span>감독 신뢰 <b>${rd(G.trust)}</b></span><span>명성 <b>${rd(G.fame)}</b></span>${G.cy?`<span>계약 <b>${G.cy}년</b> 남음</span>`:''}</div><div class="trait-section"><div class="trait-title">현재 특기 · 능력치 기반 자동 판정</div>${traitMarkup(currentTraits())}</div>${K.map(k=>`<div class="row"><span>${KN[k]}${G.focus.includes(k)?' ★':''}</span><div class="bar"><b style="width:${G.s[k]}%"></b></div><b>${G.s[k]}</b></div>`).join('')}</div>`;
 const note=()=>G.note?`<p class="good">${esc(G.note)}</p>`:'';
 function setStatView(view){statView=view;render()}
 const table=()=>`<div class="card tbl"><div class="stat-tabs"><button class="${statView==='basic'?'active':''}" onclick="setStatView('basic')">기본 통계</button><button class="${statView==='advanced'?'active':''}" onclick="setStatView('advanced')">세부·고급 통계</button></div><table>${statView==='basic'?`<tr><th>나이</th><th>OVR</th><th>리그</th><th>팀</th><th>경기</th><th>분</th><th>득점</th><th>리바</th><th>어시</th><th>승</th><th>시즌 특기</th></tr>${G.hist.map(h=>`<tr><td>${h.age}</td><td><b>${h.o??'—'}</b></td><td>${(LV[h.lv]||{n:h.lv}).n}</td><td>${esc(h.tn)}</td><td>${h.gp}</td><td>${h.min}</td><td>${h.ppg}</td><td>${h.rpg}</td><td>${h.apg}</td><td>${h.w}</td><td>${(h.traits||[]).map(t=>esc(t.label||t.name)).join(', ')||'—'}</td></tr>`).join('')}`:`<tr><th>나이</th><th>FG%</th><th>3P%</th><th>FT%</th><th>SPG</th><th>BPG</th><th>TOPG</th><th>TS%</th><th>PER*</th></tr>${G.hist.map(h=>{const x=h.stats||makeAdvancedStats({ppg:h.ppg||0,rpg:h.rpg||0,apg:h.apg||0,min:h.min||0,...G.s});return `<tr><td>${h.age}</td><td>${pct(x.fgPct)}</td><td>${pct(x.threePct)}</td><td>${pct(x.ftPct)}</td><td>${x.stl}</td><td>${x.blk}</td><td>${x.tov}</td><td>${pct(x.tsPct)}</td><td>${x.perProxy}</td></tr>`}).join('')}</table><small>* PER은 현재 게임의 기록을 활용한 대체 지표이며, 공식 PER 산식과는 다릅니다. 이전 세이브의 상세 스탯은 추정값으로 표시될 수 있습니다.</small>`}</div>`;
-function startUI(){const s=ld();if(!C.cs.length)newC();return `<section class="brand-hero" aria-label="ZERO TO MVP"><div class="brand-wordmark">ZERO TO <span>MVP</span></div><div class="brand-kicker">Basketball Career Simulator · v45</div><p class="brand-tagline"><em>Every Legend Starts at the Bottom.</em></p><p class="brand-copy">고등학교에서 시작해 농구계의 정상까지.<br>네 커리어를 직접 만들어라.</p><div class="brand-actions"><button type="button" class="brand-primary" onclick="document.getElementById('careerSetup').scrollIntoView({behavior:'smooth',block:'start'})">NEW CAREER</button>${s?`<button type="button" class="brand-secondary" onclick="resume()">CONTINUE · ${esc(s.name)}</button>`:`<button type="button" class="brand-secondary" disabled aria-disabled="true" title="저장된 커리어가 없습니다">CONTINUE · NO SAVE</button>`}</div></section><div id="careerSetup" class="brand-section-title">Create Your Player / 선수 생성</div><div class="card"><b>선수 만들기</b><input value="${esc(C.name)}" placeholder="이름(닉네임)" maxlength="10" oninput="C.name=this.value" aria-label="이름"><input type="number" value="${C.no}" min="0" max="99" oninput="C.no=this.value" aria-label="등번호"><div>${Object.keys(POS).map(k=>ch(C.pos===k,POS[k].n,`C.pos='${k}';C.foc=[];newC();render()`)).join('')}</div><div>${ch(C.st==='KR','한국 고교 농구부',`C.st='KR';render()`)}${ch(C.st==='US','미국 프렙스쿨 유학',`C.st='US';C.usSchool=C.usSchool||'Montverde Academy';render()`)}</div>${C.st==='US'?`<div style="margin-top:10px"><label for="usSchool"><b>유학할 고등학교 선택</b></label><select id="usSchool" onchange="C.usSchool=this.value" style="width:100%;font:16px 'Noto Sans KR',sans-serif;padding:10px;margin-top:6px;border:2px solid var(--ink);border-radius:4px;background:var(--card);color:var(--ink)">${US_SCHOOLS.map(x=>`<option value="${x.name}" ${C.usSchool===x.name?'selected':''}>${x.name} — ${x.state}</option>`).join('')}</select><small style="display:block;color:var(--mute);margin-top:5px">학교 선택은 커리어 기록에 표시돼. 실제 입학 가능성이나 팀 로스터를 뜻하지는 않아.</small></div>`:`<div style="margin-top:10px"><label for="krSchool"><b>진학할 한국 고등학교 선택</b></label><select id="krSchool" onchange="C.krSchool=this.value" style="width:100%;font:16px 'Noto Sans KR',sans-serif;padding:10px;margin-top:6px;border:2px solid var(--ink);border-radius:4px;background:var(--card);color:var(--ink)">${KR_SCHOOLS.map(x=>`<option value="${x.name}" ${C.krSchool===x.name?'selected':''}>${x.name} — ${x.state}</option>`).join('')}</select></div>`}</div></div>${C.cs.map((c,i)=>`<button class="cand ${C.sel===i?'on':''}" aria-pressed="${C.sel===i?'true':'false'}" onclick="C.sel=${i};render()"><span class="cand-title">${C.sel===i?'✓ 선택됨　':''}후보 ${i+1} · ${c.arch||'선수 유형'}, 키 ${c.h}cm, 종합 ${ovrOf(c.s,C.pos)}</span><small>${K.map(k=>`${KN[k]} ${c.s[k]}`).join(', ')}</small></button>`).join('')}${b('다른 후보 보기','','newC();render()')}<div class="card"><b>집중 육성 (최대 2개)</b><div>${K.map(k=>ch(C.foc.includes(k),KN[k],`kg('${k}')`)).join('')}</div></div>${C.err?'<p class="bad">후보를 먼저 골라주세요.</p>':''}${b('커리어 시작','','begin()','go')}`}
+function startUI(){const s=ld();if(!C.cs.length)newC();return `<section class="brand-hero" aria-label="ZERO TO MVP"><div class="brand-wordmark">ZERO TO <span>MVP</span></div><div class="brand-kicker">Basketball Career Simulator · v65</div><p class="brand-tagline"><em>Every Legend Starts at the Bottom.</em></p><p class="brand-copy">고등학교에서 시작해 농구계의 정상까지.<br>네 커리어를 직접 만들어라.</p><div class="brand-actions"><button type="button" class="brand-primary" onclick="document.getElementById('careerSetup').scrollIntoView({behavior:'smooth',block:'start'})">NEW CAREER</button>${s?`<button type="button" class="brand-secondary" onclick="resume()">CONTINUE · ${esc(s.name)}</button>`:`<button type="button" class="brand-secondary" disabled aria-disabled="true" title="저장된 커리어가 없습니다">CONTINUE · NO SAVE</button>`}</div></section><div id="careerSetup" class="brand-section-title">Create Your Player / 선수 생성</div><div class="card"><b>선수 만들기</b><input value="${esc(C.name)}" placeholder="이름(닉네임)" maxlength="10" oninput="C.name=this.value" aria-label="이름"><input type="number" value="${C.no}" min="0" max="99" oninput="C.no=this.value" aria-label="등번호"><div>${Object.keys(POS).map(k=>ch(C.pos===k,POS[k].n,`C.pos='${k}';C.foc=[];newC();render()`)).join('')}</div><div>${ch(C.st==='KR','한국 고교 농구부',`C.st='KR';render()`)}${ch(C.st==='US','미국 프렙스쿨 유학',`C.st='US';C.usSchool=C.usSchool||'Montverde Academy';render()`)}</div>${C.st==='US'?`<div style="margin-top:10px"><label for="usSchool"><b>유학할 고등학교 선택</b></label><select id="usSchool" onchange="C.usSchool=this.value" style="width:100%;font:16px 'Noto Sans KR',sans-serif;padding:10px;margin-top:6px;border:2px solid var(--ink);border-radius:4px;background:var(--card);color:var(--ink)">${US_SCHOOLS.map(x=>`<option value="${x.name}" ${C.usSchool===x.name?'selected':''}>${x.name} — ${x.state}</option>`).join('')}</select><small style="display:block;color:var(--mute);margin-top:5px">학교 선택은 커리어 기록에 표시돼. 실제 입학 가능성이나 팀 로스터를 뜻하지는 않아.</small></div>`:`<div style="margin-top:10px"><label for="krSchool"><b>진학할 한국 고등학교 선택</b></label><select id="krSchool" onchange="C.krSchool=this.value" style="width:100%;font:16px 'Noto Sans KR',sans-serif;padding:10px;margin-top:6px;border:2px solid var(--ink);border-radius:4px;background:var(--card);color:var(--ink)">${KR_SCHOOLS.map(x=>`<option value="${x.name}" ${C.krSchool===x.name?'selected':''}>${x.name} — ${x.state}</option>`).join('')}</select></div>`}</div></div>${C.cs.map((c,i)=>`<button class="cand ${C.sel===i?'on':''}" aria-pressed="${C.sel===i?'true':'false'}" onclick="C.sel=${i};render()"><span class="cand-title">${C.sel===i?'✓ 선택됨　':''}후보 ${i+1} · ${c.arch||'선수 유형'}, 키 ${c.h}cm, 종합 ${ovrOf(c.s,C.pos)}</span><small>${K.map(k=>`${KN[k]} ${c.s[k]}`).join(', ')}</small></button>`).join('')}${b('다른 후보 보기','','newC();render()')}<div class="card"><b>집중 육성 (최대 2개)</b><div>${K.map(k=>ch(C.foc.includes(k),KN[k],`kg('${k}')`)).join('')}</div></div>${C.err?'<p class="bad">후보를 먼저 골라주세요.</p>':''}${b('커리어 시작','','begin()','go')}`}
 function kg(k){C.foc=C.foc.includes(k)?C.foc.filter(x=>x!==k):[...C.foc,k].slice(-2);render()}
 function resume(){G=ld();render()}
 function exitGame(){
@@ -604,10 +940,13 @@ document.addEventListener('click',function(event){
 },true);
 function careerTotals(filter='all'){
   const seasons=(G?.hist||[]).filter(h=>filter==='all'||h.lv===filter);
-  const games=seasons.reduce((n,h)=>n+(Number(h.gp)||0),0);
-  const points=seasons.reduce((n,h)=>n+(Number(h.ppg)||0)*(Number(h.gp)||0),0);
-  const rebounds=seasons.reduce((n,h)=>n+(Number(h.rpg)||0)*(Number(h.gp)||0),0);
-  const assists=seasons.reduce((n,h)=>n+(Number(h.apg)||0)*(Number(h.gp)||0),0);
+  const logged=(G?.seasons||[]).filter(se=>filter==='all'||se.league===filter);
+  const loggedIds=new Set(logged.map(se=>se.seasonId));
+  const legacy=seasons.filter(h=>!h.seasonId||!loggedIds.has(h.seasonId));
+  const games=logged.reduce((n,se)=>n+aggregateSeason(se.games||[]).gp,0)+legacy.reduce((n,h)=>n+(Number(h.gp)||0),0);
+  const points=logged.reduce((n,se)=>n+aggregateSeason(se.games||[]).points,0)+legacy.reduce((n,h)=>n+(Number(h.ppg)||0)*(Number(h.gp)||0),0);
+  const rebounds=logged.reduce((n,se)=>n+aggregateSeason(se.games||[]).rebounds,0)+legacy.reduce((n,h)=>n+(Number(h.rpg)||0)*(Number(h.gp)||0),0);
+  const assists=logged.reduce((n,se)=>n+aggregateSeason(se.games||[]).assists,0)+legacy.reduce((n,h)=>n+(Number(h.apg)||0)*(Number(h.gp)||0),0);
   return {seasons,games,points,rebounds,assists,
     ppg:games?points/games:0,rpg:games?rebounds/games:0,apg:games?assists/games:0};
 }
@@ -658,7 +997,6 @@ function buildCareerSummary(){
     '',
     '【주요 수상】',
     awardText,
-    `총 자산: ${Number(G.money||0).toFixed(1)}억`,
     '',
     '#ZEROTOMVP #BasketballCareerSimulator'
   ].join('\n');
@@ -701,32 +1039,93 @@ function seasonCompetitionRows(l){
  }else if(l.lv==='KBL'||l.lv==='NBA'||l.lv==='GL'||l.lv==='NCAA'){
   rows.push({icon:'🏟️',title:`${name} 정규시즌`,sub:`${l.g}경기 기준 · ${l.w}승 ${l.g-l.w}패`,result:winPct>=.65?'상위 시드 경쟁':winPct>=.5?'플레이오프권': '하위권 성적',tone:winPct>=.5?'good':'bad'});
   rows.push({icon:'🏆',title:'플레이오프',sub:'시즌 성적 기반 시뮬레이션',result:l.aw.some(a=>a.includes('우승'))?'챔피언':winPct>=.5?'포스트시즌 도전 종료':'진출 실패',tone:l.aw.some(a=>a.includes('우승'))?'good':'bad'});
- }else rows.push({icon:'🪖',title:'상무 복무 시즌',sub:'개인 기록 및 훈련 제한 반영',result:'시즌 완료',tone:''});
+ }else rows.push({icon:'🪖',title:`${militaryName(l.reg??G?.reg)} 복무 기간`,sub:(l.reg??G?.reg)?'현역 복무 · 훈련 및 경기 활동 제한':'상무 선수단 소속 · 복무 시즌',result:'복무 시즌 완료',tone:''});
  return rows;
 }
 function seasonReactions(l){
- const inj=l.inj==='십자인대 파열, 시즌 아웃',star=l.ppg>=20&&l.min>=25,solid=l.ppg>=12||l.apg>=4||l.rpg>=7;
- if(inj)return [{source:'스포츠 기사',quote:'부상으로 아쉬움을 남겼다. 건강을 회복하고 돌아오는 것이 최우선이다.'},{source:'팬 반응',quote:'무리하지 말고 재활 잘해서 다음 시즌에 건강하게 돌아오자.'}];
- if(star)return [{source:'스포츠 기사',quote:'확실한 존재감을 드러냈다. 다음 시즌 더 큰 역할을 맡을 수 있을까?'},{source:'팬 반응',quote:'이번 시즌 폼 미쳤다. 다음 시즌도 이 페이스 유지하자.'}];
- if(solid)return [{source:'스포츠 기사',quote:'꾸준히 기여했지만, 더 높은 단계로 도약하려면 한 가지 무기가 필요하다.'},{source:'팬 반응',quote:'조급해하지 말자. 아직 보여줄 게 더 많은 선수다.'}];
- return [{source:'스포츠 기사',quote:'아직 보여준 것보다 보여줄 것이 많은 선수. 출전 기회를 늘리는 것이 과제다.'},{source:'팬 반응',quote:'조급해하지 마. 아직 시간 많다. 다음 시즌엔 더 성장하자.'}];
+ const inj=String(l.inj||'').includes('시즌 아웃'),star=l.ppg>=20&&l.min>=25,solid=l.ppg>=12||l.apg>=4||l.rpg>=7;
+ // 신인 관련 반응은 해당 리그 첫 시즌에만 표시한다.
+ const rookie=l.rookieSeason===true;
+ const champion=(l.aw||[]).some(x=>x.includes('우승'));
+ const mvp=(l.aw||[]).some(x=>x.includes('MVP'));
+ const allstar=(l.aw||[]).some(x=>x.includes('올스타'));
+ const winning=(Number(l.w)||0)/Math.max(1,Number(l.g)||1)>=.65;
+ const lowMinutes=Number(l.min||0)<10;
+ const pools=[];
+ const add=(press,analysis)=>pools.push({press,analysis});
+ if(inj)add(
+  ['부상으로 시즌을 일찍 마감했다. 구단은 회복 경과를 지켜보며 복귀 시점을 조율할 예정이다.','뜻하지 않은 부상이 시즌의 흐름을 끊었다. 지금은 성급한 복귀보다 완전한 회복이 우선이다.','코트 위에서 보여줄 것이 많았지만 부상이 발목을 잡았다. 다음 시즌 건강한 모습으로 돌아오는 것이 가장 중요하다.','재활 과정이 다음 시즌의 출발점을 결정할 전망이다. 구단 의료진과 함께 단계적인 복귀를 준비한다.','시즌 막판 전력에서 이탈한 점은 팀에도 아쉬움이다. 무리하지 않고 몸 상태를 끌어올려야 한다.'],
+  ['회복 속도보다 재발 방지가 중요하다. 충분히 회복한 뒤 경쟁에 합류해야 한다.','부상 전까지의 경기력을 되찾는 것이 첫 번째 과제다. 복귀 후 컨디션 관리도 관건이다.','선수에게 쉽지 않은 시간이겠지만 장기적인 커리어를 생각하면 신중한 선택이 필요하다.','복귀 자체보다 복귀 이후 꾸준히 출전할 수 있는 몸을 만드는 데 초점을 맞춰야 한다.']);
+ else if(mvp)add(
+  ['리그 최고의 영예를 차지했다. 개인의 지배력을 팀의 우승으로 연결할 수 있을지가 다음 과제다.','정규시즌 내내 가장 꾸준하고 강렬한 존재감을 남겼다. MVP 트로피는 그 활약을 상징한다.','득점과 경기 영향력 모두에서 정상급이었다. 이제 리그의 모든 팀이 이 선수를 기준으로 전력을 짤 것이다.','시즌을 대표하는 선수로 공식 인정받았다. 다음 목표는 이 자리를 오래 지키는 것이다.','중요한 순간마다 답을 내놓은 에이스가 결국 최고의 자리에 올랐다.'],
+  ['MVP는 기록만으로 설명되지 않는다. 경기 흐름을 바꾸는 영향력과 꾸준함이 돋보였다.','이제 상대의 집중 견제는 더 강해질 것이다. 새로운 공격 해법을 준비해야 한다.','개인 수상에 만족하지 않고 팀 성과까지 끌어올린다면 전설적인 시즌이 될 수 있다.','리그 최고라는 평가를 다음 시즌에도 유지하는 것이 진짜 시험대다.']);
+ else if(star)add(
+  ['폭발적인 공격 생산력을 앞세워 리그 정상급 선수로 도약했다. 다음 시즌에는 집중 견제를 어떻게 이겨낼지가 관전 포인트다.','공격의 중심축으로 확실히 자리 잡았다. 이제 상대 수비의 첫 번째 분석 대상이 될 가능성이 크다.','득점력에서 한 단계 올라선 시즌이다. 꾸준함까지 더해진다면 리그를 대표하는 에이스로 성장할 수 있다.','상대가 알고도 막기 어려운 공격 옵션을 보여줬다. 다음 단계는 동료까지 살리는 플레이가 될 것이다.','팀이 어려울 때 해결사 역할을 맡았다. 기대치가 높아진 만큼 다음 시즌 부담도 커질 전망이다.'],
+  ['수비가 몰리는 상황에서 효율을 유지할 수 있는지가 관건이다.','득점 외에 수비와 플레이메이킹까지 영향력을 넓히면 가치가 더 커진다.','상대의 대응에 맞춰 공격 패턴을 다변화할 필요가 있다.','에이스로 인정받은 시즌이다. 이제 큰 경기에서의 존재감이 평가 기준이 될 것이다.']);
+ else if(rookie)add(
+  ['성공적인 데뷔 시즌을 보냈다. 새로운 무대에 적응하며 가능성을 확인했다.','첫 시즌부터 경쟁력을 보여줬다. 경험이 쌓일수록 맡을 수 있는 역할도 늘어날 전망이다.','프로 무대에 첫발을 내디딘 시즌이다. 시행착오 속에서도 성장 가능성을 확인했다.','낯선 리그와 경기 속도에 적응하는 과정에서 의미 있는 장면을 남겼다.','데뷔 시즌의 과제를 분명히 확인했다. 비시즌 동안 약점을 보완한다면 도약을 기대할 만하다.'],
+  ['기술적인 완성도와 경기 판단을 함께 끌어올리는 것이 다음 단계다.','출전 경험이 쌓인 만큼 다음 시즌에는 더 안정적인 경기 운영이 기대된다.','체력과 수비 이해도를 보완하면 코칭스태프의 신뢰를 더 얻을 수 있다.','가능성은 확인했다. 이제 매 경기 일정한 경기력을 보여주는 것이 중요하다.']);
+ else if(solid)add(
+  ['공수 양면에서 꾸준히 기여했다. 확실한 주전으로 자리 잡기 위해서는 자신만의 강점을 더 날카롭게 다듬어야 한다.','팀 전술 안에서 맡은 역할을 안정적으로 수행했다. 다음 단계로 올라설 준비가 필요한 시점이다.','눈에 띄는 폭발력보다 꾸준함으로 팀에 보탬이 됐다. 역할의 폭을 넓히는 것이 과제다.','시즌 내내 일정 수준의 생산성을 유지했다. 한두 가지 확실한 무기를 더한다면 입지가 단단해질 수 있다.','기록 이상의 기여를 남긴 경기들이 있었다. 다만 결정적인 순간의 영향력은 더 키워야 한다.'],
+  ['공격 효율과 수비 집중력을 동시에 끌어올리면 더 큰 역할을 맡을 수 있다.','현재의 장점을 유지하면서 약점을 줄이는 현실적인 성장이 필요하다.','팀이 원하는 역할을 이해하고 수행했다. 다음 시즌에는 주도적인 플레이도 보여줘야 한다.','경기마다 기복을 줄이는 것이 로테이션 경쟁에서 우위를 만드는 길이다.']);
+ else if(lowMinutes)add(
+  ['출전 시간이 제한되며 존재감을 보여줄 기회가 많지 않았다. 다음 시즌 로테이션 경쟁이 중요해졌다.','코트에 설 기회가 많지 않았던 시즌이다. 짧은 시간 안에 강점을 증명해야 한다.','팀 내 경쟁에서 아직 우위를 확보하지 못했다. 비시즌 준비가 어느 때보다 중요하다.','제한된 역할 속에서 시즌을 마쳤다. 훈련 성과를 실전 경쟁력으로 연결해야 한다.','기회가 적었던 만큼 아쉬움도 남는다. 다음 시즌에는 확실한 무기를 보여줄 필요가 있다.'],
+  ['수비와 리바운드처럼 즉시 기여할 수 있는 부분부터 어필해야 한다.','출전 시간은 경쟁으로 얻어내야 한다. 작은 기회를 놓치지 않는 집중력이 필요하다.','팀이 신뢰할 수 있는 역할을 하나 만드는 것이 우선이다.']);
+ else add(
+  ['기복이 있었던 시즌이다. 가능성을 보여준 경기와 아쉬움이 남은 경기가 공존했다.','기대만큼의 성과를 내지는 못했지만 개선해야 할 지점은 분명해졌다.','좋은 흐름을 이어가지 못한 점이 아쉽다. 꾸준한 경기력을 만드는 것이 우선이다.','성장과 정체가 교차한 시즌이었다. 다음 시즌에는 보다 선명한 경쟁력을 보여줘야 한다.','팀 내 역할을 확실히 정립하지 못했다. 비시즌 동안 자신의 강점을 재정비할 필요가 있다.'],
+  ['기본기와 판단 속도를 보완하면 경기 운영이 한결 안정될 수 있다.','한 시즌의 결과에 머무르기보다 부족했던 부분을 구체적으로 개선해야 한다.','자신에게 맞는 역할을 찾고 그 안에서 확실한 장점을 만드는 것이 중요하다.']);
+ // 시즌 성과에 따른 추가 기사 후보도 별도로 구성해 문구 조합을 넓힌다.
+ if(champion)add(['팀의 우승 여정에 힘을 보탰다. 중요한 순간 팀이 필요로 하는 역할을 수행했다.','챔피언의 일원으로 시즌을 마무리했다. 팀의 목표를 함께 이뤘다는 점에서 값진 결과다.','우승 경쟁의 마지막까지 살아남아 정상에 섰다. 팀 플레이의 결실을 맺었다.'],['우승 경험은 다음 시즌에도 큰 자산이 될 것이다. 이제 타이틀 방어가 새로운 도전이다.','개인의 역할을 팀의 성공으로 연결했다는 점이 의미 있다.']);
+ if(allstar)add(['올스타에 선정되며 리그를 대표하는 선수 중 한 명으로 인정받았다. 팬들의 기대도 한층 커졌다.','리그 최고의 선수들과 어깨를 나란히 했다. 올스타 선정은 한 시즌 활약의 보상이다.','팬과 관계자들의 선택을 받으며 올스타 무대에 선다. 존재감을 넓힌 시즌이다.'],['이제 올스타 선정에 걸맞은 꾸준함을 증명해야 한다.','큰 무대에서 다양한 선수들과 호흡한 경험이 성장의 계기가 될 수 있다.']);
+ if(winning&&!champion)add(['팀 성적도 좋은 편이었다. 개인 활약이 팀 경쟁력으로 연결됐다는 점에서 의미가 있다.','팀은 안정적인 승률을 기록했다. 다음 목표는 플레이오프에서 경쟁력을 증명하는 것이다.','좋은 팀 성적 속에서 자신의 몫을 해냈다. 상승세를 이어갈 기반을 마련했다.'],['팀 성적을 유지하려면 다음 시즌에도 역할 수행의 일관성이 필요하다.','정규시즌의 성과를 더 큰 무대에서도 재현할 수 있을지가 관건이다.']);
+ const fanPools=inj?['조급해하지 말고 완전히 회복해서 돌아왔으면 좋겠다. 기다리고 있을게!','선수 본인에게도 힘든 시즌이었을 듯. 건강하게 복귀하는 게 먼저다.','재활 잘 마치고 다음 시즌에는 코트에서 보자.','무리해서 돌아오지 않았으면 한다. 건강한 모습으로 다시 뛰는 게 가장 중요해.','팬들은 기다릴 수 있으니 몸부터 잘 챙겨줘!','이번 시즌은 아쉽지만 다음 시즌 반등을 응원한다.','재활 과정 잘 버텨내길. 다시 코트에서 보자!','완전히 회복해서 예전보다 더 좋은 모습으로 돌아오길 바란다.','부상은 잊고 회복에만 집중하자. 언제든 응원할게.']
+ :mvp?['MVP는 인정이지. 이번 시즌은 진짜 네가 리그를 지배했다.','이제 목표는 우승과 MVP를 함께 가져가는 것!','하이라이트만 봐도 왜 MVP인지 알겠다.','매 경기 기대하게 만드는 선수였다. 최고의 시즌 축하한다!','중요할 때 해결해 주는 모습이 진짜 에이스다.','이 정도면 팀의 상징을 넘어 리그의 얼굴이다.','MVP 트로피 너무 잘 어울린다. 다음 시즌도 부탁해!','기록도 경기력도 모두 압도적이었다. 인정할 수밖에 없다.','이제 전설의 시작이라고 믿는다.']
+ :star?['오늘 경기력 미쳤다. 이제 상대 팀들이 너부터 막겠네.','확실히 에이스로 성장했다. 다음 시즌도 기대된다.','이 정도면 리그 대표 선수라고 불러도 되겠다.','공 잡을 때마다 뭔가 만들어낼 것 같은 기대감이 있다.','상대가 더블팀 와도 해결하는 게 대단하다.','이번 시즌은 네 경기 챙겨보는 재미가 있었다.','득점력 하나는 확실히 증명했다. 더 큰 무대로 가자!','다음 시즌에는 수비까지 더 좋아질 것 같다.','팀이 어려울 때 중심 잡아주는 게 멋있다.']
+ :rookie?['첫 시즌부터 이 정도면 앞으로가 더 기대된다.','신인상 축하! 비시즌에 더 성장해서 돌아오자.','가능성 충분히 보여줬다. 꾸준히 경험 쌓아보자.','새로운 무대에서 잘 적응한 것 같아 보기 좋았다.','처음부터 완벽할 필요는 없어. 성장하는 모습 계속 보여줘!','다음 시즌에는 더 많은 출전 시간 받을 수 있겠다.','데뷔 시즌 고생 많았다. 앞으로가 진짜 시작이다.','몇 경기에서는 깜짝 놀랄 정도였어. 더 성장하자!','우리 팀의 미래가 되어줘!']
+ :solid?['꾸준하게 해주는 게 제일 어렵지. 수고했다!','다음 시즌에는 한 단계 더 올라갈 수 있을 것 같다.','좋은 점도 많았고 보완할 점도 보였던 시즌.','화려하진 않아도 팀에 꼭 필요한 선수라고 생각해.','자기 역할을 해주는 모습이 좋았다. 다음 시즌도 응원한다!','조금만 더 공격적으로 하면 훨씬 위협적일 듯.','한 시즌 고생했어. 다음엔 더 높은 곳으로 가자.','기복만 줄이면 주전 자리도 확실히 잡을 수 있을 것 같아.','팀을 위해 묵묵히 뛰는 모습이 인상적이었다.']
+ :lowMinutes?['출전 시간이 아쉽긴 했지만 아직 기회는 있다. 포기하지 말자.','다음 시즌에는 로테이션 한 자리 꼭 차지하자!','짧은 시간에도 임팩트를 보여주면 기회는 온다.','기회가 왔을 때 자신 있게 던졌으면 좋겠다.','수비나 리바운드부터 확실히 보여주자. 응원한다!','비시즌에 준비 잘해서 경쟁 이겨내자.','아직 보여줄 게 많다고 생각해. 포기하지 마!','작은 역할부터 차근차근 올라가면 된다.','다음 시즌에는 코트에서 더 자주 보자.']
+ :['잘한 경기도 있었으니 자신감 잃지 말자. 다음 시즌엔 더 잘할 수 있어.','기복만 줄이면 훨씬 좋은 선수가 될 것 같다.','한 시즌 고생했다. 비시즌 잘 준비해서 돌아오자.','아쉬운 순간도 있었지만 응원은 계속할게.','자신 있는 플레이를 더 많이 보여줬으면 좋겠다.','다음 시즌에는 한층 달라진 모습 기대한다.','좋은 경기의 감각을 꾸준히 이어가 보자!','아직 성장할 여지가 많아 보여. 계속 도전하자.','팀에서 어떤 역할을 맡게 될지 다음 시즌이 기대된다.'];
+ const seed=String(l.seasonId||`${l.age}-${l.lv}-${l.yr}-${l.ppg}-${l.rpg}-${l.apg}`);
+ let hash=0;for(let i=0;i<seed.length;i++)hash=(hash*31+seed.charCodeAt(i))>>>0;
+ const pick=(arr,n=0)=>arr[(hash+n*7)%arr.length];
+ const base=pick(pools,0);
+ return [
+  {source:'스포츠 뉴스',quote:pick(base.press,1)},
+  {source:pick(['농구 전문 기자','경기 분석','현지 매체','해설위원','스카우트 리포트','팀 담당 기자'],2),quote:pick(base.analysis,2)},
+  {source:pick(['팬 반응','팬 커뮤니티','경기장 관중','팬 게시판','서포터즈 반응'],3),quote:pick(fanPools,4)}
+ ];
 }
 function seasonReportMarkup(l){
  const cur=ovr(),prevO=l.o??cur,delta=cur-prevO,stats=[['득점',l.ppg,'PPG'],['리바운드',l.rpg,'RPG'],['어시스트',l.apg,'APG'],['출전 경기',l.gp,'GP'],['평균 출전 시간',l.min,'MPG'],['팀 승리',l.w,'W']];
- const growth=K.map(k=>{const start=l.startStats?.[k],end=G.s[k],d=Number.isFinite(start)?end-start:0;return `<div class="sr-growth-item"><span>${KN[k]}</span><b class="${d>0?'up':d<0?'down':''}">${start==null?end:`${start} → ${end}`} ${d>0?`<span class="up">+${d}</span>`:d<0?`<span class="down">${d}</span>`:''}</b></div>`}).join('');
+ const growth=K.map(k=>{const start=l.startStats?.[k],end=G.s[k],d=Number.isFinite(start)?end-start:0;const change=start==null?'':` (${d>0?'+':''}${d})`;return `<div class="sr-growth-item"><span>${KN[k]}</span><b class="${d>0?'up':d<0?'down':''}">${start==null?end:`${start} → ${end}`}<span class="${d>0?'up':d<0?'down':'same'}">${change}</span></b></div>`}).join('');
  const comps=seasonCompetitionRows(l).map(x=>`<div class="sr-competition"><div class="sr-icon">${x.icon}</div><div class="sr-comp-main"><b>${x.title}</b><small>${x.sub}</small></div><div class="sr-comp-result ${x.tone||''}">${x.result}</div></div>`).join('');
- const reactions=seasonReactions(l).map((x,i)=>i===0?`<div class="sr-reaction"><div class="sr-source">📰 ${x.source}</div><div class="sr-quote">${x.quote}</div></div>`:`<div class="sr-fan"><div class="sr-avatar">팬</div><div><p>${x.quote}</p><small>${x.source} · 방금 전</small></div></div>`).join('');
+ const reactions=seasonReactions(l).map((x,i)=>i<2?`<div class="sr-reaction"><div class="sr-source">${i===0?'📰':'🎙️'} ${x.source}</div><div class="sr-quote">${x.quote}</div></div>`:`<div class="sr-fan"><div class="sr-avatar">팬</div><div><p>${x.quote}</p><small>${x.source} · 방금 전</small></div></div>`).join('');
  const awards=l.aw.length?l.aw.map(x=>`<span class="sr-award">🏅 ${esc(x)}</span>`).join(''):'<span style="font-size:13px;color:#7b8796">이번 시즌 수상 기록 없음</span>';
- return `<section class="season-report" aria-label="시즌 종료 리포트"><header class="sr-head"><div class="sr-kicker">Season Review · ${l.age}세</div><h2>${esc(G.name||'선수')}의 시즌 결산</h2><div class="sr-sub">${esc((LV[l.lv]||{n:l.lv}).n)} · ${esc(l.tn)} · ${l.gp}/${l.g}경기 출전</div><div class="sr-ovr"><div class="sr-ovr-num">${cur}</div><div class="sr-ovr-label"><b>종합 능력치</b>${delta>0?`지난 시즌 기준 대비 +${delta} OVR`:delta<0?`지난 시즌 기준 대비 ${delta} OVR`:'현재 종합 능력치'}<br><span style="font-size:11px">※ 능력치 변화는 시즌 종료 시점 기준</span></div></div></header><div class="sr-body"><section class="sr-section"><h3>📊 시즌 기록</h3><div class="sr-stats">${stats.map(x=>`<div class="sr-stat"><strong>${typeof x[1]==='number'?Number(x[1]).toFixed(x[2]==='PPG'||x[2]==='RPG'||x[2]==='APG'?1:0):x[1]}</strong><span>${x[0]}</span></div>`).join('')}</div></section><section class="sr-section"><h3>🏆 대회 결과</h3>${comps}</section><section class="sr-section"><h3>📈 능력치 변화</h3><div class="sr-growth">${growth}</div></section><section class="sr-section"><h3>🏅 개인 수상</h3><div class="sr-awards">${awards}</div></section><section class="sr-section"><h3>🗞️ 언론 · 팬 반응</h3>${reactions}</section></div></section>`;
+ return `<section class="season-report" aria-label="시즌 종료 리포트"><header class="sr-head"><div class="sr-kicker">Season Review · ${l.age}세</div><h2>${esc(G.name||'선수')}의 시즌 결산</h2><div class="sr-sub">${esc(l.lv==='MIL'?militaryName(l.reg??G?.reg):(LV[l.lv]||{n:l.lv}).n)} · ${esc(l.tn)} · ${l.gp}/${l.g}경기 출전${l.lv==='NBA'&&l.nbaRole?` · NBA ${l.nbaCareerSeason}년 차 · ${esc(l.nbaRole)}`:''}</div><div class="sr-ovr"><div class="sr-ovr-num">${cur}</div><div class="sr-ovr-label"><b>종합 능력치</b>${delta>0?`지난 시즌 기준 대비 +${delta} OVR`:delta<0?`지난 시즌 기준 대비 ${delta} OVR`:'현재 종합 능력치'}<br><span style="font-size:11px">※ 능력치 변화는 시즌 종료 시점 기준</span></div></div></header><div class="sr-body"><section class="sr-section"><h3>📊 시즌 기록</h3><div class="sr-stats">${stats.map(x=>`<div class="sr-stat"><strong>${typeof x[1]==='number'?Number(x[1]).toFixed(x[2]==='PPG'||x[2]==='RPG'||x[2]==='APG'?1:0):x[1]}</strong><span>${x[0]}</span></div>`).join('')}</div></section><section class="sr-section"><h3>🏆 대회 결과</h3>${comps}</section><section class="sr-section"><h3>📈 능력치 변화</h3><div class="sr-growth">${growth}</div></section><section class="sr-section"><h3>🏅 개인 수상</h3><div class="sr-awards">${awards}</div></section><section class="sr-section"><h3>🗞️ 언론 · 팬 반응</h3>${reactions}</section></div></section>`;
+}
+
+
+function gameLogPanel(){
+ const season=(G?.seasons||[]).slice().reverse().find(x=>x&&Array.isArray(x.games)&&x.games.length);
+ if(!season)return `<div class="card"><b>경기별 기록</b><p class="subtle">새 시즌을 진행하면 경기별 박스스코어가 여기에 저장됩니다.</p></div>`;
+ const rows=season.games.map(game=>{
+  const st=game.stats||{};
+  const score=`${game.teamScore} : ${game.opponentScore}`;
+  const result=game.result==='W'?'승':'패';
+  return `<article class="game-log-row"><div class="game-log-top"><span class="game-result ${game.result==='W'?'win':'loss'}">${result}</span><b>${esc(game.opponent||'상대팀')}</b><span class="game-score">${score}</span></div><div class="game-log-sub">${game.homeAway==='home'?'홈':'원정'} · ${game.gameNumber}번째 경기 · ${st.minutes||0}분 출전</div><div class="game-box-grid"><div><b>${st.points||0}</b><small>득점</small></div><div><b>${st.rebounds||0}</b><small>리바운드</small></div><div><b>${st.assists||0}</b><small>어시스트</small></div><div><b>${st.fgMade||0}/${st.fgAttempted||0}</b><small>FG</small></div><div><b>${st.threeMade||0}/${st.threeAttempted||0}</b><small>3P</small></div><div><b>${st.ftMade||0}/${st.ftAttempted||0}</b><small>FT</small></div><div><b>${st.steals||0}</b><small>스틸</small></div><div><b>${st.blocks||0}</b><small>블록</small></div><div><b>${st.turnovers||0}</b><small>턴오버</small></div></div></article>`;
+ }).join('');
+ const totals=aggregateSeason(season.games);
+ return `<details class="game-log-card"><summary><span>경기별 기록</span><b>${season.games.length}경기 · ${totals.w}승 ${totals.l}패</b></summary><p class="subtle">${season.year}시즌 · ${season.league==='MIL'?militaryName(season.reg):(LV[season.league]||{n:season.league}).n} · ${esc(season.team)}</p><div class="game-log-list">${rows}</div></details>`;
 }
 
 function render(){const a=$('app');if(!G){a.innerHTML=startUI();return}/* 기존 저장 데이터에 잘못 남은 조기 종료 상태 복구 */if(G.phase==='end'&&G.age<39&&G.endReason!=='retired'){G.phase=G.last?'result':'hub';}sv();let h=head()+`<div class="save-access"><button onclick="saveManager()">저장 · 불러오기</button></div>`;
 if(G.phase==='turn'){const e=EV[G.evi];h+=note()+`<div class="card"><h2>${e.t}</h2><p>${e.d}</p></div>${b(e.a[0],ft(e.a[1]),'choose(0)')}${b(e.b[0],ft(e.b[1]),'choose(1)')}`}
-else if(G.phase==='hub')h+=note()+panel()+economyPanel()+`<div class="card"><b>이번 시즌 집중 훈련 (최대 2개)</b><div>${K.map(k=>ch(G.focus.includes(k),KN[k],`tg('${k}')`)).join('')}${ch(G.focus.includes('rest'),'휴식·재활',`tg('rest')`)}</div></div>${b('시즌 진행','','play()','go')}${b('커리어 기록','','G.sh=!G.sh;render()')}${G.sh?table():''}`;
+else if(G.phase==='hub')h+=note()+panel()+`<div class="card"><b>이번 시즌 집중 훈련 (최대 2개)</b><div>${K.map(k=>ch(G.focus.includes(k),KN[k],`tg('${k}')`)).join('')}${ch(G.focus.includes('rest'),'휴식·재활',`tg('rest')`)}</div></div>${b('시즌 진행','','play()','go')}${b('커리어 기록','','G.sh=!G.sh;render()')}${G.sh?table():''}`;
 else if(G.phase==='out'){const o=G.out;h+=`<div class="card"><h2>${esc(o.t)}</h2>${o.n?`<p class="${o.bd?'bad':'good'}">${esc(o.n)}</p>`:''}${o.l.map(x=>`<div>${esc(x)}</div>`).join('')}</div>`+b('계속','','cont()','go')}
-else if(G.phase==='season'){const l=G.last,sg=G.sg,gh=rd(l.g/2),wh=cl(rd(l.w/2*l.fr),0,gh),f=sg?1:l.fr,rec=sg?`${l.w}승 ${l.g-l.w}패`:`${wh}승 ${gh-wh}패`;h+=`<div class="card"><h2>${['시즌 전반','시즌 후반','포스트시즌'][sg]}</h2>`+(sg<2?`<p>${sg?l.g:gh}경기, ${rec}</p><div class="big">${(l.ppg*f).toFixed(1)}점 ${(l.rpg*f).toFixed(1)}리바 ${(l.apg*f).toFixed(1)}어시</div><p>${l.inj==='십자인대 파열, 시즌 아웃'?'부상으로 시즌 대부분을 놓쳤다.':l.min<10?'벤치에서 기회를 기다렸다.':l.min>=28?'팀의 주축으로 뛰고 있다.':'로테이션의 한 자리를 지키고 있다.'}</p>${sg&&l.inj?`<p class="bad">${l.inj}</p>`:''}`:`<p>${l.lv==='MIL'?'상무 시즌이 끝났다.':l.aw.includes((l.lv==='UNIV'?'대학':Pn[l.lv])+' 우승')?'우승! 정상에 올랐다.':l.w/l.g>=.5?'플레이오프에서 탈락했다.':'플레이오프에 오르지 못했다.'}</p>`)+`</div>`+b(['후반기로','포스트시즌으로','시즌 결산 보기'][sg],'','sgn()','go')}
-else if(G.phase==='result'){const l=G.last;h+=seasonReportMarkup(l)+`${l.rank?`<div class="card">NBA MVP 투표 순위: <b>${l.rank}위</b></div>`:''}${l.aw.includes('NBA MVP')&&G.aw['NBA MVP']===1?'<div class="card good"><b>NBA MVP 달성! 목표를 이뤘어요. 커리어는 계속 이어갈 수 있어요.</b></div>':''}<div class="card"><h3>이번 시즌 특기</h3>${traitMarkup(l.traits||[])}</div>${panel()}${economyPanel()}${b('다음 시즌','','adv()','go')}`}
-else{
+else if(G.phase==='path'){const p=G.path||{t:'진로 선택',d:'다음 커리어 단계를 선택하세요.',opts:[]};h+=note()+`<div class="card"><h2>${esc(p.t||'진로 선택')}</h2><p>${esc(p.d||'다음 커리어 단계를 선택하세요.')}</p></div>`+(p.opts||[]).map((o,i)=>b(esc(o.l||'선택'),esc(o.s||''),`doPath(${i})`,'path-choice '+(i===0?'go':''))).join('')}
+else if(G.phase==='season'){const l=G.last,sg=G.sg,gh=rd(l.g/2),wh=cl(rd(l.w/2*l.fr),0,gh),f=sg?1:l.fr,rec=sg?`${l.w}승 ${l.g-l.w}패`:`${wh}승 ${gh-wh}패`;h+=`<div class="card"><h2>${['시즌 전반','시즌 후반','포스트시즌'][sg]}</h2>`+(sg<2?`<p>${sg?l.g:gh}경기, ${rec}</p><div class="big">${(l.ppg*f).toFixed(1)}점 ${(l.rpg*f).toFixed(1)}리바 ${(l.apg*f).toFixed(1)}어시</div><p>${l.inj==='십자인대 파열, 시즌 아웃'?'부상으로 시즌 대부분을 놓쳤다.':l.min<10?'벤치에서 기회를 기다렸다.':l.min>=28?'팀의 주축으로 뛰고 있다.':'로테이션의 한 자리를 지키고 있다.'}</p>${sg&&l.inj?`<p class="bad">${l.inj}</p>`:''}`:`<p>${l.lv==='MIL'?`${militaryName(l.reg??G.reg)} 복무 기간이 끝났다.`:l.aw.includes((l.lv==='UNIV'?'대학':Pn[l.lv])+' 우승')?'우승! 정상에 올랐다.':l.w/l.g>=.5?'플레이오프에서 탈락했다.':'플레이오프에 오르지 못했다.'}</p>`)+`</div>`+b(['후반기로','포스트시즌으로','시즌 결산 보기'][sg],'','sgn()','go')}
+else if(G.phase==='result'){const l=G.last;h+=seasonReportMarkup(l)+`${l.rank?`<div class="card">NBA MVP 투표 순위: <b>${l.rank}위</b></div>`:''}${l.aw.includes('NBA MVP')&&G.aw['NBA MVP']===1?'<div class="card good"><b>NBA MVP 달성! 목표를 이뤘어요. 커리어는 계속 이어갈 수 있어요.</b></div>':''}<div class="card"><h3>이번 시즌 특기</h3>${traitMarkup(l.traits||[])}</div>${panel()}${b('다음 시즌','','adv()','go')}${gameLogPanel()}`}
+else if(G.phase==='end'){
 const nba=careerTotals('NBA'),A=G.aw||{},nm=Number(A['NBA MVP'])||0,nickname=getPlayerNickname(),major=getMajorAwards();
 const awardMarkup=major.length?major.map(x=>`<span class="hof-award">${esc(x.name)}${x.count>1?` · ${x.count}회`:''}</span>`).join(''):'<span class="hof-award">주요 수상 기록 없음</span>';
 h=`<div class="game-headline">ZERO TO <span>MVP</span> · CAREER ENDED</div>
@@ -745,11 +1144,12 @@ h=`<div class="game-headline">ZERO TO <span>MVP</span> · CAREER ENDED</div>
   </div>
   <div class="hof-detail"><b>NBA 통산 기록</b><p>${Math.round(nba.points).toLocaleString('ko-KR')}점 · ${Math.round(nba.rebounds).toLocaleString('ko-KR')}리바운드 · ${Math.round(nba.assists).toLocaleString('ko-KR')}어시스트</p></div>
   <div class="hof-detail"><b>주요 수상</b><div class="hof-awards">${awardMarkup}</div></div>
-  <div class="hof-detail"><b>선수 자산</b><p>${Number(G.money||0).toFixed(1)}억 · 성장 유형 ${esc(TY[G.type]||G.type||'—')}</p></div>
+  <div class="hof-detail"><b>성장 유형</b><p>${esc(TY[G.type]||G.type||'—')}</p></div>
   <button type="button" class="hof-copy" onclick="copyCareerSummary()">📋 커리어 요약 텍스트 복사하기</button>
 </section>
 ${table()}${b('새 선수로 다시 시작','','clr();G=null;C.cs=[];render()','go')}`}
 
+if(G.phase!=='end'&&G.phase!=='path'&&G.phase!=='turn'&&G.phase!=='hub'&&G.phase!=='out'&&G.phase!=='season'&&G.phase!=='result'){G.phase='hub';return render()}
 a.innerHTML=h}
 render();
 </script></body></html>
