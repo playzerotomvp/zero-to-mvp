@@ -1176,10 +1176,20 @@ function seasonReactions(l){
  let hash=0;for(let i=0;i<seed.length;i++)hash=(hash*31+seed.charCodeAt(i))>>>0;
  const pick=(arr,n=0)=>arr[(hash+n*7)%arr.length];
  const base=pick(pools,0);
+ // 리그에 맞는 실제 매체·커뮤니티 이름을 사용하되, 문구는 게임 내 가상 반응이다.
+ const sourceSets={
+  HS:{press:['점프볼','바스켓코리아','한국중고농구연맹 소식'],analysis:['점프볼 취재진','바스켓코리아 경기 리뷰','농구 전문 해설'],fans:['디시인사이드 국내농구 갤러리','에펨코리아 농구 게시판','학교 농구부 팬 커뮤니티']},
+  UNIV:{press:['점프볼','바스켓코리아','대학농구연맹 소식'],analysis:['점프볼 대학농구 취재진','바스켓코리아 분석','대학농구 해설위원'],fans:['디시인사이드 국내농구 갤러리','에펨코리아 농구 게시판','NBA Mania 대학농구 게시판']},
+  KBL:{press:['점프볼','바스켓코리아','KBL 공식 미디어'],analysis:['점프볼 경기 분석','바스켓코리아 해설','KBL 전문 기자'],fans:['디시인사이드 국내농구 갤러리','NBA Mania','에펨코리아 농구 게시판']},
+  NCAA:{press:['ESPN','CBS Sports','The Athletic'],analysis:['ESPN College Basketball','CBS Sports 분석','The Athletic 대학농구 취재진'],fans:['Reddit r/CollegeBasketball','디시인사이드 국내농구 갤러리','에펨코리아 농구 게시판']},
+  NBA:{press:['ESPN','TNT Sports','The Athletic'],analysis:['ESPN NBA 분석','TNT Sports 해설진','The Athletic NBA 취재진'],fans:['디시인사이드 NBA 갤러리','NBA Mania','Reddit r/nba']},
+  GL:{press:['ESPN','The Athletic','NBA G League'],analysis:['ESPN 농구 분석','The Athletic 취재진','G League 리포트'],fans:['디시인사이드 NBA 갤러리','NBA Mania','Reddit r/nba']}
+ };
+ const sources=sourceSets[l.lv]||sourceSets.KBL;
  return [
-  {source:'스포츠 뉴스',quote:pick(base.press,1)},
-  {source:pick(['농구 전문 기자','경기 분석','현지 매체','해설위원','스카우트 리포트','팀 담당 기자'],2),quote:pick(base.analysis,2)},
-  {source:pick(['팬 반응','팬 커뮤니티','경기장 관중','팬 게시판','서포터즈 반응'],3),quote:pick(fanPools,4)}
+  {source:pick(sources.press,1),quote:pick(base.press,1)},
+  {source:pick(sources.analysis,2),quote:pick(base.analysis,2)},
+  {source:pick(sources.fans,3),quote:pick(fanPools,4)}
  ];
 }
 function seasonReportMarkup(l){
@@ -1188,7 +1198,7 @@ function seasonReportMarkup(l){
  const comps=seasonCompetitionRows(l).map(x=>`<div class="sr-competition"><div class="sr-icon">${x.icon}</div><div class="sr-comp-main"><b>${x.title}</b><small>${x.sub}</small></div><div class="sr-comp-result ${x.tone||''}">${x.result}</div></div>`).join('');
  const reactions=seasonReactions(l).map((x,i)=>i<2?`<div class="sr-reaction"><div class="sr-source">${i===0?'📰':'🎙️'} ${x.source}</div><div class="sr-quote">${x.quote}</div></div>`:`<div class="sr-fan"><div class="sr-avatar">팬</div><div><p>${x.quote}</p><small>${x.source} · 방금 전</small></div></div>`).join('');
  const awards=l.aw.length?l.aw.map(x=>`<span class="sr-award">🏅 ${esc(x)}</span>`).join(''):'<span style="font-size:13px;color:#7b8796">이번 시즌 수상 기록 없음</span>';
- return `<section class="season-report" aria-label="시즌 종료 리포트"><header class="sr-head"><div class="sr-kicker">Season Review · ${l.age}세</div><h2>${esc(G.name||'선수')}의 시즌 결산</h2><div class="sr-sub">${esc(l.lv==='MIL'?militaryName(l.reg??G?.reg):(LV[l.lv]||{n:l.lv}).n)} · ${esc(l.tn)} · ${l.gp}/${l.g}경기 출전${l.lv==='NBA'&&l.nbaRole?` · NBA ${l.nbaCareerSeason}년 차 · ${esc(l.nbaRole)}`:''}</div><div class="sr-ovr"><div class="sr-ovr-num">${cur}</div><div class="sr-ovr-label"><b>종합 능력치</b>${delta>0?`지난 시즌 기준 대비 +${delta} OVR`:delta<0?`지난 시즌 기준 대비 ${delta} OVR`:'현재 종합 능력치'}<br><span style="font-size:11px">※ 능력치 변화는 시즌 종료 시점 기준</span></div></div></header><div class="sr-body"><section class="sr-section"><h3>📊 시즌 기록</h3><div class="sr-stats">${stats.map(x=>`<div class="sr-stat"><strong>${typeof x[1]==='number'?Number(x[1]).toFixed(x[2]==='PPG'||x[2]==='RPG'||x[2]==='APG'?1:0):x[1]}</strong><span>${x[0]}</span></div>`).join('')}</div></section><section class="sr-section"><h3>🏆 대회 결과</h3>${comps}</section><section class="sr-section"><h3>📈 능력치 변화</h3><div class="sr-growth">${growth}</div></section><section class="sr-section"><h3>🏅 개인 수상</h3><div class="sr-awards">${awards}</div></section><section class="sr-section"><h3>🗞️ 언론 · 팬 반응</h3>${reactions}</section></div></section>`;
+ return `<section class="season-report" aria-label="시즌 종료 리포트"><header class="sr-head"><div class="sr-kicker">Season Review · ${l.age}세</div><h2>${esc(G.name||'선수')}의 시즌 결산</h2><div class="sr-sub">${esc(l.lv==='MIL'?militaryName(l.reg??G?.reg):(LV[l.lv]||{n:l.lv}).n)} · ${esc(l.tn)} · ${l.gp}/${l.g}경기 출전${l.lv==='NBA'&&l.nbaRole?` · NBA ${l.nbaCareerSeason}년 차 · ${esc(l.nbaRole)}`:''}</div><div class="sr-ovr"><div class="sr-ovr-num">${cur}</div><div class="sr-ovr-label"><b>종합 능력치</b>${delta>0?`지난 시즌 기준 대비 +${delta} OVR`:delta<0?`지난 시즌 기준 대비 ${delta} OVR`:'현재 종합 능력치'}<br><span style="font-size:11px">※ 능력치 변화는 시즌 종료 시점 기준</span></div></div></header><div class="sr-body"><section class="sr-section"><h3>📊 시즌 기록</h3><div class="sr-stats">${stats.map(x=>`<div class="sr-stat"><strong>${typeof x[1]==='number'?Number(x[1]).toFixed(x[2]==='PPG'||x[2]==='RPG'||x[2]==='APG'?1:0):x[1]}</strong><span>${x[0]}</span></div>`).join('')}</div></section><section class="sr-section"><h3>🏆 대회 결과</h3>${comps}</section><section class="sr-section"><h3>📈 능력치 변화</h3><div class="sr-growth">${growth}</div></section><section class="sr-section"><h3>🏅 개인 수상</h3><div class="sr-awards">${awards}</div></section><section class="sr-section"><h3>🗞️ 언론 · 팬 반응</h3><p class="subtle" style="margin:0 0 10px">실제 매체·커뮤니티를 본뜬 게임 내 가상 반응</p>${reactions}</section></div></section>`;
 }
 
 
