@@ -1,20 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Every Legend Starts at the Bottom. Build your basketball career in ZERO TO MVP, a basketball career simulator.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="ZERO TO MVP — Basketball Career Simulator">
-<meta property="og:description" content="Every Legend Starts at the Bottom. Build your basketball career.">
-<meta property="og:image" content="https://pulcher0829-cpu.github.io/zero-to-mvp/og-image.png">
-<meta property="og:image:width" content="1732">
-<meta property="og:image:height" content="908">
-<meta property="og:image:alt" content="ZERO TO MVP — Basketball Career Simulator promotional artwork">
-<meta property="og:url" content="https://pulcher0829-cpu.github.io/zero-to-mvp/">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="ZERO TO MVP — Basketball Career Simulator">
-<meta name="twitter:description" content="Every Legend Starts at the Bottom. Build your basketball career.">
-<meta name="twitter:image" content="https://pulcher0829-cpu.github.io/zero-to-mvp/og-image.png">
-<title>ZERO TO MVP — Basketball Career Simulator v65</title>
+<title>ZERO TO MVP — Basketball Career Simulator v67</title>
 <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0d1520;--plank:#253649;--card:#1a2939;--ink:#f3f7fc;--mute:#b6c7d8;--blue:#70baff;--org:#ff8047;--line:#455c70;--good:#72df9e;--bad:#ff9999;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -266,6 +253,19 @@ input::placeholder{color:#aab2bc!important}
   color:rgba(255,255,255,.88)!important;
 }
 
+.hof-story p{line-height:1.8;word-break:keep-all;color:var(--mute)}
+
+#app button.path-choice.locked,
+#app button.path-choice.locked:disabled {
+  opacity:.48!important;
+  cursor:not-allowed!important;
+  background:#eef1f5!important;
+  color:#657184!important;
+  border:1px solid #d7dde5!important;
+  box-shadow:none!important;
+}
+#app button.path-choice.locked small {color:#7b8797!important}
+
 </style></head><body><div class="top-actions"><button type="button" id="exitGameBtn" class="exit-btn" aria-label="게임 종료">게임 종료 ✕</button></div><main id="app"></main>
 <script>
 const R=Math.random,rn=(a,b)=>a+R()*(b-a),cl=(v,a=0,b=100)=>Math.max(a,Math.min(b,v)),rd=Math.round,pk=a=>a[Math.floor(R()*a.length)];
@@ -275,7 +275,33 @@ const KN={shoot:'슛',fin:'돌파·마무리',play:'플레이메이킹',def:'수
 const POS={H:{n:'핸들러',w:{shoot:.22,fin:.18,play:.30,def:.12,reb:.03,phy:.15},h:[176,192],pm:1},W:{n:'윙',w:{shoot:.28,fin:.22,play:.12,def:.20,reb:.08,phy:.10},h:[188,200],pm:1.06},B:{n:'빅',w:{shoot:.08,fin:.25,play:.07,def:.22,reb:.25,phy:.13},h:[197,212],pm:.92}};
 const LV={HS:{n:'고교',b:50,g:25},UNIV:{n:'대학',b:56,g:28},KBL:{n:'KBL',b:64,g:54},NCAA:{n:'NCAA',b:68,g:32},GL:{n:'G리그',b:66,g:50},MIL:{n:'상무',b:62,g:40},NBA:{n:'NBA',b:76,g:82}};
 const Pn={HS:'고교',UNIV:'U리그',KBL:'KBL',NCAA:'NCAA',GL:'G리그',NBA:'NBA',MIL:'상무'};
-const TN={HS:['삼일고','경복고','용산고','양정고','휘문고','제물포고'],UNIV:['연세대','고려대','중앙대','경희대','한양대','동국대'],KBL:['서울 SK','서울 삼성','수원 KT','창원 LG','울산 현대모비스','대구 한국가스공사','고양 소노','원주 DB','안양 정관장','부산 KCC'],NCAA:['듀크','캔자스','UCLA','UConn','곤자가','미시간 주립'],GL:['위스콘신 허드','오스틴 스퍼스','산타크루즈','사우스베이'],NBA:['레이커스','셀틱스','워리어스','너기츠','히트','벅스','선즈','닉스','스퍼스','썬더','매버릭스','위저즈']};
+const TN={HS:['삼일고','경복고','용산고','양정고','휘문고','제물포고'],UNIV:['연세대','고려대','중앙대','경희대','한양대','동국대','건국대','성균관대','단국대','명지대','상명대'],KBL:['서울 SK','서울 삼성','수원 KT','창원 LG','울산 현대모비스','대구 한국가스공사','고양 소노','원주 DB','안양 정관장','부산 KCC'],NCAA:['듀크','노스캐롤라이나','캔자스','켄터키','UCLA','UConn','곤자가','미시간 주립','애리조나','플로리다'],GL:['위스콘신 허드','오스틴 스퍼스','산타크루즈','사우스베이'],NBA:['레이커스','셀틱스','워리어스','너기츠','히트','벅스','선즈','닉스','스퍼스','썬더','매버릭스','위저즈']};
+// 대학 진학 선택지: 팀 전력은 게임 밸런스를 위한 가상 수치이며 실제 팀 순위가 아니다.
+const KR_COLLEGES=[
+ {name:'연세대',region:'서울',tier:'최상위권',strength:76,req:58},
+ {name:'고려대',region:'서울',tier:'최상위권',strength:76,req:58},
+ {name:'중앙대',region:'경기 안성',tier:'상위권',strength:72,req:54},
+ {name:'경희대',region:'경기 용인',tier:'상위권',strength:72,req:54},
+ {name:'한양대',region:'서울',tier:'상위권',strength:70,req:52},
+ {name:'건국대',region:'서울',tier:'상위권',strength:70,req:52},
+ {name:'동국대',region:'서울',tier:'경쟁권',strength:67,req:48},
+ {name:'성균관대',region:'경기 수원',tier:'경쟁권',strength:68,req:49},
+ {name:'단국대',region:'경기 용인',tier:'경쟁권',strength:66,req:47},
+ {name:'명지대',region:'경기 용인',tier:'경쟁권',strength:65,req:46},
+ {name:'상명대',region:'충남 천안',tier:'경쟁권',strength:64,req:45}
+];
+const US_COLLEGES=[
+ {name:'Duke',region:'노스캐롤라이나',tier:'블루블러드 명문',strength:82,req:67},
+ {name:'North Carolina',region:'노스캐롤라이나',tier:'블루블러드 명문',strength:81,req:66},
+ {name:'Kansas',region:'캔자스',tier:'전통 명문',strength:80,req:64},
+ {name:'Kentucky',region:'켄터키',tier:'전통 명문',strength:80,req:64},
+ {name:'UConn',region:'코네티컷',tier:'전국 최강권',strength:80,req:64},
+ {name:'UCLA',region:'캘리포니아',tier:'전통 명문',strength:78,req:62},
+ {name:'Gonzaga',region:'워싱턴',tier:'전국 강호',strength:77,req:60},
+ {name:'Michigan State',region:'미시간',tier:'전국 강호',strength:76,req:59},
+ {name:'Arizona',region:'애리조나',tier:'전국 강호',strength:76,req:59},
+ {name:'Florida',region:'플로리다',tier:'전국 강호',strength:77,req:60}
+];
 const KR_SCHOOLS=[
  {name:'용산고',state:'서울 · 전통 강호'},
  {name:'경복고',state:'서울 · 전통 강호'},
@@ -870,7 +896,7 @@ function route(){const A=G.age,F=G.fl,set=(t,d,O)=>{G.path={t,d,opts:O};G.phase=
 if(A>=39){G.endReason='age_limit';G.phase='end';return}
 if(G.lv==='MIL'&&G.ms<=0){const returnLv=G.prevLv||'KBL',returnTeam=G.prevTn,returnStrength=G.prevTeam,returnContract=G.prevCy;join(returnLv,returnStrength);G.tn=returnTeam||G.tn;G.team=returnStrength??G.team;G.cy=returnContract>0?returnContract:rd(rn(1,3));G.note=`전역했다. 원소속팀 ${G.tn}에 복귀한다.`;delete G.prevLv;delete G.prevTn;delete G.prevTeam;delete G.prevCy}
 const v=ovr(),L=LV[G.lv],ro=L.b+(G.team-50)*.35;
-if(G.lv==='HS'&&A>=19&&!F.g){F.g=1;return set('고교 졸업','스카우트 평가에 따라 진로 제안이 달라져요.',[op('대학 진학','U리그 4년, 2학년부터 프로 도전','j','UNIV'),...(v>=50?[op('KBL 프로 직행','드래프트 지명 후 입단','j','KBL')]:[]),...(v>=(G.us?50:56)?[op('NCAA 유학','미국 대학, NBA 스카우트에 노출','j','NCAA')]:[])])}
+if(G.lv==='HS'&&A>=19&&!F.g){F.g=1;return set('고교 졸업','어느 무대에서 대학 농구를 시작할지 선택하세요.',[op('한국 대학 진학','연세대·고려대·건국대 등 KUSF U-리그','pickKR'),...(v>=50?[op('KBL 프로 직행','드래프트 지명 후 입단','j','KBL')]:[]),...(v>=(G.us?50:56)?[op('미국 NCAA 진학','Duke·North Carolina 등 NCAA 디비전 I','pickUS')]:[])])}
 if(G.lv==='UNIV'&&G.uy>=2&&!F.g){F.g=1;const f=G.uy>=4;return set('프로 도전',f?'졸업이에요. 프로에 입단합니다.':'KBL 드래프트를 신청할 수 있어요.',[...(v>=50||f?[op('KBL 드래프트 신청','지명 후 프로 입단','j','KBL')]:[]),...(f?[]:[op('대학 잔류','한 시즌 더 성장','s')])])}
 if(G.lv==='NCAA'&&G.uy>=1&&!F.g){F.g=1;const f=G.uy>=4;return set('NBA 드래프트','지명 순위는 실력, 명성, 스카우트 평가로 정해져요.',[op('NBA 드래프트 신청','언드래프티면 G리그 투웨이 또는 귀국','nd'),...(f?[]:[op('NCAA 잔류','한 시즌 더 성장','s')]),op('KBL 귀국','','j','KBL')])}
 // KBL에서 NBA로 가는 것은 예외적인 경로다. 벤치/롤플레이어에게 자동으로 투웨이를 제안하지 않고, 실제 시즌 성과가 검증된 리그 최상위권 선수만 드물게 후보가 된다.
@@ -896,7 +922,10 @@ const ti=NT.findIndex(n=>G.yr>=n[1]&&(G.yr-n[1])%4===0);
 if(ti>=0&&A>=19&&v>=60&&G.lv!=='HS'&&!F.t&&G.yr-(G.ntLast||0)>=2&&R()<.45){F.t=1;G.ntLast=G.yr;const n=NT[ti];return set(`${n[0]} 대표팀 소집`,`국가대표 차출은 매년 보장되지 않는다. 이번 대회에서 국가대표 명단에 올랐다.${n[3]?' 병역 특례가 걸려 있다.':''}`,[op('합류한다','건강 -8, 명성 상승','nt',[ti,1]),op('고사한다','소속팀에 집중, 신뢰 +4','nt',[ti,0])])}
 G.evi=R()<.75?pickEv():-1;G.phase=G.evi>=0?'turn':'hub'}
 function doPath(i){const o=G.path.opts[i],x=o.x,s0=sn();G.path=null;
-switch(o.a){case'j':join(x);G.note=`${LV[G.lv].n} ${G.tn} 입단`;break;
+if(o.a==='pickKR'){G.path={t:'한국 대학 선택',d:'진학할 대학 농구부를 선택하세요. 학교별 팀 전력과 진학 난이도는 게임 밸런스를 위한 설정입니다.',opts:KR_COLLEGES.filter(c=>ovr()>=c.req).map(c=>op(c.name,`${c.region} · ${c.tier} · 진학 평가 ${c.req}+`,'enrollKR',c))};if(!G.path.opts.length)G.path.opts=[op('성장 후 재도전','현재 평가로는 진학 제안이 부족하다.','s')];G.phase='path';render();return}
+if(o.a==='pickUS'){G.path={t:'NCAA 대학 선택',d:`미국 대학 농구 무대를 선택하세요. 전체 ${US_COLLEGES.length}개 대학을 확인할 수 있으며, 현재 종합 평가(${ovr()})가 각 대학의 기준에 도달해야 선택할 수 있습니다.`,opts:US_COLLEGES.map(c=>({...op(c.name,ovr()>=c.req?`${c.region} · ${c.tier} · 진학 평가 ${c.req}+`:`${c.region} · ${c.tier} · 진학 평가 ${c.req}+ 필요 (현재 ${ovr()})`,'enrollUS',c),locked:ovr()<c.req}))};G.phase='path';render();return}
+switch(o.a){case'enrollKR':case'enrollUS':{const c=x;G.lv=o.a==='enrollKR'?'UNIV':'NCAA';G.uy=0;G.tn=c.name;G.team=c.strength;G.cy=0;G.collegeName=c.name;G.collegeCountry=o.a==='enrollKR'?'KR':'US';G.note=`${c.name} 농구부 진학 확정`;break;}
+case'j':join(x);G.note=`${LV[G.lv].n} ${G.tn} 입단`;break;
 case's':G.note='이번 시즌은 지금 자리에서 뛴다.';break;
 case'nd':nd();break;
 case'nj':if(ovr()>=72){join('NBA');G.note=`NBA ${G.tn}와 로스터 계약`}else{join('GL');G.note=`${G.tn}와 NBA 투웨이 계약, G리그에서 시작`}break;
@@ -914,7 +943,7 @@ const panel=()=>`<div class="card"><div class="meta"><span>OVERALL <b>${ovr()}</
 const note=()=>G.note?`<p class="good">${esc(G.note)}</p>`:'';
 function setStatView(view){statView=view;render()}
 const table=()=>`<div class="card tbl"><div class="stat-tabs"><button class="${statView==='basic'?'active':''}" onclick="setStatView('basic')">기본 통계</button><button class="${statView==='advanced'?'active':''}" onclick="setStatView('advanced')">세부·고급 통계</button></div><table>${statView==='basic'?`<tr><th>나이</th><th>OVR</th><th>리그</th><th>팀</th><th>경기</th><th>분</th><th>득점</th><th>리바</th><th>어시</th><th>승</th><th>시즌 특기</th></tr>${G.hist.map(h=>`<tr><td>${h.age}</td><td><b>${h.o??'—'}</b></td><td>${(LV[h.lv]||{n:h.lv}).n}</td><td>${esc(h.tn)}</td><td>${h.gp}</td><td>${h.min}</td><td>${h.ppg}</td><td>${h.rpg}</td><td>${h.apg}</td><td>${h.w}</td><td>${(h.traits||[]).map(t=>esc(t.label||t.name)).join(', ')||'—'}</td></tr>`).join('')}`:`<tr><th>나이</th><th>FG%</th><th>3P%</th><th>FT%</th><th>SPG</th><th>BPG</th><th>TOPG</th><th>TS%</th><th>PER*</th></tr>${G.hist.map(h=>{const x=h.stats||makeAdvancedStats({ppg:h.ppg||0,rpg:h.rpg||0,apg:h.apg||0,min:h.min||0,...G.s});return `<tr><td>${h.age}</td><td>${pct(x.fgPct)}</td><td>${pct(x.threePct)}</td><td>${pct(x.ftPct)}</td><td>${x.stl}</td><td>${x.blk}</td><td>${x.tov}</td><td>${pct(x.tsPct)}</td><td>${x.perProxy}</td></tr>`}).join('')}</table><small>* PER은 현재 게임의 기록을 활용한 대체 지표이며, 공식 PER 산식과는 다릅니다. 이전 세이브의 상세 스탯은 추정값으로 표시될 수 있습니다.</small>`}</div>`;
-function startUI(){const s=ld();if(!C.cs.length)newC();return `<section class="brand-hero" aria-label="ZERO TO MVP"><div class="brand-wordmark">ZERO TO <span>MVP</span></div><div class="brand-kicker">Basketball Career Simulator · v65</div><p class="brand-tagline"><em>Every Legend Starts at the Bottom.</em></p><p class="brand-copy">고등학교에서 시작해 농구계의 정상까지.<br>네 커리어를 직접 만들어라.</p><div class="brand-actions"><button type="button" class="brand-primary" onclick="document.getElementById('careerSetup').scrollIntoView({behavior:'smooth',block:'start'})">NEW CAREER</button>${s?`<button type="button" class="brand-secondary" onclick="resume()">CONTINUE · ${esc(s.name)}</button>`:`<button type="button" class="brand-secondary" disabled aria-disabled="true" title="저장된 커리어가 없습니다">CONTINUE · NO SAVE</button>`}</div></section><div id="careerSetup" class="brand-section-title">Create Your Player / 선수 생성</div><div class="card"><b>선수 만들기</b><input value="${esc(C.name)}" placeholder="이름(닉네임)" maxlength="10" oninput="C.name=this.value" aria-label="이름"><input type="number" value="${C.no}" min="0" max="99" oninput="C.no=this.value" aria-label="등번호"><div>${Object.keys(POS).map(k=>ch(C.pos===k,POS[k].n,`C.pos='${k}';C.foc=[];newC();render()`)).join('')}</div><div>${ch(C.st==='KR','한국 고교 농구부',`C.st='KR';render()`)}${ch(C.st==='US','미국 프렙스쿨 유학',`C.st='US';C.usSchool=C.usSchool||'Montverde Academy';render()`)}</div>${C.st==='US'?`<div style="margin-top:10px"><label for="usSchool"><b>유학할 고등학교 선택</b></label><select id="usSchool" onchange="C.usSchool=this.value" style="width:100%;font:16px 'Noto Sans KR',sans-serif;padding:10px;margin-top:6px;border:2px solid var(--ink);border-radius:4px;background:var(--card);color:var(--ink)">${US_SCHOOLS.map(x=>`<option value="${x.name}" ${C.usSchool===x.name?'selected':''}>${x.name} — ${x.state}</option>`).join('')}</select><small style="display:block;color:var(--mute);margin-top:5px">학교 선택은 커리어 기록에 표시돼. 실제 입학 가능성이나 팀 로스터를 뜻하지는 않아.</small></div>`:`<div style="margin-top:10px"><label for="krSchool"><b>진학할 한국 고등학교 선택</b></label><select id="krSchool" onchange="C.krSchool=this.value" style="width:100%;font:16px 'Noto Sans KR',sans-serif;padding:10px;margin-top:6px;border:2px solid var(--ink);border-radius:4px;background:var(--card);color:var(--ink)">${KR_SCHOOLS.map(x=>`<option value="${x.name}" ${C.krSchool===x.name?'selected':''}>${x.name} — ${x.state}</option>`).join('')}</select></div>`}</div></div>${C.cs.map((c,i)=>`<button class="cand ${C.sel===i?'on':''}" aria-pressed="${C.sel===i?'true':'false'}" onclick="C.sel=${i};render()"><span class="cand-title">${C.sel===i?'✓ 선택됨　':''}후보 ${i+1} · ${c.arch||'선수 유형'}, 키 ${c.h}cm, 종합 ${ovrOf(c.s,C.pos)}</span><small>${K.map(k=>`${KN[k]} ${c.s[k]}`).join(', ')}</small></button>`).join('')}${b('다른 후보 보기','','newC();render()')}<div class="card"><b>집중 육성 (최대 2개)</b><div>${K.map(k=>ch(C.foc.includes(k),KN[k],`kg('${k}')`)).join('')}</div></div>${C.err?'<p class="bad">후보를 먼저 골라주세요.</p>':''}${b('커리어 시작','','begin()','go')}`}
+function startUI(){const s=ld();if(!C.cs.length)newC();return `<section class="brand-hero" aria-label="ZERO TO MVP"><div class="brand-wordmark">ZERO TO <span>MVP</span></div><div class="brand-kicker">Basketball Career Simulator · v67.1</div><p class="brand-tagline"><em>Every Legend Starts at the Bottom.</em></p><p class="brand-copy">고등학교에서 시작해 농구계의 정상까지.<br>네 커리어를 직접 만들어라.</p><div class="brand-actions"><button type="button" class="brand-primary" onclick="document.getElementById('careerSetup').scrollIntoView({behavior:'smooth',block:'start'})">NEW CAREER</button>${s?`<button type="button" class="brand-secondary" onclick="resume()">CONTINUE · ${esc(s.name)}</button>`:`<button type="button" class="brand-secondary" disabled aria-disabled="true" title="저장된 커리어가 없습니다">CONTINUE · NO SAVE</button>`}</div></section><div id="careerSetup" class="brand-section-title">Create Your Player / 선수 생성</div><div class="card"><b>선수 만들기</b><input value="${esc(C.name)}" placeholder="이름(닉네임)" maxlength="10" oninput="C.name=this.value" aria-label="이름"><input type="number" value="${C.no}" min="0" max="99" oninput="C.no=this.value" aria-label="등번호"><div>${Object.keys(POS).map(k=>ch(C.pos===k,POS[k].n,`C.pos='${k}';C.foc=[];newC();render()`)).join('')}</div><div>${ch(C.st==='KR','한국 고교 농구부',`C.st='KR';render()`)}${ch(C.st==='US','미국 프렙스쿨 유학',`C.st='US';C.usSchool=C.usSchool||'Montverde Academy';render()`)}</div>${C.st==='US'?`<div style="margin-top:10px"><label for="usSchool"><b>유학할 고등학교 선택</b></label><select id="usSchool" onchange="C.usSchool=this.value" style="width:100%;font:16px 'Noto Sans KR',sans-serif;padding:10px;margin-top:6px;border:2px solid var(--ink);border-radius:4px;background:var(--card);color:var(--ink)">${US_SCHOOLS.map(x=>`<option value="${x.name}" ${C.usSchool===x.name?'selected':''}>${x.name} — ${x.state}</option>`).join('')}</select><small style="display:block;color:var(--mute);margin-top:5px">학교 선택은 커리어 기록에 표시돼. 실제 입학 가능성이나 팀 로스터를 뜻하지는 않아.</small></div>`:`<div style="margin-top:10px"><label for="krSchool"><b>진학할 한국 고등학교 선택</b></label><select id="krSchool" onchange="C.krSchool=this.value" style="width:100%;font:16px 'Noto Sans KR',sans-serif;padding:10px;margin-top:6px;border:2px solid var(--ink);border-radius:4px;background:var(--card);color:var(--ink)">${KR_SCHOOLS.map(x=>`<option value="${x.name}" ${C.krSchool===x.name?'selected':''}>${x.name} — ${x.state}</option>`).join('')}</select></div>`}</div></div>${C.cs.map((c,i)=>`<button class="cand ${C.sel===i?'on':''}" aria-pressed="${C.sel===i?'true':'false'}" onclick="C.sel=${i};render()"><span class="cand-title">${C.sel===i?'✓ 선택됨　':''}후보 ${i+1} · ${c.arch||'선수 유형'}, 키 ${c.h}cm, 종합 ${ovrOf(c.s,C.pos)}</span><small>${K.map(k=>`${KN[k]} ${c.s[k]}`).join(', ')}</small></button>`).join('')}${b('다른 후보 보기','','newC();render()')}<div class="card"><b>집중 육성 (최대 2개)</b><div>${K.map(k=>ch(C.foc.includes(k),KN[k],`kg('${k}')`)).join('')}</div></div>${C.err?'<p class="bad">후보를 먼저 골라주세요.</p>':''}${b('커리어 시작','','begin()','go')}`}
 function kg(k){C.foc=C.foc.includes(k)?C.foc.filter(x=>x!==k):[...C.foc,k].slice(-2);render()}
 function resume(){G=ld();render()}
 function exitGame(){
@@ -966,22 +995,40 @@ function careerTotals(filter='all'){
 function getPlayerNickname(){
   if(!G)return '코트 위의 도전자';
   const awards=G.aw||{},nba=careerTotals('NBA'),all=careerTotals('all');
-  const sample=nba.games?nba:all;
   const mvp=Number(awards['NBA MVP'])||0;
-  if(mvp>=3)return '농구의 신 (GOAT)';
+  const rings=Number(awards['NBA 우승'])||0;
+  const allStars=Number(awards['NBA 올스타']||awards['올스타'])||0;
+  const firstTeam=Number(awards['ALL-NBA FIRST TEAM'])||0;
+  const secondTeam=Number(awards['ALL-NBA SECOND TEAM'])||0;
+  const thirdTeam=Number(awards['ALL-NBA THIRD TEAM'])||0;
+  const dpoy=Number(awards['NBA 올해의 수비수'])||0;
+  const sample=nba.games?nba:all;
+  const maxO=Number(G.maxO)||0;
+  const playedNBA=nba.games>0;
+  const playedKBL=(G.hist||[]).some(h=>h.lv==='KBL');
+  const playedCollege=(G.hist||[]).some(h=>h.lv==='NCAA'||h.lv==='UNIV');
+  if(mvp>=3)return '농구의 신';
   if(mvp>=1)return '시대를 지배한 MVP';
+  if(rings>=4)return 'NBA 왕조의 전설';
+  if(rings>=2)return '우승을 이끈 승리의 주역';
+  if(dpoy>0)return '코트의 수호자';
+  if(allStars>=3||firstTeam>=2)return '올스타 슈퍼스타';
+  if(firstTeam>0)return '리그를 대표하는 퍼스트 팀';
+  if(allStars>0)return 'NBA 올스타';
   if(sample.ppg>=25)return '코트 위의 폭격기';
-  if(sample.apg>=8)return '패스의 마술사';
-  if(sample.rpg>=10)return '골밑의 지배자';
-  if((Number(G.maxO)||0)>=85)return '올스타 슈퍼스타';
-  if((Number(awards['NBA 올해의 수비수'])||0)>0 || (Number(awards['ALL-DEFENSIVE FIRST TEAM'])||0)>=3)return '코트의 수호자';
-  if((Number(awards['NBA 우승'])||0)>=3)return '왕조의 심장';
-  if((Number(awards['NBA 올스타'])||Number(awards['올스타'])||0)>0)return '올스타 플레이어';
-  if((Number(awards['ALL-NBA FIRST TEAM'])||0)>0)return '퍼스트 팀 스타';
-  if(nba.games>0)return 'NBA 무대를 밟은 사나이';
-  if((G.hist||[]).some(h=>h.lv==='KBL'))return 'KBL의 자부심';
-  if((G.hist||[]).some(h=>h.lv==='NCAA'||h.lv==='UNIV'))return '코트를 거친 승부사';
-  return '끝까지 달린 도전자';
+  if(sample.apg>=8)return '경기를 지휘한 플레이메이커';
+  if(sample.rpg>=10)return '골밑을 지배한 리바운더';
+  if(secondTeam+thirdTeam>0)return 'NBA 정상급 플레이어';
+  if(maxO>=85)return 'NBA를 빛낸 슈퍼스타';
+  if(playedNBA&&nba.games>=500)return 'NBA 베테랑';
+  if(playedNBA&&nba.games>=100)return 'NBA 핵심 로테이션';
+  if(playedNBA)return '꿈의 무대에 선 NBA 플레이어';
+  if(playedKBL&&maxO>=75)return 'KBL을 빛낸 스타';
+  if(playedKBL)return 'KBL 프로 플레이어';
+  if(playedCollege&&maxO>=70)return '대학 무대를 지배한 에이스';
+  if(playedCollege)return '프로를 향해 달린 대학 스타';
+  if(maxO>=65)return '가능성을 증명한 유망주';
+  return '끝까지 코트를 지킨 도전자';
 }
 function getMajorAwards(){
   const awards=G?.aw||{};
@@ -1131,12 +1178,41 @@ function gameLogPanel(){
  return `<details class="game-log-card"><summary><span>경기별 기록</span><b>${season.games.length}경기 · ${totals.w}승 ${totals.l}패</b></summary><p class="subtle">${season.year}시즌 · ${season.league==='MIL'?militaryName(season.reg):(LV[season.league]||{n:season.league}).n} · ${esc(season.team)}</p><div class="game-log-list">${rows}</div></details>`;
 }
 
+function careerLegacyStory(){
+ const hist=Array.isArray(G.hist)?G.hist:[];
+ const nba=careerTotals('NBA');
+ const awards=G.aw||{};
+ const mvp=Number(awards['NBA MVP'])||0;
+ const rings=Number(awards['NBA 우승'])||0;
+ const allStar=Number(awards['NBA 올스타'])||0;
+ const nbaSeasons=hist.filter(x=>x.lv==='NBA').length;
+ const first=hist[0],last=hist[hist.length-1];
+ const leagues=[...new Set(hist.map(x=>x.lv).filter(Boolean))];
+ const leagueNames=leagues.map(x=>x==='MIL'?'상무':(LV[x]?.n||x));
+ const pathText=leagueNames.length?leagueNames.join(' · '):'코트 위';
+ const peak=Number(G.maxO)||0;
+ let opening;
+ if(mvp>0) opening=`고교 무대에서 첫발을 뗀 ${esc(G.name||'선수')}는 NBA 정상에 올라 ${mvp}차례 정규시즌 MVP를 차지하며 리그를 대표하는 선수로 이름을 남겼다.`;
+ else if(rings>0) opening=`화려한 개인 수상보다 팀의 승리를 향해 달린 ${esc(G.name||'선수')}는 NBA 우승 ${rings}회를 경험하며 챔피언의 커리어를 완성했다.`;
+ else if(nbaSeasons>0) opening=`고교 시절의 도전은 대학과 프로 무대를 거쳐 NBA까지 이어졌다. ${esc(G.name||'선수')}는 세계 최고 무대에서 ${nba.games}경기를 소화하며 자신의 이름을 증명했다.`;
+ else opening=`고교 코트에서 시작된 도전은 여러 무대와 선택을 거치며 한 편의 농구 인생이 되었다. ${esc(G.name||'선수')}는 끝까지 코트를 향한 도전을 이어갔다.`;
+ const highlights=[];
+ if(peak>=80) highlights.push(`커리어 최고 종합 능력치 ${peak}를 기록했다`);
+ else if(peak>0) highlights.push(`커리어 최고 종합 능력치 ${peak}까지 성장했다`);
+ if(allStar>0) highlights.push(`NBA 올스타 ${allStar}회 선정됐다`);
+ if(nba.games>0) highlights.push(`NBA에서 평균 ${nba.ppg.toFixed(1)}점 · ${nba.rpg.toFixed(1)}리바운드 · ${nba.apg.toFixed(1)}어시스트를 기록했다`);
+ if(rings>0) highlights.push(`NBA 챔피언십 ${rings}회를 달성했다`);
+ if(mvp>0) highlights.push(`NBA MVP ${mvp}회를 수상했다`);
+ const detail=highlights.length?highlights.join(', ')+'는 기록을 남겼다.':`총 ${hist.length}시즌 동안 ${pathText} 무대를 누비며 자신만의 커리어를 쌓았다.`;
+ const closing=G.endReason==='retired'?'이제 선수로서의 여정은 막을 내렸지만, 코트 위에서 남긴 기록과 순간들은 오래도록 기억될 것이다.':'선수 생활은 여기서 마무리되지만, 도전으로 채운 시간은 ZERO TO MVP의 커리어 레거시로 남는다.';
+ return `${opening} ${detail} ${closing}`;
+}
 function render(){const a=$('app');if(!G){a.innerHTML=startUI();return}/* 기존 저장 데이터에 잘못 남은 조기 종료 상태 복구 */if(G.phase==='end'&&G.age<39&&G.endReason!=='retired'){G.phase=G.last?'result':'hub';}sv();let h=head()+`<div class="save-access"><button onclick="saveManager()">저장 · 불러오기</button></div>`;
 if(G.phase==='turn'){const e=EV[G.evi];h+=note()+`<div class="card"><h2>${e.t}</h2><p>${e.d}</p></div>${b(e.a[0],ft(e.a[1]),'choose(0)')}${b(e.b[0],ft(e.b[1]),'choose(1)')}`}
 else if(G.phase==='hub')h+=note()+panel()+`<div class="card"><b>이번 시즌 집중 훈련 (최대 2개)</b><div>${K.map(k=>ch(G.focus.includes(k),KN[k],`tg('${k}')`)).join('')}${ch(G.focus.includes('rest'),'휴식·재활',`tg('rest')`)}</div></div>${b('시즌 진행','','play()','go')}${b('커리어 기록','','G.sh=!G.sh;render()')}${G.sh?table():''}`;
 else if(G.phase==='out'){const o=G.out;h+=`<div class="card"><h2>${esc(o.t)}</h2>${o.n?`<p class="${o.bd?'bad':'good'}">${esc(o.n)}</p>`:''}${o.l.map(x=>`<div>${esc(x)}</div>`).join('')}</div>`+b('계속','','cont()','go')}
-else if(G.phase==='path'){const p=G.path||{t:'진로 선택',d:'다음 커리어 단계를 선택하세요.',opts:[]};h+=note()+`<div class="card"><h2>${esc(p.t||'진로 선택')}</h2><p>${esc(p.d||'다음 커리어 단계를 선택하세요.')}</p></div>`+(p.opts||[]).map((o,i)=>b(esc(o.l||'선택'),esc(o.s||''),`doPath(${i})`,'path-choice '+(i===0?'go':''))).join('')}
-else if(G.phase==='season'){const l=G.last,sg=G.sg,gh=rd(l.g/2),wh=cl(rd(l.w/2*l.fr),0,gh),f=sg?1:l.fr,rec=sg?`${l.w}승 ${l.g-l.w}패`:`${wh}승 ${gh-wh}패`;h+=`<div class="card"><h2>${['시즌 전반','시즌 후반','포스트시즌'][sg]}</h2>`+(sg<2?`<p>${sg?l.g:gh}경기, ${rec}</p><div class="big">${(l.ppg*f).toFixed(1)}점 ${(l.rpg*f).toFixed(1)}리바 ${(l.apg*f).toFixed(1)}어시</div><p>${l.inj==='십자인대 파열, 시즌 아웃'?'부상으로 시즌 대부분을 놓쳤다.':l.min<10?'벤치에서 기회를 기다렸다.':l.min>=28?'팀의 주축으로 뛰고 있다.':'로테이션의 한 자리를 지키고 있다.'}</p>${sg&&l.inj?`<p class="bad">${l.inj}</p>`:''}`:`<p>${l.lv==='MIL'?`${militaryName(l.reg??G.reg)} 복무 기간이 끝났다.`:l.aw.includes((l.lv==='UNIV'?'대학':Pn[l.lv])+' 우승')?'우승! 정상에 올랐다.':l.w/l.g>=.5?'플레이오프에서 탈락했다.':'플레이오프에 오르지 못했다.'}</p>`)+`</div>`+b(['후반기로','포스트시즌으로','시즌 결산 보기'][sg],'','sgn()','go')}
+else if(G.phase==='path'){const p=G.path||{t:'진로 선택',d:'다음 커리어 단계를 선택하세요.',opts:[]};h+=note()+`<div class="card"><h2>${esc(p.t||'진로 선택')}</h2><p>${esc(p.d||'다음 커리어 단계를 선택하세요.')}</p></div>`+(p.opts||[]).map((o,i)=>o.locked?`<button class="path-choice locked" type="button" disabled aria-disabled="true">${esc(o.l||'선택')}<small>${esc(o.s||'')}</small></button>`:b(esc(o.l||'선택'),esc(o.s||''),`doPath(${i})`,'path-choice '+(i===0?'go':''))).join('')}
+else if(G.phase==='season'){const l=G.last,sg=G.sg,gh=rd(l.g/2),wh=cl(rd(l.w/2*l.fr),0,gh),f=sg?1:l.fr,rec=sg?`${l.w}승 ${l.g-l.w}패`:`${wh}승 ${gh-wh}패`;h+=`<div class="card"><h2>${['시즌 전반','시즌 후반','포스트시즌'][sg]}</h2>`+(sg<2?`<p>${sg?l.g:gh}경기, ${rec}</p><div class="big">${(l.ppg*f).toFixed(1)}점 ${(l.rpg*f).toFixed(1)}리바 ${(l.apg*f).toFixed(1)}어시</div><p>${l.inj==='십자인대 파열, 시즌 아웃'?'부상으로 시즌 대부분을 놓쳤다.':l.min<10?'벤치에서 기회를 기다렸다.':l.min>=28?'팀의 주축으로 뛰고 있다.':'로테이션의 한 자리를 지키고 있다.'}</p>${sg&&l.inj?`<p class="bad">${l.inj}</p>`:''}`:`<p>${l.lv==='MIL'?(Number(G.ms)<=1?`${militaryName(l.reg??G.reg)} 2시즌 복무를 모두 마쳤다. 이제 원소속팀 복귀를 앞두고 있다.`:'상무에서 첫 번째 복무 시즌을 마쳤다. 아직 한 시즌의 복무가 남아 있다.'):l.aw.includes((l.lv==='UNIV'?'대학':Pn[l.lv])+' 우승')?'우승! 정상에 올랐다.':l.w/l.g>=.5?'플레이오프에서 탈락했다.':'플레이오프에 오르지 못했다.'}</p>`)+`</div>`+b(['후반기로','포스트시즌으로','시즌 결산 보기'][sg],'','sgn()','go')}
 else if(G.phase==='result'){const l=G.last;h+=seasonReportMarkup(l)+`${l.rank?`<div class="card">NBA MVP 투표 순위: <b>${l.rank}위</b></div>`:''}${l.aw.includes('NBA MVP')&&G.aw['NBA MVP']===1?'<div class="card good"><b>NBA MVP 달성! 목표를 이뤘어요. 커리어는 계속 이어갈 수 있어요.</b></div>':''}<div class="card"><h3>이번 시즌 특기</h3>${traitMarkup(l.traits||[])}</div>${panel()}${b('다음 시즌','','adv()','go')}${gameLogPanel()}`}
 else if(G.phase==='end'){
 const nba=careerTotals('NBA'),A=G.aw||{},nm=Number(A['NBA MVP'])||0,nickname=getPlayerNickname(),major=getMajorAwards();
